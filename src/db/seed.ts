@@ -18,6 +18,17 @@ export const contentPack = parseContentPack(rawPack, 'content/a1.seed.json');
 
 export async function seedDatabase(db: Database, now = Date.now()): Promise<void> {
   await db.transaction(async (tx) => {
+    await seedContent(tx, now);
+  });
+}
+
+/**
+ * Il corpo del seed, senza transazione, così può girare anche su driver che
+ * non le supportano — è quello che permette al test di integrazione di
+ * esercitare esattamente questo codice invece di una sua copia.
+ */
+export async function seedContent(tx: Database, now: number): Promise<void> {
+  {
     for (const item of contentPack.items) {
       await tx
         .insert(items)
@@ -70,7 +81,7 @@ export async function seedDatabase(db: Database, now = Date.now()): Promise<void
       .insert(settings)
       .values({ id: 1, ...DEFAULT_SETTINGS, fsrsWeights: null, onboardingDone: false, createdAt: now })
       .onConflictDoNothing({ target: settings.id });
-  });
+  }
 }
 
 export async function isSeeded(db: Database): Promise<boolean> {

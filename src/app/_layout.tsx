@@ -1,10 +1,11 @@
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import migrations from '../../drizzle/migrations';
-import { db } from '../db/client';
+import { getDatabase } from '../db/client';
 import { isSeeded, seedDatabase } from '../db/seed';
 import { palette, spacing, type } from '../theme';
 
@@ -13,14 +14,14 @@ type Bootstrap = { status: 'pending' } | { status: 'ready' } | { status: 'error'
 export default function RootLayout() {
   const scheme = useColorScheme() ?? 'dark';
   const colors = palette[scheme === 'light' ? 'light' : 'dark'];
-  const { success, error } = useMigrations(db, migrations);
   const [bootstrap, setBootstrap] = useState<Bootstrap>({ status: 'pending' });
 
   useEffect(() => {
-    if (!success) return;
     let cancelled = false;
     (async () => {
       try {
+        const db = await getDatabase();
+        await migrate(db, migrations);
         if (!(await isSeeded(db))) {
           await seedDatabase(db);
         }
@@ -32,11 +33,9 @@ export default function RootLayout() {
     return () => {
       cancelled = true;
     };
-  }, [success]);
+  }, []);
 
-  const failure = error ?? (bootstrap.status === 'error' ? new Error(bootstrap.message) : null);
-
-  if (failure) {
+  if (bootstrap.status === 'error') {
     // Un fallimento di migrazione o di seed non va nascosto dietro uno spinner
     // infinito: il database è l'unica copia dei dati dell'utente.
     return (
@@ -44,12 +43,12 @@ export default function RootLayout() {
         <Text style={[type.title, { color: colors.danger, marginBottom: spacing.sm }]}>
           Impossibile preparare il database
         </Text>
-        <Text style={[type.body, { color: colors.textMuted, textAlign: 'center' }]}>{failure.message}</Text>
+        <Text style={[type.body, { color: colors.textMuted, textAlign: 'center' }]}>{bootstrap.message}</Text>
       </View>
     );
   }
 
-  if (!success || bootstrap.status !== 'ready') {
+  if (bootstrap.status !== 'ready') {
     return (
       <View style={[styles.center, { backgroundColor: colors.bg }]}>
         <ActivityIndicator color={colors.textMuted} />
@@ -58,7 +57,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar style={scheme === 'light' ? 'dark' : 'light'} />
       <Stack
         screenOptions={{
@@ -66,7 +65,7 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: colors.bg },
         }}
       />
-    </>
+    </SafeAreaProvider>
   );
 }
 

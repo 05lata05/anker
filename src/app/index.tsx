@@ -1,110 +1,75 @@
-import { sql } from 'drizzle-orm';
-import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GENDER_COLORS, GENDER_MARKS, type Gender } from '../core/types';
-import { db } from '../db/client';
-import { cards, items, lessons } from '../db/schema';
-import { type Palette, palette, radius, spacing, type } from '../theme';
+import { Button, Label, Surface } from '../features/ui/components';
+import { useColors } from '../features/ui/theme';
+import { getDatabase } from '../db/client';
+import { ANCHOR_STABILITY_DAYS, countAnchors, countDueNow, findOpenSession, getSettings } from '../db/repo';
+import { spacing, type } from '../theme';
 
 /**
- * Segnaposto della Fase A: serve a verificare che migrazioni e seed girino sul
- * dispositivo. La Home vera (Ancoraggi, review dovute, streak) arriva in Fase D.
+ * Home minima della Fase C: serve ad avviare e riprendere una sessione.
+ * Streak, copertura per frequenza e metriche complete arrivano in Fase D.
  */
-export default function ScaffoldScreen() {
-  const scheme = useColorScheme() ?? 'dark';
-  const colors = palette[scheme === 'light' ? 'light' : 'dark'];
-  const [counts, setCounts] = useState<{ items: number; lessons: number; cards: number } | null>(null);
-  const [samples, setSamples] = useState<{ id: string; de: string; it: string; gender: Gender | null }[]>([]);
+export default function HomeScreen() {
+  const router = useRouter();
+  const colors = useColors();
+  const [state, setState] = useState<{ due: number; anchors: number; resumable: boolean } | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const [i] = await db.select({ n: sql<number>`count(*)` }).from(items);
-      const [l] = await db.select({ n: sql<number>`count(*)` }).from(lessons);
-      const [c] = await db.select({ n: sql<number>`count(*)` }).from(cards);
-      setCounts({ items: i?.n ?? 0, lessons: l?.n ?? 0, cards: c?.n ?? 0 });
-
-      const rows = await db
-        .select({ id: items.id, de: items.de, it: items.it, gender: items.gender })
-        .from(items)
-        .where(sql`${items.type} = 'noun'`)
-        .limit(6);
-      setSamples(rows);
-    })();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+      (async () => {
+        const db = await getDatabase();
+        const now = Date.now();
+        const settings = await getSettings(db);
+        const [due, anchors, open] = await Promise.all([
+          countDueNow(db, now),
+          countAnchors(db),
+          findOpenSession(db, now, settings.dayRolloverHour),
+        ]);
+        if (!cancelled) setState({ due, anchors, resumable: open !== null });
+      })();
+      return () => {
+        cancelled = true;
+      };
+    }, []),
+  );
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.bg }]}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[type.label, { color: colors.textFaint }]}>ANKER · FASE A</Text>
-        <Text style={[type.display, { color: colors.text, marginBottom: spacing.lg }]}>Scaffolding</Text>
-
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Row label="Item nel database" value={counts?.items ?? '…'} colors={colors} />
-          <Row label="Lezioni di input" value={counts?.lessons ?? '…'} colors={colors} />
-          <Row
-            label="Card create"
-            value={counts?.cards ?? '…'}
-            hint="0 è corretto: le card nascono quando l'item viene introdotto"
-            colors={colors}
-          />
+      <View style={styles.content}>
+        <View style={styles.hero}>
+          <Label>ANCORAGGI</Label>
+          <Text style={[type.display, { color: colors.text }]}>{state?.anchors ?? '—'}</Text>
+          <Text style={[type.body, { color: colors.textFaint }]}>
+            item che reggono più di {ANCHOR_STABILITY_DAYS} giorni
+          </Text>
         </View>
 
-        <Text style={[type.label, { color: colors.textFaint, marginTop: spacing.xl, marginBottom: spacing.sm }]}>
-          COLOR-CODING DEL GENERE
-        </Text>
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          {samples.map((item) => (
-            <View key={item.id} style={styles.sampleRow}>
-              <Text style={[type.mono, { color: item.gender ? GENDER_COLORS[item.gender] : colors.textMuted }]}>
-                {item.gender ? GENDER_MARKS[item.gender] : '·'}
-              </Text>
-              <Text
-                style={[
-                  type.body,
-                  styles.sampleDe,
-                  { color: item.gender ? GENDER_COLORS[item.gender] : colors.text },
-                ]}
-              >
-                {item.de}
-              </Text>
-              <Text style={[type.body, { color: colors.textMuted }]}>{item.it}</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+        <Surface>
+          <View style={styles.row}>
+            <Text style={[type.body, { color: colors.textMuted }]}>Da richiamare oggi</Text>
+            <Text style={[type.title, { color: colors.text }]}>{state?.due ?? '—'}</Text>
+          </View>
+        </Surface>
 
-function Row({
-  label,
-  value,
-  hint,
-  colors,
-}: {
-  label: string;
-  value: number | string;
-  hint?: string;
-  colors: Palette;
-}) {
-  return (
-    <View style={styles.row}>
-      <View style={styles.rowMain}>
-        <Text style={[type.body, { color: colors.textMuted }]}>{label}</Text>
-        <Text style={[type.title, { color: colors.text }]}>{value}</Text>
+        <View style={styles.spacer} />
+
+        <Button
+          label={state?.resumable ? 'Riprendi la sessione' : 'Inizia sessione'}
+          onPress={() => router.push('/session')}
+        />
       </View>
-      {hint ? <Text style={[type.mono, { color: colors.textFaint }]}>{hint}</Text> : null}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  content: { padding: spacing.lg, paddingBottom: spacing.xxl },
-  card: { borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: spacing.md, gap: spacing.md },
-  row: { gap: spacing.xs },
-  rowMain: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  sampleRow: { flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm },
-  sampleDe: { flex: 1 },
+  content: { flex: 1, padding: spacing.lg, gap: spacing.lg },
+  hero: { gap: spacing.xs, paddingTop: spacing.xxl },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  spacer: { flex: 1 },
 });

@@ -118,3 +118,54 @@ export function explainCaseError(params: {
 
 /** Ordine di introduzione dei casi. Il genitivo arriva per ultimo, e va bene così. */
 export const CASE_SEQUENCE: readonly Case[] = ['nominativ', 'akkusativ', 'dativ', 'genitiv'];
+
+const DATIVE_FORMS = new Set(['dem', 'einem', 'einer', 'keinem', 'keiner', 'meinem', 'meiner']);
+const ACCUSATIVE_FORMS = new Set(['den', 'einen', 'keinen', 'meinen']);
+
+/**
+ * Caso di una forma d'articolo, quando è deducibile.
+ *
+ * `der` e `die` restano ambigui fuori contesto — `der` è nominativo maschile,
+ * dativo femminile e genitivo femminile — quindi qui si usa il reggente della
+ * preposizione, che è l'informazione che l'utente deve davvero interiorizzare.
+ */
+export function caseOfArticle(article: string, government: PrepositionGovernment | null): Case | null {
+  const lower = article.toLowerCase();
+  if (government === 'dativ') return 'dativ';
+  if (government === 'akkusativ') return 'akkusativ';
+
+  if (DATIVE_FORMS.has(lower)) return 'dativ';
+  if (ACCUSATIVE_FORMS.has(lower)) return 'akkusativ';
+  if (government === 'wechsel') return lower === 'der' ? 'dativ' : 'akkusativ';
+  return null;
+}
+
+/**
+ * Variante della spiegazione che parte dalla forma corretta invece che dal
+ * genere. Serve al feedback della Fase 1, dove la frase giusta è nota ma il
+ * genere del sostantivo dentro il chunk no.
+ */
+export function explainArticleError(params: {
+  preposition: string;
+  expectedArticle: string;
+  noun?: string;
+}): string | null {
+  const government = prepositionGovernment(params.preposition);
+  if (government === null) return null;
+
+  const kase = caseOfArticle(params.expectedArticle, government);
+  if (kase === null) return null;
+
+  const tail = params.noun ? ` ${params.noun}` : '';
+  const correct = `${params.expectedArticle}${tail}`;
+
+  if (government === 'wechsel') {
+    const reason =
+      kase === 'dativ'
+        ? 'qui indica uno stato, non un movimento verso (wo?)'
+        : 'qui indica un movimento verso, non uno stato (wohin?)';
+    return `«${params.preposition}» regge sia il dativo sia l’accusativo: ${reason}, quindi ${CASE_LABEL[kase]} → ${correct}.`;
+  }
+
+  return `In tedesco dopo «${params.preposition}» si usa sempre il ${CASE_LABEL[kase]} → ${correct}.`;
+}

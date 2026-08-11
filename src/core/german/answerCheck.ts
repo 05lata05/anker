@@ -183,6 +183,76 @@ export function checkAnswer(userAnswer: string, expected: string): AnswerCheck {
   };
 }
 
+const ITALIAN_FUNCTION_WORDS = new Set([
+  'il', 'lo', 'la', 'i', 'gli', 'le', 'un', 'uno', 'una', "un'",
+  'di', 'a', 'da', 'in', 'con', 'su', 'per', 'tra', 'fra',
+  'del', 'dello', 'della', 'dei', 'degli', 'delle',
+  'al', 'allo', 'alla', 'ai', 'agli', 'alle',
+  'dal', 'dallo', 'dalla', 'nel', 'nella', 'sul', 'sulla',
+  'e', 'che', 'è', 'ho', 'mi', 'ti', 'si', 'ci', 'vi',
+]);
+
+/**
+ * Verifica una glossa italiana (direzioni `recognition` e `listening`).
+ *
+ * È deliberatamente permissiva. «Vado in macchina», «vado con l'auto» e «vado
+ * in auto» sono tutte comprensioni riuscite di *Ich fahre mit dem Auto*, e i
+ * contenuti portano una sola traduzione: pretendere quella esatta misurerebbe
+ * la capacità di indovinare la formulazione dell'autore, non il richiamo.
+ *
+ * Il rovescio della medaglia è che questo controllo può assolvere una risposta
+ * approssimativa. Va bene: la direzione che deve essere severa è la produzione
+ * in tedesco, dove la forma attesa è una sola e `checkAnswer` non fa sconti.
+ */
+export const GLOSS_OVERLAP_THRESHOLD = 0.7;
+
+export function checkGloss(userAnswer: string, expected: string): AnswerCheck {
+  const normalizedUser = normalize(userAnswer);
+  const normalizedExpected = normalize(expected);
+  const base = { normalizedUser, normalizedExpected, differingToken: null };
+
+  if (normalizedUser.toLowerCase() === normalizedExpected.toLowerCase()) {
+    return { ...base, verdict: 'correct', wasCorrect: true, distance: 0, note: null };
+  }
+
+  const content = (text: string) =>
+    text
+      .toLowerCase()
+      .split(' ')
+      .filter((word) => word.length > 0 && !ITALIAN_FUNCTION_WORDS.has(word));
+
+  const expectedWords = content(normalizedExpected);
+  const userWords = new Set(content(normalizedUser));
+
+  if (expectedWords.length === 0) {
+    return { ...base, verdict: 'wrong', wasCorrect: false, distance: 1, note: `Significa «${normalizedExpected}».` };
+  }
+
+  const matched = expectedWords.filter((word) =>
+    [...userWords].some((candidate) => levenshtein(word, candidate) <= (word.length > 5 ? 2 : 1)),
+  ).length;
+
+  const overlap = matched / expectedWords.length;
+
+  if (overlap >= GLOSS_OVERLAP_THRESHOLD) {
+    return {
+      ...base,
+      verdict: 'correct',
+      wasCorrect: true,
+      distance: 0,
+      note: normalizedUser.toLowerCase() === normalizedExpected.toLowerCase() ? null : `Nei contenuti: «${normalizedExpected}».`,
+    };
+  }
+
+  return {
+    ...base,
+    verdict: 'wrong',
+    wasCorrect: false,
+    distance: 1 - overlap,
+    note: `Significa «${normalizedExpected}».`,
+  };
+}
+
 /**
  * Traduce l'esito della correzione in input per la derivazione del voto FSRS.
  * Il typo passa da `usedHint` perché l'effetto voluto è identico: richiamo

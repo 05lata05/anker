@@ -48,13 +48,43 @@ drizzle/           migrazioni generate (committare)
 Il confine tra `core/` e il resto è verificato da un test: se qualcosa dentro
 `src/core/` importa React, React Native, Expo o Drizzle, la suite fallisce.
 
+`npm test` esegue due suite: il motore su oggetti in memoria (`src/core`) e il
+layer dati contro SQLite vero via `node:sqlite` (`src/db`), che copre
+migrazioni, colonne JSON, persistenza dello stato FSRS e ripresa di sessione.
+
+## Limitazioni note
+
+**Il target web non funziona**, per un bug a monte in `expo-sqlite`. In
+`node_modules/expo-sqlite/web/WorkerChannel.ts` il canale sincrono verso il
+worker scrive la lunghezza del risultato con
+
+```js
+resultArray.set(new Uint32Array([length]), 0);
+```
+
+`Uint8Array.prototype.set` converte ogni elemento in un singolo byte, quindi
+finisce in memoria solo `length & 0xFF` mentre il lettore rilegge quattro byte.
+Qualsiasi risultato oltre i 255 byte torna troncato e la deserializzazione
+fallisce con «Unterminated string in JSON at position N», dove N è
+`lunghezza % 256`. Il driver `drizzle-orm/expo-sqlite` usa solo API sincrone,
+quindi l'app su web si ferma alla prima query non banale.
+
+Non tocca iOS e Android, dove SQLite è nativo. Chi volesse sbloccare lo sviluppo
+su web può correggere quella riga in `node_modules` con `patch-package`
+(`resultArray.set(new Uint8Array(new Uint32Array([length]).buffer), 0)`), ma è
+una patch a monte da mantenere.
+
+**La UI non è stata verificata su dispositivo.** Logica ed accesso ai dati sono
+coperti dai test; le schermate no. Per vederle serve `npm start` e un telefono
+con Expo Go o una dev build.
+
 ## Stato
 
 | Fase | Contenuto | Stato |
 | --- | --- | --- |
 | A | Scaffolding, schema DB, seed, test di setup | fatto |
 | B | Motore `core/` completo | fatto |
-| C | Session player a 5 fasi | da fare |
+| C | Session player a 5 fasi | fatto |
 | D | Home, progressi, dettaglio item, impostazioni, onboarding | da fare |
 | E | Audio: shadowing, registrazione, A/B, TTS | da fare |
 | F | 300 item + rifinitura | da fare |
