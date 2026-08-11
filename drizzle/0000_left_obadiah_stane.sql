@@ -111,6 +111,7 @@ CREATE TABLE `settings` (
 	`initial_blocking` integer DEFAULT false NOT NULL,
 	`leech_lapse_threshold` integer DEFAULT 8 NOT NULL,
 	`streak_freezes_left` integer DEFAULT 2 NOT NULL,
+	`level` text DEFAULT 'A1' NOT NULL,
 	`fsrs_weights` text,
 	`onboarding_done` integer DEFAULT false NOT NULL,
 	`created_at` integer NOT NULL

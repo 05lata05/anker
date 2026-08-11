@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b54d59f0-dffa-4346-9e65-bb1e6d806f79",
+  "id": "2ba128a4-b6b5-489a-abd4-3e9b96934923",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "cards": {
@@ -770,6 +770,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": 2
+        },
+        "level": {
+          "name": "level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'A1'"
         },
         "fsrs_weights": {
           "name": "fsrs_weights",

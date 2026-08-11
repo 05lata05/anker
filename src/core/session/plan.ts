@@ -122,7 +122,7 @@ export function buildSessionPlan(input: SessionPlanInput): SessionPlan {
     candidates: [...itemsById.values()],
     introducedItemIds,
     allowance: newItemAllowance.allowance,
-    level: input.level ?? 'A1',
+    level: input.level ?? settings.level,
     familiarTags: familiarTagsFrom(input.errorProfile),
   });
 

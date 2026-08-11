@@ -6,8 +6,10 @@
  * Nessuna regola didattica vive in questo file: se ne compare una, è nel posto
  * sbagliato.
  */
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql } from 'drizzle-orm';
+import { seedKnownCards } from '../core/onboarding/placement';
 import { recordAnswer } from '../core/profile/errorProfile';
+import { ANCHOR_STABILITY_DAYS } from '../core/progress/metrics';
 import { logicalDay } from '../core/scheduler/day';
 import { applyReview, createCard, createScheduler, retrievabilityWith } from '../core/scheduler/fsrs';
 import { scheduleSameDayReinforcement } from '../core/scheduler/sameDay';
@@ -15,6 +17,8 @@ import { directionsForItem, directionsToUnlock } from '../core/scheduler/unlock'
 import { KNOWN_RETRIEVABILITY } from '../core/selection/comprehensibleInput';
 import type {
   Card,
+  Cefr,
+  DayLog,
   ErrorProfileEntry,
   Grade,
   GrammarTag,
@@ -404,6 +408,8 @@ export async function abandonOpenSessions(db: Database, now: number, rolloverHou
 // Letture di supporto per la UI
 // ---------------------------------------------------------------------------
 
+export { ANCHOR_STABILITY_DAYS };
+
 export async function countDueNow(db: Database, now: number): Promise<number> {
   const [row] = await db
     .select({ n: sql<number>`count(*)` })
@@ -412,13 +418,129 @@ export async function countDueNow(db: Database, now: number): Promise<number> {
   return row?.n ?? 0;
 }
 
-/** «Ancoraggi»: item con stability oltre 30 giorni (§6). */
-export const ANCHOR_STABILITY_DAYS = 30;
-
 export async function countAnchors(db: Database): Promise<number> {
   const [row] = await db
     .select({ n: sql<number>`count(distinct ${cards.itemId})` })
     .from(cards)
-    .where(sql`${cards.stability} >= ${ANCHOR_STABILITY_DAYS}`);
+    .where(and(eq(cards.direction, 'recognition'), sql`${cards.stability} >= ${ANCHOR_STABILITY_DAYS}`));
   return row?.n ?? 0;
+}
+
+export async function getDayLogs(db: Database, limit = 400): Promise<DayLog[]> {
+  const rows = await db.select().from(dayLog).orderBy(desc(dayLog.day)).limit(limit);
+  return rows;
+}
+
+/** Item la cui card di riconoscimento supera la soglia di retrievability. */
+export async function getKnownItems(db: Database, now: number): Promise<Item[]> {
+  const state = await loadEngineState(db, now);
+  return [...state.knownItemIds]
+    .map((id) => state.itemsById.get(id))
+    .filter((item): item is Item => item !== undefined);
+}
+
+export interface ItemDetail {
+  item: Item;
+  cards: Card[];
+  reviews: { id: string; cardId: string; ts: number; rating: number; wasCorrect: boolean; userAnswer: string | null }[];
+}
+
+export async function getItemDetail(db: Database, itemId: string): Promise<ItemDetail | null> {
+  const [itemRow] = await db.select().from(items).where(eq(items.id, itemId));
+  if (!itemRow) return null;
+
+  const cardRows = await db.select().from(cards).where(eq(cards.itemId, itemId));
+  const cardIds = cardRows.map((row) => row.id);
+
+  const reviewRows =
+    cardIds.length === 0
+      ? []
+      : await db
+          .select({
+            id: reviews.id,
+            cardId: reviews.cardId,
+            ts: reviews.ts,
+            rating: reviews.rating,
+            wasCorrect: reviews.wasCorrect,
+            userAnswer: reviews.userAnswer,
+          })
+          .from(reviews)
+          .where(inArray(reviews.cardId, cardIds))
+          .orderBy(desc(reviews.ts))
+          .limit(50);
+
+  return { item: rowToItem(itemRow), cards: cardRows.map(rowToCard), reviews: reviewRows };
+}
+
+/** Item studiati, dal più stabile: è la lista sfogliabile dei progressi. */
+export async function listStudiedItems(db: Database, limit = 200): Promise<{ item: Item; stability: number }[]> {
+  const rows = await db
+    .select({ item: items, stability: cards.stability })
+    .from(cards)
+    .innerJoin(items, eq(cards.itemId, items.id))
+    .where(eq(cards.direction, 'recognition'))
+    .orderBy(desc(cards.stability))
+    .limit(limit);
+
+  return rows.map((row) => ({ item: rowToItem(row.item), stability: row.stability }));
+}
+
+export async function getRecentReviews(db: Database, limit = 500) {
+  return db
+    .select({ cardId: reviews.cardId, ts: reviews.ts, wasCorrect: reviews.wasCorrect })
+    .from(reviews)
+    .orderBy(desc(reviews.ts))
+    .limit(limit);
+}
+
+export async function getItem(db: Database, itemId: string): Promise<Item | null> {
+  const [row] = await db.select().from(items).where(eq(items.id, itemId));
+  return row ? rowToItem(row) : null;
+}
+
+export async function getAllCards(db: Database): Promise<Card[]> {
+  const rows = await db.select().from(cards);
+  return rows.map(rowToCard);
+}
+
+// ---------------------------------------------------------------------------
+// Onboarding
+// ---------------------------------------------------------------------------
+
+export async function isOnboardingDone(db: Database): Promise<boolean> {
+  const [row] = await db.select({ done: settings.onboardingDone }).from(settings).where(eq(settings.id, 1));
+  return row?.done ?? false;
+}
+
+/**
+ * Applica l'esito del placement: semina le card degli item riconosciuti e
+ * registra il livello stimato.
+ *
+ * Le card seminate partono da una stability di pochi giorni, non da «imparato»:
+ * se la stima è sbagliata l'item torna presto e l'errore si corregge da sé.
+ */
+export async function applyPlacement(
+  db: Database,
+  result: { level: Cefr; knownItemIds: readonly string[] },
+  now: number,
+): Promise<number> {
+  const state = await loadEngineState(db, now);
+  const created: Card[] = [];
+
+  for (const id of result.knownItemIds) {
+    const item = state.itemsById.get(id);
+    if (!item) continue;
+    created.push(...seedKnownCards(item, now, directionsForItem(item)));
+  }
+
+  if (created.length > 0) {
+    await db.insert(cards).values(created).onConflictDoNothing();
+  }
+
+  await db.update(settings).set({ level: result.level, onboardingDone: true }).where(eq(settings.id, 1));
+  return created.length;
+}
+
+export async function resetOnboarding(db: Database): Promise<void> {
+  await db.update(settings).set({ onboardingDone: false }).where(eq(settings.id, 1));
 }

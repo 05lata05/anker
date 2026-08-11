@@ -196,6 +196,9 @@ export const settings = sqliteTable('settings', {
   initialBlocking: integer('initial_blocking', { mode: 'boolean' }).notNull().default(false),
   leechLapseThreshold: integer('leech_lapse_threshold').notNull().default(8),
   streakFreezesLeft: integer('streak_freezes_left').notNull().default(2),
+  level: text('level', { enum: ['A1', 'A2', 'B1', 'B2'] })
+    .notNull()
+    .default('A1'),
   /**
    * Pesi FSRS. Restano i default finché non esiste un ottimizzatore: ts-fsrs
    * applica i pesi, non li stima. Vedi la nota in core/scheduler/fsrs.ts.

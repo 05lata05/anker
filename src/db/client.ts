@@ -18,6 +18,7 @@ export const DATABASE_NAME = 'anker.db';
 export type Database = ExpoSQLiteDatabase<typeof schema>;
 
 let instance: Database | null = null;
+let handle: SQLite.SQLiteDatabase | null = null;
 let opening: Promise<Database> | null = null;
 
 export function getDatabase(): Promise<Database> {
@@ -29,12 +30,31 @@ export function getDatabase(): Promise<Database> {
       // Le foreign key in SQLite sono disattivate di default: senza questo
       // pragma `onDelete: 'cascade'` sullo schema non fa nulla.
       await sqlite.execAsync('PRAGMA foreign_keys = ON;');
+      handle = sqlite;
       instance = drizzle(sqlite, { schema });
       return instance;
     })();
   }
 
   return opening;
+}
+
+/**
+ * Chiude e cancella il database.
+ *
+ * Serve quando le migrazioni non si applicano a un file preesistente — succede
+ * in sviluppo ogni volta che si rigenera lo schema — e va offerta SOLO da lì:
+ * per l'utente questo pulsante cancella anni di ripetizioni, ed è irreversibile
+ * a meno che non abbia esportato.
+ */
+export async function resetDatabase(): Promise<void> {
+  if (handle) {
+    await handle.closeAsync();
+    handle = null;
+  }
+  instance = null;
+  opening = null;
+  await SQLite.deleteDatabaseAsync(DATABASE_NAME);
 }
 
 export { schema };

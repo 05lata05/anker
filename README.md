@@ -76,10 +76,17 @@ dipendenza `patch-package` si possono togliere.
 
 ## Limitazioni note
 
-**La UI non è stata verificata su iOS e Android.** Il ciclo di sessione è stato
-percorso end-to-end nel browser — richiamo, input, nuovi chunk, produzione,
-consolidamento, pausa e ripresa — ma su dispositivo reale no. Per provarlo
-servono `npm start` e un telefono con Expo Go o una dev build.
+**La UI non è stata verificata su iOS e Android.** Onboarding, sessione, home,
+progressi, dettaglio item e impostazioni sono stati percorsi end-to-end nel
+browser, ma su dispositivo reale no. In particolare export e import del
+database usano API native che sul web non fanno nulla di utile: sono l'unica
+parte scritta e mai eseguita. Per provarli servono `npm start` e un telefono
+con Expo Go o una dev build.
+
+**Il livello stimato dal placement è una stima grossolana.** Venti domande di
+riconoscimento non misurano il livello di nessuno. Serve solo a decidere da
+dove cominciare, e gli item dati per noti partono con una scadenza di quattro
+giorni proprio perché l'errore si scopra subito.
 
 ## Stato
 
@@ -88,7 +95,7 @@ servono `npm start` e un telefono con Expo Go o una dev build.
 | A | Scaffolding, schema DB, seed, test di setup | fatto |
 | B | Motore `core/` completo | fatto |
 | C | Session player a 5 fasi | fatto |
-| D | Home, progressi, dettaglio item, impostazioni, onboarding | da fare |
+| D | Home, progressi, dettaglio item, impostazioni, onboarding | fatto |
 | E | Audio: shadowing, registrazione, A/B, TTS | da fare |
 | F | 300 item + rifinitura | da fare |
 

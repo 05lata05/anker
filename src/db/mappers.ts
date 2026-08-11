@@ -74,6 +74,7 @@ export function rowToSettings(row: SettingsRow): Settings {
     initialBlocking: row.initialBlocking,
     leechLapseThreshold: row.leechLapseThreshold,
     streakFreezesLeft: row.streakFreezesLeft,
+    level: row.level,
   };
 }
 

@@ -263,6 +263,11 @@ export interface Settings {
   leechLapseThreshold: number;
   /** Streak freeze rimasti nel mese corrente. */
   streakFreezesLeft: number;
+  /**
+   * Livello di partenza stimato dal placement. Limita quali item possono essere
+   * introdotti; è una stima, e si corregge da sé man mano che si studia.
+   */
+  level: Cefr;
 }
 
 export const RETENTION_MIN = 0.8;
@@ -278,6 +283,7 @@ export const DEFAULT_SETTINGS: Settings = {
   initialBlocking: false,
   leechLapseThreshold: 8,
   streakFreezesLeft: 2,
+  level: 'A1',
 };
 
 // ---------------------------------------------------------------------------

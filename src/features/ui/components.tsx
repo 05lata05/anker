@@ -9,6 +9,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { GENDER_COLORS, GENDER_MARKS, type Gender } from '../../core/types';
+import { useGenderColorsEnabled } from '../../state/settingsStore';
 import { radius, spacing, type } from '../../theme';
 import { useColors } from './theme';
 
@@ -108,18 +109,18 @@ export function GermanText({
   text,
   gender,
   size = 'german',
-  enabled = true,
 }: {
   text: string;
   gender?: Gender | null;
   size?: 'german' | 'body' | 'title';
-  enabled?: boolean;
 }) {
   const colors = useColors();
-  const useColor = enabled && gender != null;
+  const colorsEnabled = useGenderColorsEnabled();
+  const useColor = colorsEnabled && gender != null;
   return (
     <Text style={[type[size], { color: useColor ? GENDER_COLORS[gender] : colors.text }]}>
-      {useColor ? `${GENDER_MARKS[gender]} ` : ''}
+      {/* Il simbolo resta anche col colore spento: è il canale non cromatico. */}
+      {gender != null ? `${GENDER_MARKS[gender]} ` : ''}
       {text}
     </Text>
   );
