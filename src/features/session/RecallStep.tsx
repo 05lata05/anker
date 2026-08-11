@@ -61,7 +61,9 @@ export function RecallStep({
         <Pressable onPress={() => prompt.language === 'de' && speakGerman(prompt.text)}>
           <GermanText
             text={prompt.text}
-            gender={prompt.language === 'de' ? item.gender : null}
+            // Sulla card di genere il colore E il simbolo sono la risposta:
+            // mostrarli qui trasformerebbe l'esercizio in una lettura.
+            gender={prompt.language === 'de' && step.card.card.direction !== 'gender' ? item.gender : null}
             size={prompt.language === 'de' ? 'german' : 'title'}
           />
         </Pressable>

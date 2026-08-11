@@ -126,6 +126,31 @@ describe('feedback', () => {
     expect(feedback.correction).toBe('Ich fahre mit dem Auto');
   });
 
+  it('su un genere sbagliato cita la regola di QUELLA parola, non una generica', () => {
+    const familie = makeItem({
+      id: 'die-familie',
+      type: 'noun',
+      de: 'die Familie',
+      it: 'la famiglia',
+      gender: 'die',
+      plural: 'die Familien',
+      tags: ['gender_die', 'suffix_ie'],
+    });
+    const feedback = buildFeedback(checkAnswer('der Familie', 'die Familie'), familie);
+    expect(feedback.explanation).toContain('-ie');
+    expect(feedback.explanation).not.toContain('-ung');
+    expect(feedback.tag).toBe('gender_die');
+  });
+
+  it('quando nessuna regola predice il genere lo dice, invece di inventarne una', () => {
+    // `Auto` non finisce con nessun suffisso informativo: citare i diminutivi
+    // in -chen sarebbe una regola vera e del tutto inutile qui.
+    const feedback = buildFeedback(checkAnswer('die', 'das'), autoNoun);
+    expect(feedback.explanation).toContain('per esposizione');
+    expect(feedback.explanation).not.toContain('-chen');
+    expect(feedback.tag).toBe('gender_das');
+  });
+
   it('quando l’errore non è sull’articolo ripiega sulla regola del tag', () => {
     const ordine = makeItem({
       id: 'weil',

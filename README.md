@@ -52,31 +52,34 @@ Il confine tra `core/` e il resto è verificato da un test: se qualcosa dentro
 layer dati contro SQLite vero via `node:sqlite` (`src/db`), che copre
 migrazioni, colonne JSON, persistenza dello stato FSRS e ripresa di sessione.
 
-## Limitazioni note
+## La patch a `expo-sqlite`
 
-**Il target web non funziona**, per un bug a monte in `expo-sqlite`. In
-`node_modules/expo-sqlite/web/WorkerChannel.ts` il canale sincrono verso il
-worker scrive la lunghezza del risultato con
+In `patches/expo-sqlite+57.0.1.patch` c'è la correzione di un bug a monte che
+rendeva il target web inutilizzabile. Il canale sincrono verso il worker
+scriveva la lunghezza del risultato così:
 
 ```js
 resultArray.set(new Uint32Array([length]), 0);
 ```
 
 `Uint8Array.prototype.set` converte ogni elemento in un singolo byte, quindi
-finisce in memoria solo `length & 0xFF` mentre il lettore rilegge quattro byte.
-Qualsiasi risultato oltre i 255 byte torna troncato e la deserializzazione
-fallisce con «Unterminated string in JSON at position N», dove N è
-`lunghezza % 256`. Il driver `drizzle-orm/expo-sqlite` usa solo API sincrone,
-quindi l'app su web si ferma alla prima query non banale.
+finiva in memoria solo `length & 0xFF` mentre il lettore ne rileggeva quattro.
+Qualsiasi risultato oltre i 255 byte tornava troncato e la deserializzazione
+falliva con «Unterminated string in JSON at position N», dove N è
+`lunghezza % 256`. Siccome `drizzle-orm/expo-sqlite` usa solo API sincrone,
+l'app si fermava alla prima query non banale.
 
-Non tocca iOS e Android, dove SQLite è nativo. Chi volesse sbloccare lo sviluppo
-su web può correggere quella riga in `node_modules` con `patch-package`
-(`resultArray.set(new Uint8Array(new Uint32Array([length]).buffer), 0)`), ma è
-una patch a monte da mantenere.
+La patch viene riapplicata da `patch-package` nel `postinstall`. Non serve su
+iOS e Android, dove SQLite è nativo: serve per poter sviluppare e verificare nel
+browser. Quando expo-sqlite correggerà il bug a monte, questa patch e la
+dipendenza `patch-package` si possono togliere.
 
-**La UI non è stata verificata su dispositivo.** Logica ed accesso ai dati sono
-coperti dai test; le schermate no. Per vederle serve `npm start` e un telefono
-con Expo Go o una dev build.
+## Limitazioni note
+
+**La UI non è stata verificata su iOS e Android.** Il ciclo di sessione è stato
+percorso end-to-end nel browser — richiamo, input, nuovi chunk, produzione,
+consolidamento, pausa e ripresa — ma su dispositivo reale no. Per provarlo
+servono `npm start` e un telefono con Expo Go o una dev build.
 
 ## Stato
 

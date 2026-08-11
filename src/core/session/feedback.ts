@@ -9,6 +9,7 @@
  */
 import type { AnswerCheck } from '../german/answerCheck';
 import { explainArticleError, prepositionGovernment } from '../german/cases';
+import { predictGender } from '../german/genderRules';
 import { RULE_CARDS } from '../profile/drills';
 import { TAG_LABELS } from '../german/tags';
 import { classifyClause, explainWordOrder } from '../german/wordOrder';
@@ -63,6 +64,44 @@ function articleExplanation(check: AnswerCheck): { text: string; tag: GrammarTag
   return { text, tag };
 }
 
+const GENDER_TAG: Record<string, GrammarTag> = {
+  der: 'gender_der',
+  die: 'gender_die',
+  das: 'gender_das',
+};
+
+/**
+ * Spiegazione mirata su un genere sbagliato.
+ *
+ * Va interrogato il motore di regole sulla parola concreta, non la scheda
+ * generica del tag: dire «sono neutri i diminutivi in -chen» a chi ha sbagliato
+ * `das Auto` è una regola vera e completamente inutile lì.
+ *
+ * E quando nessuna regola si applica, lo si dice. Un'app che inventa una
+ * giustificazione per ogni genere insegna che il sistema è sempre prevedibile,
+ * il che è falso e si ritorce contro alla prima eccezione.
+ */
+function genderExplanation(item: Item): { text: string; tag: GrammarTag } | null {
+  if (item.type !== 'noun' || item.gender === null) return null;
+
+  const tag = GENDER_TAG[item.gender];
+  const prediction = predictGender(item.de);
+
+  if (prediction.gender === item.gender && prediction.confidence >= 0.7) {
+    return { text: prediction.explanation, tag };
+  }
+
+  const plural = item.plural ? ` Plurale: ${item.plural}.` : '';
+  return {
+    text: `Nessuna regola di forma predice il genere di «${item.de}»: questo va imparato per esposizione.${plural}`,
+    tag,
+  };
+}
+
+function isArticle(token: string): boolean {
+  return ARTICLE_LIKE.has(token.toLowerCase());
+}
+
 /**
  * Costruisce il feedback. L'ordine dei tentativi va dal più specifico al più
  * generico: una spiegazione sull'articolo sbagliato vale molto più della
@@ -92,6 +131,25 @@ export function buildFeedback(check: AnswerCheck, item: Item): Feedback {
       explanation: article.text,
       tag: article.tag,
     };
+  }
+
+  // Card di genere («das»), oppure articolo sbagliato in testa a un sostantivo
+  // («der Familie» per «die Familie»): in entrambi i casi l'errore è il genere.
+  const wrongArticle =
+    isArticle(check.normalizedExpected) ||
+    (check.differingToken !== null && check.differingToken.index === 0 && isArticle(check.differingToken.expected));
+
+  if (wrongArticle) {
+    const gender = genderExplanation(item);
+    if (gender) {
+      return {
+        correct: false,
+        title: 'Non ancora',
+        correction: check.normalizedExpected,
+        explanation: gender.text,
+        tag: gender.tag,
+      };
+    }
   }
 
   const orderTag = item.tags.find((tag) => WORD_ORDER_TAGS.has(tag));
