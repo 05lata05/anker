@@ -9,6 +9,7 @@ import { ChunkStep, DrillStep, RuleStep } from '../features/session/NewSteps';
 import { OutputStep } from '../features/session/OutputSteps';
 import { PhaseBar } from '../features/session/PhaseBar';
 import { RecallStep } from '../features/session/RecallStep';
+import { ShadowingStep } from '../features/session/ShadowingStep';
 import { Button, Screen } from '../features/ui/components';
 import { useColors } from '../features/ui/theme';
 import { stopSpeaking } from '../features/audio/tts';
@@ -134,14 +135,17 @@ export default function SessionScreen() {
             <DrillStep step={step} disabled={!answering} onAnswer={(answer) => void store.answer(answer)} />
           ) : null}
 
-          {step.phase === 'output' ? (
-            <OutputStep
-              step={step}
-              disabled={!answering}
+          {step.phase === 'output' && step.rung === 'shadowing' ? (
+            <ShadowingStep
+              key={step.id}
+              item={step.item}
               ttsSpeed={engine.settings.ttsSpeed}
-              onAnswer={(answer) => void store.answer(answer)}
-              onDone={() => void store.advance()}
+              onDone={(assessment) => void store.answerShadowing(assessment)}
             />
+          ) : null}
+
+          {step.phase === 'output' && step.rung !== 'shadowing' ? (
+            <OutputStep step={step} disabled={!answering} onAnswer={(answer) => void store.answer(answer)} />
           ) : null}
 
           {step.phase === 'consolidation' ? (

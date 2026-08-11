@@ -1,36 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import type { SessionStep } from '../../core/session/steps';
 import { spacing, type } from '../../theme';
-import { speakGerman } from '../audio/tts';
-import { Button, Chip, Field, GermanText, Label } from '../ui/components';
+import { Button, Chip, Field, Label } from '../ui/components';
 import { useColors } from '../ui/theme';
 
 type OutputStepData = Extract<SessionStep, { phase: 'output' }>;
 
 /**
- * Fase 4 — output.
+ * Fase 4 — output, gradini scritti.
  *
  * È la fase che manca alle app concorrenti, e la scala è crescente:
- * completamento → riordino → produzione libera.
- *
- * Lo shadowing qui è dichiaratamente incompleto: si ascolta e si ripete, ma
- * senza registrazione, senza confronto A/B e senza traccia prosodica — quelli
- * arrivano nella Fase E. La schermata lo dice invece di far finta che la
- * ripetizione a vuoto sia shadowing.
+ * completamento → riordino → produzione libera. Lo shadowing sta in
+ * `ShadowingStep`, perché ha bisogno di microfono e riproduzione.
  */
 export function OutputStep({
   step,
   disabled,
-  ttsSpeed,
   onAnswer,
-  onDone,
 }: {
   step: OutputStepData;
   disabled: boolean;
-  ttsSpeed: number;
   onAnswer: (answer: string) => void;
-  onDone: () => void;
 }) {
   const colors = useColors();
   const [value, setValue] = useState('');
@@ -41,31 +32,6 @@ export function OutputStep({
     setValue('');
     setChips([]);
   }, [step.id]);
-
-  if (step.rung === 'shadowing') {
-    return (
-      <View style={styles.root}>
-        <Label>Shadowing — ripeti sopra la voce, prima lento poi a velocità piena</Label>
-
-        <Pressable onPress={() => speakGerman(item.de, { rate: 0.8 * ttsSpeed })}>
-          <GermanText text={item.de} gender={item.gender} />
-        </Pressable>
-        <Text style={[type.body, { color: colors.textMuted }]}>{item.it}</Text>
-
-        <View style={styles.actions}>
-          <Button label="0,8×" variant="ghost" onPress={() => speakGerman(item.de, { rate: 0.8 * ttsSpeed })} />
-          <Button label="1×" variant="ghost" onPress={() => speakGerman(item.de, { rate: ttsSpeed })} />
-        </View>
-
-        <Text style={[type.body, { color: colors.textFaint }]}>
-          Registrazione, confronto A/B e traccia prosodica arrivano nella prossima fase di sviluppo. Per ora la voce è
-          sintetica: la prosodia è approssimata, non è quella di un parlante reale.
-        </Text>
-
-        <Button label="Fatto" onPress={onDone} />
-      </View>
-    );
-  }
 
   if (step.rung === 'completion') {
     const words = item.de.split(/\s+/);

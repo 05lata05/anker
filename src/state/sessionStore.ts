@@ -15,6 +15,7 @@ import { PHASE_SHARES, type SessionPlan, buildSessionPlan } from '../core/sessio
 import { buildDrill } from '../core/profile/drills';
 import { type SessionStep, buildSteps } from '../core/session/steps';
 import { deriveRating } from '../core/scheduler/rating';
+import { bySiblingDirection, canPresent } from '../core/scheduler/unlock';
 import type { GrammarTag, Item, SessionPhase } from '../core/types';
 import { getDatabase } from '../db/client';
 import {
@@ -70,6 +71,7 @@ interface SessionStoreState {
   begin: () => Promise<void>;
   hasOpenSession: () => Promise<boolean>;
   answer: (userAnswer: string, options?: { selfAssessed?: boolean }) => Promise<void>;
+  answerShadowing: (assessment: 'good' | 'again' | 'skipped') => Promise<void>;
   skipFeedback: () => void;
   useHint: () => void;
   advance: () => Promise<void>;
@@ -405,6 +407,62 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
     }
 
     set({ feedback: { correct: true, title: 'Fatto', correction: null, explanation: null, tag: null } });
+  },
+
+  /**
+   * Esito dello shadowing.
+   *
+   * Vale come review SOLO se la card `speaking` di quell'item è già aperta e
+   * presentabile. Altrimenti resta esercizio: un'auto-valutazione su una
+   * direzione che il gate di §3.1 tiene ancora chiusa entrerebbe nello
+   * scheduling scavalcando la regola che dice quando è il momento di produrre.
+   */
+  async answerShadowing(assessment) {
+    const state = get();
+    const step = state.currentStep();
+    if (!step || step.phase !== 'output' || step.rung !== 'shadowing' || !state.engine) return;
+
+    if (assessment !== 'skipped') {
+      const db = await getDatabase();
+      const now = Date.now();
+      const itemCards = state.engine.cards.filter((card) => card.itemId === step.item.id);
+      const speaking = itemCards.find((card) => card.direction === 'speaking');
+
+      if (speaking && speaking.unlocked && canPresent(speaking, bySiblingDirection(itemCards))) {
+        const { rating } = deriveRating({
+          wasCorrect: assessment === 'good',
+          latencyMs: 0,
+          direction: 'speaking',
+          selfAssessed: true,
+        });
+
+        await recordReview(
+          db,
+          {
+            card: speaking,
+            item: step.item,
+            grade: rating,
+            wasCorrect: assessment === 'good',
+            latencyMs: 0,
+            userAnswer: null,
+            phase: 'output',
+            selfAssessed: true,
+          },
+          now,
+          state.engine.settings,
+          state.engine.weights,
+        );
+
+        set({
+          stats: {
+            ...state.stats,
+            reviewsDone: state.stats.reviewsDone + 1,
+          },
+        });
+      }
+    }
+
+    await get().advance();
   },
 
   skipFeedback() {

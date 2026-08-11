@@ -83,6 +83,20 @@ database usano API native che sul web non fanno nulla di utile: sono l'unica
 parte scritta e mai eseguita. Per provarli servono `npm start` e un telefono
 con Expo Go o una dev build.
 
+**Il confronto prosodico dello shadowing è di tempo, non di intonazione.**
+Dell'utente si misura l'inviluppo di ampiezza dal livello del microfono; della
+voce di riferimento no, perché è sintesi vocale di sistema — esce
+dall'altoparlante e non passa da un buffer leggibile, e non esiste un file da
+cui pre-calcolare una traccia. Quello che si confronta è durata, ritmo in
+sillabe al secondo e numero di pause. Un confronto del contorno punto per punto
+richiede registrazioni di parlanti reali, che i contenuti non hanno.
+
+**Registrazione e riproduzione non sono state verificate.** Il microfono è
+bloccato nel browser usato per la verifica: è stata provata solo la
+degradazione (permesso negato → messaggio esplicito, auto-valutazione ancora
+disponibile, sessione che prosegue). Registrazione, inviluppo e A/B vanno
+provati su telefono, come export e import.
+
 **Il livello stimato dal placement è una stima grossolana.** Venti domande di
 riconoscimento non misurano il livello di nessuno. Serve solo a decidere da
 dove cominciare, e gli item dati per noti partono con una scadenza di quattro
@@ -96,7 +110,7 @@ giorni proprio perché l'errore si scopra subito.
 | B | Motore `core/` completo | fatto |
 | C | Session player a 5 fasi | fatto |
 | D | Home, progressi, dettaglio item, impostazioni, onboarding | fatto |
-| E | Audio: shadowing, registrazione, A/B, TTS | da fare |
+| E | Audio: shadowing, registrazione, A/B, TTS | fatto |
 | F | 300 item + rifinitura | da fare |
 
 ## Decisioni prese e loro motivo
