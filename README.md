@@ -53,7 +53,7 @@ Il confine tra `core/` e il resto è verificato da un test: se qualcosa dentro
 | Fase | Contenuto | Stato |
 | --- | --- | --- |
 | A | Scaffolding, schema DB, seed, test di setup | fatto |
-| B | Motore `core/` completo | da fare |
+| B | Motore `core/` completo | fatto |
 | C | Session player a 5 fasi | da fare |
 | D | Home, progressi, dettaglio item, impostazioni, onboarding | da fare |
 | E | Audio: shadowing, registrazione, A/B, TTS | da fare |
@@ -82,6 +82,24 @@ scelta aperta, la ragione è nel commento accanto al codice. Le principali:
 - **Il registro dei tag grammaticali è chiuso.** I tag pilotano i drill
   adattivi: se l'autore dei contenuti può inventarli, l'EMA si frammenta e la
   soglia del drill non scatta mai.
+- **Gli step brevi di FSRS sono disattivati** (`enable_short_term: false`). La
+  seconda esposizione intra-giornaliera prevista dalla specifica sta a 90-120
+  minuti ed è gestita fuori dal ciclo FSRS: lasciare attivi anche gli step di
+  1 e 10 minuti significa farli litigare, e un richiamo dopo un minuto è
+  memoria di lavoro, non recupero dalla memoria a lungo termine.
+- **Le soglie del rating si applicano alla latenza normalizzata**, non a quella
+  grezza: sulle card di produzione si scorpora il tempo di battitura, perché
+  altrimenti ogni risposta lunga finirebbe `Hard` per motivi meccanici.
+- **Il selettore i+1 ha una scala di ripiego.** Senza, con pochi item in memoria
+  nessuna lezione raggiunge il 92% di copertura e la Fase 2 resta vuota per
+  settimane, proprio quando l'input serve di più.
+- **`der` per `dem` non è un typo.** La tolleranza a un carattere di differenza
+  non si applica ad articoli, pronomi e preposizioni: lì un carattere è un
+  errore di caso, che è esattamente ciò che l'app deve intercettare.
+- **Il motore di genere predice, non assegna.** Il genere autorevole resta
+  quello dei contenuti; le regole servono a taggare e a generare le carte
+  «regola scoperta». Sui composti la confidenza è 0,97 e non 1: la regola è
+  certa, la segmentazione no.
 
 ## Contenuti
 

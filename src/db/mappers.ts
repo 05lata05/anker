@@ -36,6 +36,7 @@ export function rowToCard(row: CardRow): Card {
     itemId: row.itemId,
     direction: row.direction,
     unlocked: row.unlocked,
+    introducedAt: row.introducedAt,
     stability: row.stability,
     difficulty: row.difficulty,
     due: row.due,

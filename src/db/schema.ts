@@ -52,6 +52,7 @@ export const cards = sqliteTable(
       enum: ['recognition', 'production', 'listening', 'speaking', 'gender'],
     }).notNull(),
     unlocked: integer('unlocked', { mode: 'boolean' }).notNull().default(false),
+    introducedAt: integer('introduced_at').notNull(),
 
     // --- stato FSRS, scritto solo dal wrapper in core/scheduler ---
     stability: real('stability').notNull().default(0),

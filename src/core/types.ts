@@ -103,6 +103,12 @@ export interface Card {
   itemId: string;
   direction: Direction;
   unlocked: boolean;
+  /**
+   * Quando l'item è entrato in circolo. Serve alla regola dei formati (§4):
+   * il quiz a scelta multipla è tollerato solo nei primi giorni di vita di un
+   * item, e «i primi giorni» è una misura di tempo, non di ripetizioni.
+   */
+  introducedAt: number;
 
   // --- stato FSRS ---
   stability: number;

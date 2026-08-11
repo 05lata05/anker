@@ -3,6 +3,7 @@ CREATE TABLE `cards` (
 	`item_id` text NOT NULL,
 	`direction` text NOT NULL,
 	`unlocked` integer DEFAULT false NOT NULL,
+	`introduced_at` integer NOT NULL,
 	`stability` real DEFAULT 0 NOT NULL,
 	`difficulty` real DEFAULT 0 NOT NULL,
 	`due` integer NOT NULL,

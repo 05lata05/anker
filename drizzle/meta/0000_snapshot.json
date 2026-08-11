@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a2365dd7-d9fc-4e53-8f71-9ad3da7384c1",
+  "id": "b54d59f0-dffa-4346-9e65-bb1e6d806f79",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "cards": {
@@ -35,6 +35,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": false
+        },
+        "introduced_at": {
+          "name": "introduced_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "stability": {
           "name": "stability",
