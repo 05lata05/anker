@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "PowerShell($ErrorActionPreference='SilentlyContinue'; \"node: \" + \\(Get-Command node\\).Source; \"npm: \" + \\(Get-Command npm\\).Source; \"npx: \" + \\(Get-Command npx\\).Source; node -v; npm -v)",
+      "PowerShell($paths = @\\(\"$env:ProgramFiles\\\\nodejs\\\\node.exe\", \"${env:ProgramFiles\\(x86\\)}\\\\nodejs\\\\node.exe\", \"$env:LOCALAPPDATA\\\\Programs\\\\nodejs\\\\node.exe\", \"$env:APPDATA\\\\nvm\\\\node.exe\", \"$env:USERPROFILE\\\\scoop\\\\shims\\\\node.exe\"\\); foreach \\($p in $paths\\) { if \\(Test-Path $p\\) { \"FOUND: $p\" } }; \"--- winget node check ---\"; try { \\(Get-ChildItem \"$env:LOCALAPPDATA\\\\Programs\" -Directory -ErrorAction Stop | Select-Object -ExpandProperty Name\\) -join \", \" } catch { \"no Programs dir\" })"
+    ]
+  }
+}
