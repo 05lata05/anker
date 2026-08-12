@@ -69,9 +69,15 @@ falliva con «Unterminated string in JSON at position N», dove N è
 `lunghezza % 256`. Siccome `drizzle-orm/expo-sqlite` usa solo API sincrone,
 l'app si fermava alla prima query non banale.
 
+La patch corregge anche un secondo punto della stessa funzione: il timeout
+dell'attesa sincrona è di un milione di iterazioni quando `Atomics.pause` è
+disponibile e di un miliardo quando non lo è — mille volte più stretto nei
+browser recenti, cioè qualche decina di millisecondi. Con 348 item qualsiasi
+query sull'intero catalogo lo sfondava.
+
 La patch viene riapplicata da `patch-package` nel `postinstall`. Non serve su
 iOS e Android, dove SQLite è nativo: serve per poter sviluppare e verificare nel
-browser. Quando expo-sqlite correggerà il bug a monte, questa patch e la
+browser. Quando expo-sqlite correggerà i bug a monte, questa patch e la
 dipendenza `patch-package` si possono togliere.
 
 ## Limitazioni note
@@ -111,7 +117,7 @@ giorni proprio perché l'errore si scopra subito.
 | C | Session player a 5 fasi | fatto |
 | D | Home, progressi, dettaglio item, impostazioni, onboarding | fatto |
 | E | Audio: shadowing, registrazione, A/B, TTS | fatto |
-| F | 300 item + rifinitura | da fare |
+| F | 348 item, 26 lezioni, trasformazioni, rifinitura | fatto |
 
 ## Decisioni prese e loro motivo
 
@@ -157,7 +163,18 @@ scelta aperta, la ragione è nel commento accanto al codice. Le principali:
 
 ## Contenuti
 
-I `freqRank` in `content/a1.seed.json` sono stime d'ordine di grandezza sul
-tedesco parlato, non ranghi presi da un corpus licenziato: servono al selettore
-i+1 per ordinare. I testi tedeschi sono scritti in fase di sviluppo e vanno
-sottoposti a revisione madrelingua prima di qualsiasi rilascio.
+`content/a1/` contiene 348 item e 26 dialoghi, un file per argomento. Sono
+divisi così perché un singolo JSON da trecento item non si rilegge e non si
+corregge: chi deve sistemare un plurale nel vocabolario del cibo non deve
+scorrere anche i trasporti. La validazione resta sull'insieme, perché i
+riferimenti delle lezioni attraversano i file.
+
+Ogni sostantivo porta articolo e plurale — è un vincolo verificato dai test, non
+una convenzione. Trentatré item portano `transformations`: coppie autorizzate
+per il gradino «riscrivi al perfetto» della Fase 4. Non vengono generate, perché
+per correggerle bisogna conoscere la forma attesa.
+
+I `freqRank` sono stime d'ordine di grandezza sul tedesco parlato, non ranghi
+presi da un corpus licenziato: servono al selettore i+1 per ordinare. I testi
+tedeschi sono scritti in fase di sviluppo e **vanno sottoposti a revisione
+madrelingua prima di qualsiasi rilascio**.

@@ -1,0 +1,280 @@
+{
+  "items": [
+    {
+      "id": "ja-und-nein",
+      "type": "chunk",
+      "de": "Ja, gern. — Nein, danke.",
+      "it": "Sì, volentieri. — No, grazie.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 20,
+      "topic": "quotidiano",
+      "tags": ["formelhaft", "hoeflichkeitsform"]
+    },
+    {
+      "id": "vielleicht",
+      "type": "chunk",
+      "de": "Vielleicht.",
+      "it": "Forse.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 350,
+      "topic": "quotidiano",
+      "tags": ["formelhaft"]
+    },
+    {
+      "id": "ich-weiss-nicht",
+      "type": "chunk",
+      "de": "Ich weiß nicht.",
+      "it": "Non lo so.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 130,
+      "topic": "quotidiano",
+      "tags": ["negation_nicht_kein", "v2_order", "praesens_irregular"]
+    },
+    {
+      "id": "das-ist-richtig",
+      "type": "chunk",
+      "de": "Das ist richtig.",
+      "it": "È giusto.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 420,
+      "topic": "quotidiano",
+      "tags": ["nominativ", "v2_order"]
+    },
+    {
+      "id": "das-ist-falsch",
+      "type": "chunk",
+      "de": "Das ist falsch.",
+      "it": "È sbagliato.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 430,
+      "topic": "quotidiano",
+      "tags": ["nominativ", "v2_order"],
+      "falseFriend": true,
+      "falseFriendNote": "«falsch» significa SBAGLIATO, non «falso» nel senso di contraffatto. Per quello si dice «gefälscht»."
+    },
+    {
+      "id": "koennen-sie-mir-helfen",
+      "type": "chunk",
+      "de": "Können Sie mir helfen?",
+      "it": "Può aiutarmi?",
+      "literalIt": "potete Lei A ME aiutare — «helfen» regge il dativo",
+      "cefr": "A1",
+      "freqRank": 390,
+      "topic": "quotidiano",
+      "tags": ["modalverb", "verbalklammer", "dativ", "hoeflichkeitsform"],
+      "transformations": [
+        { "prompt": "Dai del tu", "from": "Können Sie mir helfen?", "to": "Kannst du mir helfen?", "tag": "modalverb" }
+      ]
+    },
+    {
+      "id": "ich-brauche-hilfe",
+      "type": "chunk",
+      "de": "Ich brauche Hilfe.",
+      "it": "Ho bisogno di aiuto.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 540,
+      "topic": "quotidiano",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "die-hilfe",
+      "type": "noun",
+      "de": "die Hilfe",
+      "it": "l'aiuto",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Hilfen",
+      "cefr": "A1",
+      "freqRank": 545,
+      "topic": "quotidiano",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateEn": "help"
+    },
+    {
+      "id": "wo-ist-die-toilette",
+      "type": "chunk",
+      "de": "Wo ist die Toilette?",
+      "it": "Dov'è il bagno?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 660,
+      "topic": "quotidiano",
+      "tags": ["w_frage", "inversion"],
+      "cognateIt": "toilette"
+    },
+    {
+      "id": "die-toilette",
+      "type": "noun",
+      "de": "die Toilette",
+      "it": "il bagno (servizi)",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Toiletten",
+      "cefr": "A1",
+      "freqRank": 665,
+      "topic": "quotidiano",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "toilette"
+    },
+    {
+      "id": "sprechen-sie-langsamer",
+      "type": "chunk",
+      "de": "Sprechen Sie bitte langsamer.",
+      "it": "Parli più lentamente, per favore.",
+      "literalIt": "il comparativo si forma con -er, come in inglese",
+      "cefr": "A1",
+      "freqRank": 720,
+      "topic": "quotidiano",
+      "tags": ["imperativ", "komparativ", "hoeflichkeitsform"]
+    },
+    {
+      "id": "wie-schreibt-man-das",
+      "type": "chunk",
+      "de": "Wie schreibt man das?",
+      "it": "Come si scrive?",
+      "literalIt": "come scrive UNO questo — «man» è l'impersonale",
+      "cefr": "A1",
+      "freqRank": 640,
+      "topic": "quotidiano",
+      "tags": ["w_frage", "inversion", "akkusativ"]
+    },
+    {
+      "id": "was-bedeutet-das",
+      "type": "chunk",
+      "de": "Was bedeutet das?",
+      "it": "Cosa significa?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 580,
+      "topic": "quotidiano",
+      "tags": ["w_frage", "akkusativ"]
+    },
+    {
+      "id": "auf-deutsch",
+      "type": "chunk",
+      "de": "Wie heißt das auf Deutsch?",
+      "it": "Come si dice in tedesco?",
+      "literalIt": "come si chiama questo in tedesco",
+      "cefr": "A1",
+      "freqRank": 600,
+      "topic": "quotidiano",
+      "tags": ["w_frage", "praeposition_dativ"]
+    },
+    {
+      "id": "ich-habe-eine-frage",
+      "type": "chunk",
+      "de": "Ich habe eine Frage.",
+      "it": "Ho una domanda.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 460,
+      "topic": "quotidiano",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "die-frage",
+      "type": "noun",
+      "de": "die Frage",
+      "it": "la domanda",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Fragen",
+      "cefr": "A1",
+      "freqRank": 465,
+      "topic": "quotidiano",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "natuerlich",
+      "type": "chunk",
+      "de": "Natürlich!",
+      "it": "Certo!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 370,
+      "topic": "quotidiano",
+      "tags": ["formelhaft"],
+      "cognateIt": "naturalmente"
+    },
+    {
+      "id": "einen-moment-bitte",
+      "type": "chunk",
+      "de": "Einen Moment, bitte.",
+      "it": "Un momento, per favore.",
+      "literalIt": "accusativo: è la forma abbreviata di «aspetti un momento»",
+      "cefr": "A1",
+      "freqRank": 490,
+      "topic": "quotidiano",
+      "tags": ["akkusativ", "hoeflichkeitsform", "formelhaft"],
+      "cognateIt": "momento"
+    },
+    {
+      "id": "ich-bin-gleich-zurueck",
+      "type": "chunk",
+      "de": "Ich bin gleich zurück.",
+      "it": "Torno subito.",
+      "literalIt": "sono subito indietro",
+      "cefr": "A1",
+      "freqRank": 760,
+      "topic": "quotidiano",
+      "tags": ["v2_order", "formelhaft"]
+    },
+    {
+      "id": "alles-klar",
+      "type": "chunk",
+      "de": "Alles klar!",
+      "it": "Tutto chiaro!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 450,
+      "topic": "quotidiano",
+      "tags": ["formelhaft"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-im-unterricht",
+      "cefr": "A1",
+      "topic": "quotidiano",
+      "audioPath": null,
+      "targetItemIds": ["ich-habe-eine-frage", "was-bedeutet-das", "auf-deutsch", "sprechen-sie-langsamer", "wie-schreibt-man-das"],
+      "lines": [
+        { "speaker": "Schüler", "de": "Entschuldigung, ich habe eine Frage.", "it": "Scusi, ho una domanda." },
+        { "speaker": "Lehrer", "de": "Ja, bitte.", "it": "Sì, prego." },
+        { "speaker": "Schüler", "de": "Was bedeutet das Wort hier?", "it": "Cosa significa questa parola qui?" },
+        { "speaker": "Lehrer", "de": "Das heißt «Verspätung».", "it": "Vuol dire «ritardo»." },
+        { "speaker": "Schüler", "de": "Wie schreibt man das? Sprechen Sie bitte langsamer.", "it": "Come si scrive? Parli più lentamente, per favore." },
+        { "speaker": "Lehrer", "de": "V–E–R–S–P–Ä–T–U–N–G.", "it": "V–E–R–S–P–Ä–T–U–N–G." }
+      ],
+      "questions": [
+        { "de": "Was fragt der Schüler zuerst?", "options": ["Was ein Wort bedeutet", "Wie spät es ist", "Wo die Toilette ist"], "answerIndex": 0 },
+        { "de": "Welches Wort erklärt der Lehrer?", "options": ["Verspätung", "Wohnung", "Rechnung"], "answerIndex": 0 }
+      ]
+    },
+    {
+      "id": "l-kleine-hilfe",
+      "cefr": "A1",
+      "topic": "quotidiano",
+      "audioPath": null,
+      "targetItemIds": ["koennen-sie-mir-helfen", "wo-ist-die-toilette", "einen-moment-bitte", "natuerlich", "alles-klar"],
+      "lines": [
+        { "speaker": "Gast", "de": "Entschuldigung, können Sie mir helfen?", "it": "Scusi, può aiutarmi?" },
+        { "speaker": "Angestellter", "de": "Natürlich. Was brauchen Sie?", "it": "Certo. Di cosa ha bisogno?" },
+        { "speaker": "Gast", "de": "Wo ist die Toilette?", "it": "Dov'è il bagno?" },
+        { "speaker": "Angestellter", "de": "Einen Moment, bitte. Ich zeige es Ihnen.", "it": "Un momento, per favore. Glielo mostro." },
+        { "speaker": "Angestellter", "de": "Dort hinten rechts, neben dem Ausgang.", "it": "Là in fondo a destra, accanto all'uscita." },
+        { "speaker": "Gast", "de": "Alles klar, vielen Dank!", "it": "Tutto chiaro, grazie mille!" }
+      ],
+      "questions": [
+        { "de": "Was sucht der Gast?", "options": ["Die Toilette", "Den Ausgang", "Das Restaurant"], "answerIndex": 0 },
+        { "de": "Wo ist sie?", "options": ["Dort hinten rechts", "Dort vorne links", "Im ersten Stock"], "answerIndex": 0 }
+      ]
+    }
+  ]
+}

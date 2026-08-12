@@ -1,16 +1,59 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import rawPack from '../../../content/a1.seed.json';
-import { contentPackSchema, parseContentPack } from '../content/contentSchema';
+import { a1Pack } from '../content/a1Pack';
+import { contentPackSchema } from '../content/contentSchema';
 import { DRILLABLE_TAGS, GRAMMAR_TAGS, isGrammarTag } from '../german/tags';
 
-const pack = parseContentPack(rawPack, 'content/a1.seed.json');
+const pack = a1Pack;
+/** Copia grezza del pacchetto, per i test che devono romperlo di proposito. */
+const rawPack = JSON.parse(JSON.stringify(pack)) as Record<string, unknown>;
 
 describe('pacchetto contenuti A1', () => {
-  it('supera la validazione', () => {
-    expect(pack.items.length).toBeGreaterThanOrEqual(50);
-    expect(pack.lessons.length).toBeGreaterThanOrEqual(5);
+  it('raggiunge il volume richiesto dalla §8', () => {
+    expect(pack.items.length).toBeGreaterThanOrEqual(300);
+    expect(pack.lessons.length).toBeGreaterThanOrEqual(25);
+  });
+
+  it('copre tutti gli argomenti elencati nella §8', () => {
+    const topics = new Set(pack.items.map((item) => item.topic));
+    for (const required of [
+      'saluti',
+      'presentarsi',
+      'numeri',
+      'orari',
+      'famiglia',
+      'cibo',
+      'ristorante',
+      'casa',
+      'trasporti',
+      'lavoro',
+      'tempo_libero',
+      'acquisti',
+      'salute',
+    ]) {
+      expect(topics.has(required), `manca l'argomento «${required}»`).toBe(true);
+    }
+  });
+
+  it('ha abbastanza item per argomento da alimentare i drill', () => {
+    const perTopic = new Map<string, number>();
+    for (const item of pack.items) perTopic.set(item.topic, (perTopic.get(item.topic) ?? 0) + 1);
+    for (const [topic, count] of perTopic) {
+      expect(count, `«${topic}» ha solo ${count} item`).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  it('ogni tag drillabile ha abbastanza item per generare un drill', () => {
+    // `buildDrill` rinuncia sotto i 4 esercizi: un tag che può attivare un
+    // drill ma non ha materiale produrrebbe una soglia che scatta a vuoto.
+    const perTag = new Map<string, number>();
+    for (const item of pack.items) {
+      for (const tag of item.tags) perTag.set(tag, (perTag.get(tag) ?? 0) + 1);
+    }
+    for (const tag of DRILLABLE_TAGS) {
+      expect(perTag.get(tag) ?? 0, `il tag «${tag}» ha troppo pochi item`).toBeGreaterThanOrEqual(4);
+    }
   });
 
   it('non contiene mai un sostantivo senza articolo o senza plurale', () => {
@@ -58,6 +101,29 @@ describe('pacchetto contenuti A1', () => {
         expect(q.answerIndex).toBeLessThan(q.options.length);
       }
     }
+  });
+
+  it('le trasformazioni cambiano davvero la frase e restano in tedesco', () => {
+    const withTransformations = pack.items.filter((item) => item.transformations.length > 0);
+    expect(withTransformations.length).toBeGreaterThanOrEqual(20);
+
+    for (const item of withTransformations) {
+      for (const transformation of item.transformations) {
+        expect(transformation.from).not.toBe(transformation.to);
+        expect(transformation.prompt.length).toBeGreaterThan(3);
+        expect(isGrammarTag(transformation.tag)).toBe(true);
+      }
+    }
+  });
+
+  it('copre la scala della Fase 4 sugli item più frequenti', () => {
+    // Il gradino della trasformazione compare solo se l'item porta una coppia
+    // autorizzata: senza abbastanza item frequenti che ne hanno una, quel
+    // gradino non si vedrebbe mai.
+    const frequentWithTransformation = pack.items.filter(
+      (item) => item.freqRank <= 800 && item.transformations.length > 0,
+    );
+    expect(frequentWithTransformation.length).toBeGreaterThanOrEqual(10);
   });
 
   it('spiega ogni falso amico', () => {

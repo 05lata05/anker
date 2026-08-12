@@ -27,6 +27,7 @@ export function rowToItem(row: ItemRow): Item {
     cognateEn: row.cognateEn,
     falseFriend: row.falseFriend,
     falseFriendNote: row.falseFriendNote,
+    transformations: row.transformations,
   };
 }
 

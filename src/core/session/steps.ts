@@ -7,11 +7,11 @@
  * puntatore per ciascuna.
  */
 import type { Drill, DrillExercise } from '../profile/drills';
-import type { ComprehensionQuestion, Item, Lesson, SessionPhase } from '../types';
+import type { ComprehensionQuestion, Item, Lesson, SessionPhase, Transformation } from '../types';
 import type { ExerciseFormat } from './formats';
 import type { RecallCard, SessionPlan } from './plan';
 
-export type OutputRung = 'shadowing' | 'completion' | 'reorder' | 'free';
+export type OutputRung = 'shadowing' | 'completion' | 'reorder' | 'transformation' | 'free';
 
 export type SessionStep =
   | { id: string; phase: 'recall'; card: RecallCard; format: ExerciseFormat }
@@ -20,20 +20,20 @@ export type SessionStep =
   | { id: string; phase: 'new'; kind: 'chunk'; item: Item }
   | { id: string; phase: 'new'; kind: 'rule'; drill: Drill }
   | { id: string; phase: 'new'; kind: 'drill'; drill: Drill; exercise: DrillExercise }
-  | { id: string; phase: 'output'; rung: OutputRung; item: Item }
+  | { id: string; phase: 'output'; rung: OutputRung; item: Item; transformation?: Transformation }
   | { id: string; phase: 'consolidation' };
 
 /**
- * Scala di difficoltà crescente della Fase 4 (§4).
+ * Scala di difficoltà crescente della Fase 4 (§4):
+ * completamento → riordino → trasformazione → produzione libera.
  *
- * Manca volutamente la trasformazione libera («riscrivi al perfetto»): per
- * correggerla servirebbe generare la forma attesa, e generare tedesco che
- * nessuno ha verificato è peggio che non proporre l'esercizio. Il riordino a
- * chip copre lo stesso gradino — è manipolazione di forma, non riconoscimento —
- * usando solo frasi che stanno nei contenuti. Le trasformazioni vere arrivano
- * quando i contenuti porteranno le coppie autorizzate.
+ * La trasformazione compare solo se l'item porta una coppia autorizzata nei
+ * contenuti. Non viene generata: per correggerla bisogna conoscere la forma
+ * attesa, e produrre tedesco che nessuno ha verificato è peggio che saltare
+ * l'esercizio. Quando la coppia manca, quel posto lo prende il riordino, che
+ * è comunque manipolazione di forma e non riconoscimento.
  */
-const OUTPUT_LADDER: readonly OutputRung[] = ['completion', 'reorder', 'free', 'free'];
+const OUTPUT_LADDER: readonly OutputRung[] = ['completion', 'reorder', 'transformation', 'free'];
 
 export function buildSteps(plan: SessionPlan): SessionStep[] {
   const steps: SessionStep[] = [];
@@ -71,11 +71,17 @@ export function buildSteps(plan: SessionPlan): SessionStep[] {
   // --- Fase 4 ---
   plan.output.items.forEach((item, index) => {
     if (index === 0) steps.push({ id: `output:shadow:${item.id}`, phase: 'output', rung: 'shadowing', item });
+
+    let rung = OUTPUT_LADDER[Math.min(index, OUTPUT_LADDER.length - 1)];
+    const transformation = item.transformations[0];
+    if (rung === 'transformation' && !transformation) rung = 'reorder';
+
     steps.push({
-      id: `output:${OUTPUT_LADDER[Math.min(index, OUTPUT_LADDER.length - 1)]}:${item.id}`,
+      id: `output:${rung}:${item.id}`,
       phase: 'output',
-      rung: OUTPUT_LADDER[Math.min(index, OUTPUT_LADDER.length - 1)],
+      rung,
       item,
+      ...(rung === 'transformation' ? { transformation } : {}),
     });
   });
 

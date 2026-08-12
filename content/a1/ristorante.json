@@ -1,0 +1,370 @@
+{
+  "items": [
+    {
+      "id": "ich-haette-gern-einen-kaffee",
+      "type": "chunk",
+      "de": "Ich hätte gern einen Kaffee.",
+      "it": "Vorrei un caffè.",
+      "literalIt": "avrei volentieri un caffè",
+      "cefr": "A1",
+      "freqRank": 150,
+      "topic": "ristorante",
+      "tags": ["konjunktiv2_hoeflich", "akkusativ", "hoeflichkeitsform", "v2_order"],
+      "transformations": [
+        { "prompt": "Chiedi una birra invece del caffè", "from": "Ich hätte gern einen Kaffee.", "to": "Ich hätte gern ein Bier.", "tag": "akkusativ" }
+      ]
+    },
+    {
+      "id": "ich-nehme-die-suppe",
+      "type": "chunk",
+      "de": "Ich nehme die Suppe.",
+      "it": "Prendo la zuppa.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 910,
+      "topic": "ristorante",
+      "tags": ["v2_order", "akkusativ", "praesens_irregular"]
+    },
+    {
+      "id": "zwei-kaffee-bitte",
+      "type": "chunk",
+      "de": "Zwei Kaffee, bitte.",
+      "it": "Due caffè, per favore.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 500,
+      "topic": "ristorante",
+      "tags": ["zahlen", "akkusativ", "hoeflichkeitsform"]
+    },
+    {
+      "id": "die-speisekarte-bitte",
+      "type": "chunk",
+      "de": "Die Speisekarte, bitte.",
+      "it": "Il menù, per favore.",
+      "literalIt": "Speise + Karte: carta delle pietanze",
+      "cefr": "A1",
+      "freqRank": 950,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "hoeflichkeitsform", "kompositum"]
+    },
+    {
+      "id": "die-speisekarte",
+      "type": "noun",
+      "de": "die Speisekarte",
+      "it": "il menù",
+      "literalIt": "il genere viene da «die Karte», l'ultimo elemento",
+      "gender": "die",
+      "plural": "die Speisekarten",
+      "cefr": "A1",
+      "freqRank": 955,
+      "topic": "ristorante",
+      "tags": ["gender_die", "kompositum", "suffix_e"]
+    },
+    {
+      "id": "die-rechnung",
+      "type": "noun",
+      "de": "die Rechnung",
+      "it": "il conto",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Rechnungen",
+      "cefr": "A1",
+      "freqRank": 790,
+      "topic": "ristorante",
+      "tags": ["gender_die", "suffix_ung"]
+    },
+    {
+      "id": "die-rechnung-bitte",
+      "type": "chunk",
+      "de": "Die Rechnung, bitte.",
+      "it": "Il conto, per favore.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 800,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "akkusativ", "hoeflichkeitsform"]
+    },
+    {
+      "id": "zahlen-bitte",
+      "type": "chunk",
+      "de": "Zahlen, bitte!",
+      "it": "Vorrei pagare!",
+      "literalIt": "pagare, per favore — infinito usato come formula",
+      "cefr": "A1",
+      "freqRank": 830,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "infinitiv", "hoeflichkeitsform"]
+    },
+    {
+      "id": "zusammen-oder-getrennt",
+      "type": "chunk",
+      "de": "Zusammen oder getrennt?",
+      "it": "Insieme o separatamente?",
+      "literalIt": "chiesto dal cameriere quando si paga in più persone",
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "ja_nein_frage"]
+    },
+    {
+      "id": "ich-bekomme-eine-pizza",
+      "type": "chunk",
+      "de": "Ich bekomme eine Pizza.",
+      "it": "Per me una pizza.",
+      "literalIt": "ricevo una pizza",
+      "cefr": "A1",
+      "freqRank": 260,
+      "topic": "ristorante",
+      "tags": ["v2_order", "akkusativ"],
+      "falseFriend": true,
+      "falseFriendNote": "«bekommen» significa RICEVERE, non «diventare». «Divento medico» è «Ich werde Arzt», non «Ich bekomme Arzt»."
+    },
+    {
+      "id": "einen-tisch-fuer-zwei",
+      "type": "chunk",
+      "de": "Einen Tisch für zwei, bitte.",
+      "it": "Un tavolo per due, per favore.",
+      "literalIt": "«für» regge l'accusativo",
+      "cefr": "A1",
+      "freqRank": 880,
+      "topic": "ristorante",
+      "tags": ["akkusativ", "praeposition_akkusativ", "zahlen", "hoeflichkeitsform"]
+    },
+    {
+      "id": "der-tisch",
+      "type": "noun",
+      "de": "der Tisch",
+      "it": "il tavolo",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Tische",
+      "cefr": "A1",
+      "freqRank": 430,
+      "topic": "ristorante",
+      "tags": ["gender_der"]
+    },
+    {
+      "id": "ist-der-platz-frei",
+      "type": "chunk",
+      "de": "Ist der Platz frei?",
+      "it": "Il posto è libero?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 870,
+      "topic": "ristorante",
+      "tags": ["ja_nein_frage", "nominativ", "inversion"]
+    },
+    {
+      "id": "der-platz",
+      "type": "noun",
+      "de": "der Platz",
+      "it": "il posto; la piazza",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Plätze",
+      "cefr": "A1",
+      "freqRank": 300,
+      "topic": "ristorante",
+      "tags": ["gender_der", "plural_form"],
+      "cognateIt": "piazza"
+    },
+    {
+      "id": "was-moechten-sie-trinken",
+      "type": "chunk",
+      "de": "Was möchten Sie trinken?",
+      "it": "Cosa desidera bere?",
+      "literalIt": "che cosa vorreste Lei bere — il verbo pieno va in fondo",
+      "cefr": "A1",
+      "freqRank": 590,
+      "topic": "ristorante",
+      "tags": ["w_frage", "modalverb", "verbalklammer", "hoeflichkeitsform"]
+    },
+    {
+      "id": "noch-etwas",
+      "type": "chunk",
+      "de": "Sonst noch etwas?",
+      "it": "Altro?",
+      "literalIt": "altrimenti ancora qualcosa",
+      "cefr": "A1",
+      "freqRank": 1050,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "ja_nein_frage"]
+    },
+    {
+      "id": "nein-danke-das-ist-alles",
+      "type": "chunk",
+      "de": "Nein danke, das ist alles.",
+      "it": "No grazie, è tutto.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 720,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "v2_order"]
+    },
+    {
+      "id": "das-restaurant",
+      "type": "noun",
+      "de": "das Restaurant",
+      "it": "il ristorante",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Restaurants",
+      "cefr": "A1",
+      "freqRank": 540,
+      "topic": "ristorante",
+      "tags": ["gender_das"],
+      "cognateIt": "ristorante",
+      "cognateEn": "restaurant"
+    },
+    {
+      "id": "das-cafe",
+      "type": "noun",
+      "de": "das Café",
+      "it": "il bar",
+      "literalIt": "«Café» è il locale, «Kaffee» è la bevanda",
+      "gender": "das",
+      "plural": "die Cafés",
+      "cefr": "A1",
+      "freqRank": 600,
+      "topic": "ristorante",
+      "tags": ["gender_das"],
+      "cognateIt": "caffè"
+    },
+    {
+      "id": "der-kellner",
+      "type": "noun",
+      "de": "der Kellner",
+      "it": "il cameriere",
+      "literalIt": "nome di mestiere in -er: maschile",
+      "gender": "der",
+      "plural": "die Kellner",
+      "cefr": "A1",
+      "freqRank": 980,
+      "topic": "ristorante",
+      "tags": ["gender_der", "suffix_er", "plural_form"]
+    },
+    {
+      "id": "das-glas",
+      "type": "noun",
+      "de": "das Glas",
+      "it": "il bicchiere",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Gläser",
+      "cefr": "A1",
+      "freqRank": 750,
+      "topic": "ristorante",
+      "tags": ["gender_das", "plural_form"],
+      "cognateEn": "glass"
+    },
+    {
+      "id": "ein-glas-wasser",
+      "type": "chunk",
+      "de": "ein Glas Wasser",
+      "it": "un bicchiere d'acqua",
+      "literalIt": "un bicchiere acqua — nessun «di» tra i due",
+      "cefr": "A1",
+      "freqRank": 755,
+      "topic": "ristorante",
+      "tags": ["akkusativ", "nominativ"]
+    },
+    {
+      "id": "mit-oder-ohne-gas",
+      "type": "chunk",
+      "de": "Mit oder ohne Kohlensäure?",
+      "it": "Frizzante o naturale?",
+      "literalIt": "con o senza acido carbonico",
+      "cefr": "A1",
+      "freqRank": 1100,
+      "topic": "ristorante",
+      "tags": ["praeposition_dativ", "praeposition_akkusativ", "ja_nein_frage"]
+    },
+    {
+      "id": "es-hat-sehr-gut-geschmeckt",
+      "type": "chunk",
+      "de": "Es hat sehr gut geschmeckt.",
+      "it": "Era molto buono.",
+      "literalIt": "esso ha molto bene saputo-di — perfetto con «haben»",
+      "cefr": "A1",
+      "freqRank": 1020,
+      "topic": "ristorante",
+      "tags": ["perfekt_haben_sein", "verbalklammer"]
+    },
+    {
+      "id": "guten-appetit",
+      "type": "chunk",
+      "de": "Guten Appetit!",
+      "it": "Buon appetito!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 840,
+      "topic": "ristorante",
+      "tags": ["formelhaft", "akkusativ", "adjective_ending"],
+      "cognateIt": "appetito"
+    },
+    {
+      "id": "das-trinkgeld",
+      "type": "noun",
+      "de": "das Trinkgeld",
+      "it": "la mancia",
+      "literalIt": "trinken + Geld: soldi per bere",
+      "gender": "das",
+      "plural": "die Trinkgelder",
+      "cefr": "A1",
+      "freqRank": 1150,
+      "topic": "ristorante",
+      "tags": ["gender_das", "kompositum"]
+    },
+    {
+      "id": "stimmt-so",
+      "type": "chunk",
+      "de": "Stimmt so.",
+      "it": "Va bene così. (tenga il resto)",
+      "literalIt": "torna così",
+      "cefr": "A1",
+      "freqRank": 1200,
+      "topic": "ristorante",
+      "tags": ["formelhaft"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-im-cafe",
+      "cefr": "A1",
+      "topic": "ristorante",
+      "audioPath": null,
+      "targetItemIds": ["ich-haette-gern-einen-kaffee", "die-rechnung-bitte", "das-wasser", "was-kostet-das", "der-kaffee"],
+      "lines": [
+        { "speaker": "Kellner", "de": "Guten Tag! Was möchten Sie?", "it": "Buongiorno! Cosa desidera?" },
+        { "speaker": "Gast", "de": "Ich hätte gern einen Kaffee, bitte.", "it": "Vorrei un caffè, per favore." },
+        { "speaker": "Kellner", "de": "Gern. Möchten Sie auch Wasser?", "it": "Volentieri. Desidera anche dell'acqua?" },
+        { "speaker": "Gast", "de": "Ja, bitte. Was kostet der Kaffee?", "it": "Sì, grazie. Quanto costa il caffè?" },
+        { "speaker": "Kellner", "de": "Drei Euro.", "it": "Tre euro." },
+        { "speaker": "Gast", "de": "Gut. Die Rechnung, bitte.", "it": "Bene. Il conto, per favore." }
+      ],
+      "questions": [
+        { "de": "Was bestellt der Gast?", "options": ["Einen Kaffee", "Eine Suppe", "Ein Brot"], "answerIndex": 0 },
+        { "de": "Wie viel kostet der Kaffee?", "options": ["Zwei Euro", "Drei Euro", "Acht Euro"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-im-restaurant",
+      "cefr": "A1",
+      "topic": "ristorante",
+      "audioPath": null,
+      "targetItemIds": ["einen-tisch-fuer-zwei", "was-moechten-sie-trinken", "ich-nehme-die-suppe", "guten-appetit", "zahlen-bitte"],
+      "lines": [
+        { "speaker": "Gast", "de": "Guten Abend. Einen Tisch für zwei, bitte.", "it": "Buonasera. Un tavolo per due, per favore." },
+        { "speaker": "Kellner", "de": "Gern, hier ist die Speisekarte.", "it": "Volentieri, ecco il menù." },
+        { "speaker": "Kellner", "de": "Was möchten Sie trinken?", "it": "Cosa desidera bere?" },
+        { "speaker": "Gast", "de": "Ein Glas Wasser, bitte. Und ich nehme die Suppe.", "it": "Un bicchiere d'acqua, per favore. E prendo la zuppa." },
+        { "speaker": "Kellner", "de": "Guten Appetit!", "it": "Buon appetito!" },
+        { "speaker": "Gast", "de": "Danke. Später zahlen, bitte!", "it": "Grazie. Dopo il conto, per favore!" }
+      ],
+      "questions": [
+        { "de": "Für wie viele Personen ist der Tisch?", "options": ["Für eine", "Für zwei", "Für vier"], "answerIndex": 1 },
+        { "de": "Was isst der Gast?", "options": ["Die Suppe", "Den Salat", "Den Fisch"], "answerIndex": 0 }
+      ]
+    }
+  ]
+}

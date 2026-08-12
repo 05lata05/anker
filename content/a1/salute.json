@@ -1,0 +1,388 @@
+{
+  "items": [
+    {
+      "id": "der-arzt",
+      "type": "noun",
+      "de": "der Arzt",
+      "it": "il medico",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Ärzte",
+      "cefr": "A1",
+      "freqRank": 470,
+      "topic": "salute",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "die-aerztin",
+      "type": "noun",
+      "de": "die Ärztin",
+      "it": "la dottoressa",
+      "literalIt": "il suffisso -in forma il femminile dei mestieri",
+      "gender": "die",
+      "plural": "die Ärztinnen",
+      "cefr": "A1",
+      "freqRank": 480,
+      "topic": "salute",
+      "tags": ["gender_die", "plural_form"]
+    },
+    {
+      "id": "ich-gehe-zum-arzt",
+      "type": "chunk",
+      "de": "Ich gehe zum Arzt.",
+      "it": "Vado dal medico.",
+      "literalIt": "zum = zu dem, dativo",
+      "cefr": "A1",
+      "freqRank": 620,
+      "topic": "salute",
+      "tags": ["dativ", "praeposition_dativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Cambia in «dalla dottoressa»", "from": "Ich gehe zum Arzt.", "to": "Ich gehe zur Ärztin.", "tag": "dativ" }
+      ]
+    },
+    {
+      "id": "ich-habe-kopfschmerzen",
+      "type": "chunk",
+      "de": "Ich habe Kopfschmerzen.",
+      "it": "Ho mal di testa.",
+      "literalIt": "ho dolori-di-testa (Kopf + Schmerzen), sempre al plurale",
+      "cefr": "A1",
+      "freqRank": 880,
+      "topic": "salute",
+      "tags": ["akkusativ", "kompositum", "plural_form", "v2_order"],
+      "transformations": [
+        { "prompt": "Cambia in «mal di pancia» (Bauch)", "from": "Ich habe Kopfschmerzen.", "to": "Ich habe Bauchschmerzen.", "tag": "kompositum" }
+      ]
+    },
+    {
+      "id": "der-kopf",
+      "type": "noun",
+      "de": "der Kopf",
+      "it": "la testa",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Köpfe",
+      "cefr": "A1",
+      "freqRank": 380,
+      "topic": "salute",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "der-bauch",
+      "type": "noun",
+      "de": "der Bauch",
+      "it": "la pancia",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Bäuche",
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "salute",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "die-hand",
+      "type": "noun",
+      "de": "die Hand",
+      "it": "la mano",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Hände",
+      "cefr": "A1",
+      "freqRank": 300,
+      "topic": "salute",
+      "tags": ["gender_die", "plural_form"],
+      "cognateEn": "hand"
+    },
+    {
+      "id": "das-auge",
+      "type": "noun",
+      "de": "das Auge",
+      "it": "l'occhio",
+      "literalIt": "finisce in -e ma è neutro",
+      "gender": "das",
+      "plural": "die Augen",
+      "cefr": "A1",
+      "freqRank": 350,
+      "topic": "salute",
+      "tags": ["gender_das", "suffix_e"]
+    },
+    {
+      "id": "mir-ist-schlecht",
+      "type": "chunk",
+      "de": "Mir ist schlecht.",
+      "it": "Ho la nausea.",
+      "literalIt": "a me è male — il soggetto italiano diventa dativo in tedesco",
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "salute",
+      "tags": ["dativ", "personalpronomen"]
+    },
+    {
+      "id": "mir-ist-kalt",
+      "type": "chunk",
+      "de": "Mir ist kalt.",
+      "it": "Ho freddo.",
+      "literalIt": "a me è freddo — non «io sono freddo»",
+      "cefr": "A1",
+      "freqRank": 860,
+      "topic": "salute",
+      "tags": ["dativ", "personalpronomen"],
+      "falseFriend": true,
+      "falseFriendNote": "«kalt» significa FREDDO, non «caldo». Caldo si dice «warm» o «heiß»."
+    },
+    {
+      "id": "mir-ist-warm",
+      "type": "chunk",
+      "de": "Mir ist warm.",
+      "it": "Ho caldo.",
+      "literalIt": "a me è caldo",
+      "cefr": "A1",
+      "freqRank": 870,
+      "topic": "salute",
+      "tags": ["dativ", "personalpronomen"],
+      "cognateEn": "warm"
+    },
+    {
+      "id": "ich-bin-krank",
+      "type": "chunk",
+      "de": "Ich bin krank.",
+      "it": "Sono malato.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 560,
+      "topic": "salute",
+      "tags": ["nominativ", "v2_order"]
+    },
+    {
+      "id": "ich-bin-muede",
+      "type": "chunk",
+      "de": "Ich bin müde.",
+      "it": "Sono stanco.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 520,
+      "topic": "salute",
+      "tags": ["nominativ", "v2_order"]
+    },
+    {
+      "id": "gute-besserung",
+      "type": "chunk",
+      "de": "Gute Besserung!",
+      "it": "Guarisci presto!",
+      "literalIt": "buon miglioramento",
+      "cefr": "A1",
+      "freqRank": 1200,
+      "topic": "salute",
+      "tags": ["formelhaft", "adjective_ending", "suffix_ung"]
+    },
+    {
+      "id": "was-fehlt-ihnen",
+      "type": "chunk",
+      "de": "Was fehlt Ihnen?",
+      "it": "Cosa si sente?",
+      "literalIt": "che cosa manca a Lei — il paziente sta al dativo",
+      "cefr": "A1",
+      "freqRank": 1250,
+      "topic": "salute",
+      "tags": ["w_frage", "dativ", "hoeflichkeitsform", "inversion"]
+    },
+    {
+      "id": "seit-wann",
+      "type": "chunk",
+      "de": "Seit wann?",
+      "it": "Da quando?",
+      "literalIt": "«seit» regge il dativo",
+      "cefr": "A1",
+      "freqRank": 780,
+      "topic": "salute",
+      "tags": ["w_frage", "praeposition_dativ"]
+    },
+    {
+      "id": "seit-gestern",
+      "type": "chunk",
+      "de": "Seit gestern.",
+      "it": "Da ieri.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 800,
+      "topic": "salute",
+      "tags": ["praeposition_dativ"]
+    },
+    {
+      "id": "die-apotheke",
+      "type": "noun",
+      "de": "die Apotheke",
+      "it": "la farmacia",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Apotheken",
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "salute",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "das-medikament",
+      "type": "noun",
+      "de": "das Medikament",
+      "it": "il medicinale",
+      "literalIt": "i nomi in -ment sono neutri",
+      "gender": "das",
+      "plural": "die Medikamente",
+      "cefr": "A1",
+      "freqRank": 1100,
+      "topic": "salute",
+      "tags": ["gender_das", "suffix_ment"],
+      "cognateIt": "medicamento"
+    },
+    {
+      "id": "das-krankenhaus",
+      "type": "noun",
+      "de": "das Krankenhaus",
+      "it": "l'ospedale",
+      "literalIt": "krank + Haus: casa dei malati — il genere viene da «das Haus»",
+      "gender": "das",
+      "plural": "die Krankenhäuser",
+      "cefr": "A1",
+      "freqRank": 850,
+      "topic": "salute",
+      "tags": ["gender_das", "kompositum", "plural_form"]
+    },
+    {
+      "id": "der-termin",
+      "type": "noun",
+      "de": "der Termin",
+      "it": "l'appuntamento",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Termine",
+      "cefr": "A1",
+      "freqRank": 760,
+      "topic": "salute",
+      "tags": ["gender_der"],
+      "cognateIt": "termine"
+    },
+    {
+      "id": "ich-brauche-einen-termin",
+      "type": "chunk",
+      "de": "Ich brauche einen Termin.",
+      "it": "Ho bisogno di un appuntamento.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 770,
+      "topic": "salute",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "sie-muessen-viel-trinken",
+      "type": "chunk",
+      "de": "Sie müssen viel trinken.",
+      "it": "Deve bere molto.",
+      "literalIt": "dovete Lei molto bere — il verbo pieno va in fondo",
+      "cefr": "A1",
+      "freqRank": 1150,
+      "topic": "salute",
+      "tags": ["modalverb", "verbalklammer", "hoeflichkeitsform"]
+    },
+    {
+      "id": "ich-nehme-eine-tablette",
+      "type": "chunk",
+      "de": "Ich nehme eine Tablette.",
+      "it": "Prendo una pastiglia.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1180,
+      "topic": "salute",
+      "tags": ["akkusativ", "v2_order"],
+      "cognateIt": "tavoletta"
+    },
+    {
+      "id": "die-tablette",
+      "type": "noun",
+      "de": "die Tablette",
+      "it": "la pastiglia",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Tabletten",
+      "cefr": "A1",
+      "freqRank": 1190,
+      "topic": "salute",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "es-geht-mir-besser",
+      "type": "chunk",
+      "de": "Es geht mir besser.",
+      "it": "Sto meglio.",
+      "literalIt": "a me va meglio",
+      "cefr": "A1",
+      "freqRank": 820,
+      "topic": "salute",
+      "tags": ["dativ", "komparativ", "personalpronomen"]
+    },
+    {
+      "id": "ich-habe-mich-erkaeltet",
+      "type": "chunk",
+      "de": "Ich habe mich erkältet.",
+      "it": "Mi sono raffreddato.",
+      "literalIt": "ho me raffreddato — i riflessivi tedeschi fanno il perfetto con «haben»",
+      "cefr": "A1",
+      "freqRank": 1300,
+      "topic": "salute",
+      "tags": ["reflexiv", "perfekt_haben_sein", "verbalklammer", "akkusativ"]
+    },
+    {
+      "id": "rufen-sie-einen-arzt",
+      "type": "chunk",
+      "de": "Rufen Sie einen Arzt!",
+      "it": "Chiami un medico!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1350,
+      "topic": "salute",
+      "tags": ["imperativ", "akkusativ", "hoeflichkeitsform"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-beim-arzt",
+      "cefr": "A1",
+      "topic": "salute",
+      "audioPath": null,
+      "targetItemIds": ["ich-habe-kopfschmerzen", "mir-ist-schlecht", "gute-besserung", "der-arzt", "das-wasser"],
+      "lines": [
+        { "speaker": "Arzt", "de": "Guten Tag! Was haben Sie?", "it": "Buongiorno! Cosa si sente?" },
+        { "speaker": "Patient", "de": "Ich habe Kopfschmerzen. Und mir ist schlecht.", "it": "Ho mal di testa. E ho la nausea." },
+        { "speaker": "Arzt", "de": "Seit wann?", "it": "Da quando?" },
+        { "speaker": "Patient", "de": "Seit gestern.", "it": "Da ieri." },
+        { "speaker": "Arzt", "de": "Sie bleiben zu Hause und trinken viel Wasser.", "it": "Resti a casa e beva molta acqua." },
+        { "speaker": "Patient", "de": "Gut, danke.", "it": "Bene, grazie." },
+        { "speaker": "Arzt", "de": "Gute Besserung!", "it": "Guarisca presto!" }
+      ],
+      "questions": [
+        { "de": "Was hat der Patient?", "options": ["Kopfschmerzen", "Zahnschmerzen", "Rückenschmerzen"], "answerIndex": 0 },
+        { "de": "Was soll der Patient trinken?", "options": ["Kaffee", "Wasser", "Suppe"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-in-der-apotheke",
+      "cefr": "A1",
+      "topic": "salute",
+      "audioPath": null,
+      "targetItemIds": ["die-apotheke", "das-medikament", "ich-habe-mich-erkaeltet", "sie-muessen-viel-trinken", "ich-nehme-eine-tablette"],
+      "lines": [
+        { "speaker": "Apothekerin", "de": "Guten Tag, was brauchen Sie?", "it": "Buongiorno, di cosa ha bisogno?" },
+        { "speaker": "Kunde", "de": "Ich habe mich erkältet.", "it": "Mi sono raffreddato." },
+        { "speaker": "Apothekerin", "de": "Haben Sie Fieber?", "it": "Ha la febbre?" },
+        { "speaker": "Kunde", "de": "Nein, aber ich bin sehr müde.", "it": "No, ma sono molto stanco." },
+        { "speaker": "Apothekerin", "de": "Hier ist ein Medikament. Sie müssen viel trinken.", "it": "Ecco un medicinale. Deve bere molto." },
+        { "speaker": "Kunde", "de": "Danke. Ich nehme eine Tablette am Morgen.", "it": "Grazie. Prendo una pastiglia la mattina." }
+      ],
+      "questions": [
+        { "de": "Was hat der Kunde?", "options": ["Er hat sich erkältet", "Er hat Fieber", "Er hat Kopfschmerzen"], "answerIndex": 0 },
+        { "de": "Was soll der Kunde tun?", "options": ["Viel schlafen", "Viel trinken", "Zum Arzt gehen"], "answerIndex": 1 }
+      ]
+    }
+  ]
+}

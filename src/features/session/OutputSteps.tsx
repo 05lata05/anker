@@ -53,6 +53,19 @@ export function OutputStep({
     );
   }
 
+  if (step.rung === 'transformation' && step.transformation) {
+    const { prompt, from } = step.transformation;
+    return (
+      <View style={styles.root}>
+        <Label>{prompt}</Label>
+        <Text style={[type.german, { color: colors.text }]}>{from}</Text>
+        <Text style={[type.body, { color: colors.textMuted }]}>{item.it}</Text>
+        <Field value={value} onChangeText={setValue} placeholder="Riscrivi in tedesco…" editable={!disabled} multiline />
+        <Button label="Rispondi" onPress={() => onAnswer(value)} disabled={disabled || value.trim() === ''} />
+      </View>
+    );
+  }
+
   if (step.rung === 'reorder') {
     const shuffled = shuffleStable(item.de.split(/\s+/), item.id);
     return (

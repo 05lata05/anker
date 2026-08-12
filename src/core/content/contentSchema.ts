@@ -36,6 +36,16 @@ const rawItemSchema = z.object({
   cognateEn: z.string().min(1).nullable().default(null),
   falseFriend: z.boolean().default(false),
   falseFriendNote: z.string().min(1).nullable().default(null),
+  transformations: z
+    .array(
+      z.object({
+        prompt: z.string().min(1),
+        from: z.string().min(1),
+        to: z.string().min(1),
+        tag: tagSchema,
+      }),
+    )
+    .default([]),
 });
 
 const ARTICLE_PREFIX = /^(der|die|das) [A-ZÄÖÜ]/;
@@ -87,6 +97,16 @@ const itemSchema = rawItemSchema.superRefine((item, ctx) => {
       message: `«${item.id}»: un falso amico deve spiegare in cosa inganna`,
       path: ['falseFriendNote'],
     });
+  }
+
+  for (const transformation of item.transformations) {
+    if (transformation.from === transformation.to) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `«${item.id}»: una trasformazione che non trasforma niente non è un esercizio`,
+        path: ['transformations'],
+      });
+    }
   }
 });
 
@@ -165,6 +185,32 @@ export type ContentPack = {
   items: Item[];
   lessons: Lesson[];
 };
+
+/** Frammento di contenuto: un file per argomento, senza metadati del pacchetto. */
+export interface ContentFragment {
+  items?: unknown[];
+  lessons?: unknown[];
+}
+
+/**
+ * Unisce i frammenti in un pacchetto unico.
+ *
+ * I contenuti stanno in un file per argomento perché un singolo JSON da
+ * trecento item non si rilegge e non si corregge: chi deve sistemare un plurale
+ * sbagliato nel vocabolario del cibo non deve scorrere anche i trasporti. La
+ * validazione però resta sull'insieme, perché i riferimenti delle lezioni
+ * attraversano i file.
+ */
+export function mergeFragments(fragments: readonly ContentFragment[], cefr: Cefr, notes?: string): unknown {
+  return {
+    version: 1,
+    language: 'de',
+    cefr,
+    notes,
+    items: fragments.flatMap((fragment) => fragment.items ?? []),
+    lessons: fragments.flatMap((fragment) => fragment.lessons ?? []),
+  };
+}
 
 /**
  * Parsifica e valida un pacchetto di contenuto. Lancia con un messaggio

@@ -54,6 +54,7 @@ CREATE TABLE `items` (
 	`cognate_en` text,
 	`false_friend` integer DEFAULT false NOT NULL,
 	`false_friend_note` text,
+	`transformations` text NOT NULL,
 	`created_at` integer NOT NULL
 );
 --> statement-breakpoint

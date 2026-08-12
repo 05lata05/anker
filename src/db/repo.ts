@@ -524,12 +524,20 @@ export async function applyPlacement(
   result: { level: Cefr; knownItemIds: readonly string[] },
   now: number,
 ): Promise<number> {
-  const state = await loadEngineState(db, now);
-  const created: Card[] = [];
+  // Legge SOLO gli item riconosciuti, non l'intero catalogo: caricare
+  // trecentocinquanta item per marcarne venti è lavoro sprecato, e su web
+  // supera il budget della singola operazione SQLite.
+  const rows =
+    result.knownItemIds.length === 0
+      ? []
+      : await db
+          .select()
+          .from(items)
+          .where(inArray(items.id, [...result.knownItemIds]));
 
-  for (const id of result.knownItemIds) {
-    const item = state.itemsById.get(id);
-    if (!item) continue;
+  const created: Card[] = [];
+  for (const row of rows) {
+    const item = rowToItem(row);
     created.push(...seedKnownCards(item, now, directionsForItem(item)));
   }
 

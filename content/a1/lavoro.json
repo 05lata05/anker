@@ -1,0 +1,383 @@
+{
+  "items": [
+    {
+      "id": "die-arbeit",
+      "type": "noun",
+      "de": "die Arbeit",
+      "it": "il lavoro",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Arbeiten",
+      "cefr": "A1",
+      "freqRank": 260,
+      "topic": "lavoro",
+      "tags": ["gender_die"]
+    },
+    {
+      "id": "der-beruf",
+      "type": "noun",
+      "de": "der Beruf",
+      "it": "la professione",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Berufe",
+      "cefr": "A1",
+      "freqRank": 470,
+      "topic": "lavoro",
+      "tags": ["gender_der"]
+    },
+    {
+      "id": "was-sind-sie-von-beruf",
+      "type": "chunk",
+      "de": "Was sind Sie von Beruf?",
+      "it": "Che lavoro fa?",
+      "literalIt": "che cosa siete Lei di professione",
+      "cefr": "A1",
+      "freqRank": 480,
+      "topic": "lavoro",
+      "tags": ["w_frage", "hoeflichkeitsform", "praeposition_dativ", "inversion"]
+    },
+    {
+      "id": "der-lehrer",
+      "type": "noun",
+      "de": "der Lehrer",
+      "it": "l'insegnante",
+      "literalIt": "nome di mestiere in -er: maschile",
+      "gender": "der",
+      "plural": "die Lehrer",
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "lavoro",
+      "tags": ["gender_der", "suffix_er", "plural_form"]
+    },
+    {
+      "id": "die-lehrerin",
+      "type": "noun",
+      "de": "die Lehrerin",
+      "it": "l'insegnante (donna)",
+      "literalIt": "il suffisso -in forma il femminile dei mestieri",
+      "gender": "die",
+      "plural": "die Lehrerinnen",
+      "cefr": "A1",
+      "freqRank": 710,
+      "topic": "lavoro",
+      "tags": ["gender_die", "plural_form"]
+    },
+    {
+      "id": "ich-arbeite-als-lehrer",
+      "type": "chunk",
+      "de": "Ich arbeite als Lehrer.",
+      "it": "Lavoro come insegnante.",
+      "literalIt": "dopo «als» il mestiere resta al nominativo e senza articolo",
+      "cefr": "A1",
+      "freqRank": 715,
+      "topic": "lavoro",
+      "tags": ["v2_order", "nominativ"],
+      "transformations": [
+        { "prompt": "Metti al femminile", "from": "Ich arbeite als Lehrer.", "to": "Ich arbeite als Lehrerin.", "tag": "nominativ" }
+      ]
+    },
+    {
+      "id": "ich-bin-student",
+      "type": "chunk",
+      "de": "Ich bin Student.",
+      "it": "Sono studente.",
+      "literalIt": "i mestieri dopo «sein» non prendono articolo",
+      "cefr": "A1",
+      "freqRank": 490,
+      "topic": "lavoro",
+      "tags": ["nominativ", "v2_order"],
+      "cognateIt": "studente"
+    },
+    {
+      "id": "der-student",
+      "type": "noun",
+      "de": "der Student",
+      "it": "lo studente",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Studenten",
+      "cefr": "A1",
+      "freqRank": 495,
+      "topic": "lavoro",
+      "tags": ["gender_der"],
+      "cognateIt": "studente",
+      "cognateEn": "student"
+    },
+    {
+      "id": "das-buero",
+      "type": "noun",
+      "de": "das Büro",
+      "it": "l'ufficio",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Büros",
+      "cefr": "A1",
+      "freqRank": 580,
+      "topic": "lavoro",
+      "tags": ["gender_das"],
+      "cognateIt": "ufficio"
+    },
+    {
+      "id": "die-firma",
+      "type": "noun",
+      "de": "die Firma",
+      "it": "l'azienda",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Firmen",
+      "cefr": "A1",
+      "freqRank": 660,
+      "topic": "lavoro",
+      "tags": ["gender_die", "plural_form"],
+      "cognateIt": "firma"
+    },
+    {
+      "id": "der-chef",
+      "type": "noun",
+      "de": "der Chef",
+      "it": "il capo",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Chefs",
+      "cefr": "A1",
+      "freqRank": 750,
+      "topic": "lavoro",
+      "tags": ["gender_der"],
+      "cognateIt": "capo",
+      "cognateEn": "chief"
+    },
+    {
+      "id": "der-kollege",
+      "type": "noun",
+      "de": "der Kollege",
+      "it": "il collega",
+      "literalIt": "eccezione alla tendenza «-e = femminile»",
+      "gender": "der",
+      "plural": "die Kollegen",
+      "cefr": "A1",
+      "freqRank": 800,
+      "topic": "lavoro",
+      "tags": ["gender_der", "suffix_e"],
+      "cognateIt": "collega",
+      "cognateEn": "colleague"
+    },
+    {
+      "id": "ich-muss-um-neun-anfangen",
+      "type": "chunk",
+      "de": "Ich muss um neun anfangen.",
+      "it": "Devo iniziare alle nove.",
+      "literalIt": "io devo alle nove iniziare — il verbo pieno va in fondo",
+      "cefr": "A1",
+      "freqRank": 800,
+      "topic": "lavoro",
+      "tags": ["modalverb", "verbalklammer", "separable_verb", "uhrzeit"],
+      "transformations": [
+        { "prompt": "Togli il modale e coniuga il verbo separabile", "from": "Ich muss um neun anfangen.", "to": "Ich fange um neun an.", "tag": "separable_verb" }
+      ]
+    },
+    {
+      "id": "ich-fange-um-neun-an",
+      "type": "chunk",
+      "de": "Ich fange um neun an.",
+      "it": "Inizio alle nove.",
+      "literalIt": "comincio alle nove VIA — senza modale il prefisso si stacca",
+      "cefr": "A1",
+      "freqRank": 810,
+      "topic": "lavoro",
+      "tags": ["separable_verb", "v2_order", "uhrzeit"]
+    },
+    {
+      "id": "ich-arbeite-von-neun-bis-fuenf",
+      "type": "chunk",
+      "de": "Ich arbeite von neun bis fünf.",
+      "it": "Lavoro dalle nove alle cinque.",
+      "literalIt": "«von» regge il dativo, «bis» l'accusativo",
+      "cefr": "A1",
+      "freqRank": 830,
+      "topic": "lavoro",
+      "tags": ["praeposition_dativ", "uhrzeit", "v2_order"]
+    },
+    {
+      "id": "ich-habe-heute-frei",
+      "type": "chunk",
+      "de": "Ich habe heute frei.",
+      "it": "Oggi sono libero.",
+      "literalIt": "ho oggi libero",
+      "cefr": "A1",
+      "freqRank": 860,
+      "topic": "lavoro",
+      "tags": ["v2_order", "akkusativ"]
+    },
+    {
+      "id": "die-besprechung",
+      "type": "noun",
+      "de": "die Besprechung",
+      "it": "la riunione",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Besprechungen",
+      "cefr": "A1",
+      "freqRank": 1100,
+      "topic": "lavoro",
+      "tags": ["gender_die", "suffix_ung"]
+    },
+    {
+      "id": "die-e-mail",
+      "type": "noun",
+      "de": "die E-Mail",
+      "it": "l'email",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die E-Mails",
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "lavoro",
+      "tags": ["gender_die"],
+      "cognateIt": "email",
+      "cognateEn": "e-mail"
+    },
+    {
+      "id": "ich-schreibe-eine-e-mail",
+      "type": "chunk",
+      "de": "Ich schreibe eine E-Mail.",
+      "it": "Scrivo un'email.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 720,
+      "topic": "lavoro",
+      "tags": ["akkusativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi al perfetto", "from": "Ich schreibe eine E-Mail.", "to": "Ich habe eine E-Mail geschrieben.", "tag": "perfekt_haben_sein" }
+      ]
+    },
+    {
+      "id": "ich-rufe-dich-an",
+      "type": "chunk",
+      "de": "Ich rufe dich an.",
+      "it": "Ti chiamo.",
+      "literalIt": "chiamo te VIA — «anrufen» è separabile",
+      "cefr": "A1",
+      "freqRank": 840,
+      "topic": "lavoro",
+      "tags": ["separable_verb", "akkusativ", "personalpronomen", "v2_order"]
+    },
+    {
+      "id": "das-telefon",
+      "type": "noun",
+      "de": "das Telefon",
+      "it": "il telefono",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Telefone",
+      "cefr": "A1",
+      "freqRank": 640,
+      "topic": "lavoro",
+      "tags": ["gender_das"],
+      "cognateIt": "telefono",
+      "cognateEn": "telephone"
+    },
+    {
+      "id": "das-geld",
+      "type": "noun",
+      "de": "das Geld",
+      "it": "il denaro",
+      "literalIt": "non ha plurale nell'uso corrente",
+      "gender": "das",
+      "plural": "die Gelder",
+      "cefr": "A1",
+      "freqRank": 240,
+      "topic": "lavoro",
+      "tags": ["gender_das"]
+    },
+    {
+      "id": "ich-verdiene-genug",
+      "type": "chunk",
+      "de": "Ich verdiene genug.",
+      "it": "Guadagno abbastanza.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1050,
+      "topic": "lavoro",
+      "tags": ["v2_order"]
+    },
+    {
+      "id": "die-arbeit-macht-spass",
+      "type": "chunk",
+      "de": "Die Arbeit macht Spaß.",
+      "it": "Il lavoro è divertente.",
+      "literalIt": "il lavoro fa divertimento",
+      "cefr": "A1",
+      "freqRank": 880,
+      "topic": "lavoro",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "ich-arbeite-weil-ich-geld-brauche",
+      "type": "chunk",
+      "de": "Ich arbeite, weil ich Geld brauche.",
+      "it": "Lavoro perché ho bisogno di soldi.",
+      "literalIt": "…perché io soldi HO-BISOGNO — dopo «weil» il verbo va in fondo",
+      "cefr": "A1",
+      "freqRank": 950,
+      "topic": "lavoro",
+      "tags": ["verb_final_subordinate", "v2_order", "akkusativ"],
+      "transformations": [
+        { "prompt": "Riscrivi con «denn» al posto di «weil»", "from": "Ich arbeite, weil ich Geld brauche.", "to": "Ich arbeite, denn ich brauche Geld.", "tag": "v2_order" }
+      ]
+    },
+    {
+      "id": "der-arbeitsplatz",
+      "type": "noun",
+      "de": "der Arbeitsplatz",
+      "it": "il posto di lavoro",
+      "literalIt": "Arbeit + s + Platz: il genere viene da «der Platz»",
+      "gender": "der",
+      "plural": "die Arbeitsplätze",
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "lavoro",
+      "tags": ["gender_der", "kompositum", "plural_form"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-was-machst-du-beruflich",
+      "cefr": "A1",
+      "topic": "lavoro",
+      "audioPath": null,
+      "targetItemIds": ["was-sind-sie-von-beruf", "ich-arbeite-als-lehrer", "das-buero", "ich-arbeite-von-neun-bis-fuenf", "die-arbeit-macht-spass"],
+      "lines": [
+        { "speaker": "Klara", "de": "Was sind Sie von Beruf?", "it": "Che lavoro fa?" },
+        { "speaker": "Ali", "de": "Ich arbeite als Lehrer.", "it": "Lavoro come insegnante." },
+        { "speaker": "Klara", "de": "Und wo?", "it": "E dove?" },
+        { "speaker": "Ali", "de": "In einer Schule in Hamburg. Sie arbeiten im Büro, oder?", "it": "In una scuola ad Amburgo. Lei lavora in ufficio, vero?" },
+        { "speaker": "Klara", "de": "Ja, ich arbeite von neun bis fünf.", "it": "Sì, lavoro dalle nove alle cinque." },
+        { "speaker": "Ali", "de": "Und macht die Arbeit Spaß?", "it": "E il lavoro le piace?" }
+      ],
+      "questions": [
+        { "de": "Was ist Ali von Beruf?", "options": ["Lehrer", "Student", "Arzt"], "answerIndex": 0 },
+        { "de": "Wann arbeitet Klara?", "options": ["Von acht bis vier", "Von neun bis fünf", "Am Wochenende"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-im-buero",
+      "cefr": "A1",
+      "topic": "lavoro",
+      "audioPath": null,
+      "targetItemIds": ["ich-schreibe-eine-e-mail", "ich-rufe-dich-an", "die-besprechung", "ich-muss-um-neun-anfangen", "der-kollege"],
+      "lines": [
+        { "speaker": "Nora", "de": "Was machst du gerade?", "it": "Cosa stai facendo?" },
+        { "speaker": "Tim", "de": "Ich schreibe eine E-Mail an einen Kollegen.", "it": "Scrivo un'email a un collega." },
+        { "speaker": "Nora", "de": "Wann ist die Besprechung?", "it": "Quando è la riunione?" },
+        { "speaker": "Tim", "de": "Um zehn. Ich muss aber schon um neun anfangen.", "it": "Alle dieci. Ma devo iniziare già alle nove." },
+        { "speaker": "Nora", "de": "Gut, ich rufe dich später an.", "it": "Bene, ti chiamo più tardi." },
+        { "speaker": "Tim", "de": "Danke, bis später!", "it": "Grazie, a dopo!" }
+      ],
+      "questions": [
+        { "de": "Was macht Tim gerade?", "options": ["Er schreibt eine E-Mail", "Er telefoniert", "Er isst"], "answerIndex": 0 },
+        { "de": "Wann ist die Besprechung?", "options": ["Um neun", "Um zehn", "Um fünf"], "answerIndex": 1 }
+      ]
+    }
+  ]
+}

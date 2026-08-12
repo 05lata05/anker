@@ -303,7 +303,7 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
     if (step.phase === 'recall') {
       const prompt = state.promptFor(step)!;
       const check = gradeAnswer(prompt, userAnswer);
-      const feedback = buildFeedback(check, step.card.item);
+      const feedback = buildFeedback(check, step.card.item, { expectsGerman: prompt.answerLanguage === 'de' });
 
       const { rating } = deriveRating({
         wasCorrect: check.wasCorrect,
@@ -383,7 +383,10 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
 
     if (step.phase === 'output') {
       const outputItem: Item = step.item;
-      const expected = step.rung === 'free' || step.rung === 'reorder' ? outputItem.de : outputItem.de;
+      // Sulla trasformazione la forma attesa è quella autorizzata nei contenuti,
+      // non la frase di partenza.
+      const expected =
+        step.rung === 'transformation' && step.transformation ? step.transformation.to : outputItem.de;
       const check = gradeAnswer(
         {
           text: outputItem.it,

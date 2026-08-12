@@ -53,19 +53,26 @@ export function DialogueStep({
           <View key={`${step.id}:${index}`} style={styles.line}>
             <Text style={[type.label, { color: colors.textFaint }]}>{line.speaker.toUpperCase()}</Text>
 
-            <View style={styles.words}>
+            {/*
+              Le parole sono <Text> annidati, non View affiancate: solo così il
+              tedesco va a capo come testo invece che come griglia di riquadri,
+              e le righe lunghe restano leggibili su schermo stretto.
+            */}
+            <Text style={[type.german, { color: colors.text }]}>
               {line.de.split(/\s+/).map((word, wordIndex) => {
-                const bare = word.toLowerCase().replace(/[.,!?]/g, '');
+                const bare = word.toLowerCase().replace(/[.,!?;:]/g, '');
                 return (
-                  <Pressable
+                  <Text
                     key={`${index}:${wordIndex}`}
-                    onPress={() => setGloss({ word, it: byWord.get(bare)?.it ?? null })}
+                    onPress={() => setGloss({ word: bare, it: byWord.get(bare)?.it ?? null })}
+                    suppressHighlighting
                   >
-                    <Text style={[type.german, { color: colors.text }]}>{word} </Text>
-                  </Pressable>
+                    {word}
+                    {wordIndex < line.de.split(/\s+/).length - 1 ? ' ' : ''}
+                  </Text>
                 );
               })}
-            </View>
+            </Text>
 
             <Pressable
               onPress={() =>
@@ -143,7 +150,6 @@ const styles = StyleSheet.create({
   root: { gap: spacing.lg, flex: 1 },
   lines: { gap: spacing.lg, paddingBottom: spacing.md },
   line: { gap: spacing.xs },
-  words: { flexDirection: 'row', flexWrap: 'wrap' },
   options: { gap: spacing.sm },
   actions: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
   grow: { flex: 1 },

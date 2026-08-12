@@ -23,6 +23,7 @@ export function makeItem(overrides: Partial<Item> & { id: string }): Item {
     cognateEn: null,
     falseFriend: false,
     falseFriendNote: null,
+    transformations: [],
     ...overrides,
   };
 }

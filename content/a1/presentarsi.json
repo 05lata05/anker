@@ -1,0 +1,370 @@
+{
+  "items": [
+    {
+      "id": "ich-heisse",
+      "type": "chunk",
+      "de": "Ich heiße Anna.",
+      "it": "Mi chiamo Anna.",
+      "literalIt": "io mi chiamo Anna",
+      "cefr": "A1",
+      "freqRank": 60,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "praesens_regular"],
+      "transformations": [
+        { "prompt": "Chiedilo a qualcuno dandogli del Lei", "from": "Ich heiße Anna.", "to": "Wie heißen Sie?", "tag": "hoeflichkeitsform" }
+      ]
+    },
+    {
+      "id": "wie-heissen-sie",
+      "type": "chunk",
+      "de": "Wie heißen Sie?",
+      "it": "Come si chiama?",
+      "literalIt": "come si chiama Lei",
+      "cefr": "A1",
+      "freqRank": 90,
+      "topic": "presentarsi",
+      "tags": ["w_frage", "hoeflichkeitsform", "inversion"],
+      "transformations": [
+        { "prompt": "Dai del tu", "from": "Wie heißen Sie?", "to": "Wie heißt du?", "tag": "praesens_irregular" }
+      ]
+    },
+    {
+      "id": "mein-name-ist",
+      "type": "chunk",
+      "de": "Mein Name ist Luigi.",
+      "it": "Il mio nome è Luigi.",
+      "literalIt": "der Name è uno dei pochi maschili in -e",
+      "cefr": "A1",
+      "freqRank": 190,
+      "topic": "presentarsi",
+      "tags": ["possessivartikel", "nominativ", "v2_order"]
+    },
+    {
+      "id": "der-name",
+      "type": "noun",
+      "de": "der Name",
+      "it": "il nome",
+      "literalIt": "eccezione alla tendenza «-e = femminile»",
+      "gender": "der",
+      "plural": "die Namen",
+      "cefr": "A1",
+      "freqRank": 195,
+      "topic": "presentarsi",
+      "tags": ["gender_der", "suffix_e"],
+      "cognateIt": "nome",
+      "cognateEn": "name"
+    },
+    {
+      "id": "ich-komme-aus-italien",
+      "type": "chunk",
+      "de": "Ich komme aus Italien.",
+      "it": "Vengo dall'Italia.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 70,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "praeposition_dativ", "dativ"],
+      "transformations": [
+        { "prompt": "Chiedi da dove viene, dando del tu", "from": "Ich komme aus Italien.", "to": "Woher kommst du?", "tag": "w_frage" }
+      ]
+    },
+    {
+      "id": "woher-kommen-sie",
+      "type": "chunk",
+      "de": "Woher kommen Sie?",
+      "it": "Da dove viene?",
+      "literalIt": "da dove venite Lei",
+      "cefr": "A1",
+      "freqRank": 175,
+      "topic": "presentarsi",
+      "tags": ["w_frage", "hoeflichkeitsform", "inversion"]
+    },
+    {
+      "id": "ich-wohne-in-berlin",
+      "type": "chunk",
+      "de": "Ich wohne in Berlin.",
+      "it": "Abito a Berlino.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 85,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "wechselpraeposition", "dativ"]
+    },
+    {
+      "id": "wo-wohnen-sie",
+      "type": "chunk",
+      "de": "Wo wohnen Sie?",
+      "it": "Dove abita?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 185,
+      "topic": "presentarsi",
+      "tags": ["w_frage", "hoeflichkeitsform", "inversion"]
+    },
+    {
+      "id": "freut-mich",
+      "type": "chunk",
+      "de": "Freut mich!",
+      "it": "Piacere!",
+      "literalIt": "(mi) fa piacere",
+      "cefr": "A1",
+      "freqRank": 300,
+      "topic": "presentarsi",
+      "tags": ["formelhaft", "akkusativ", "personalpronomen"]
+    },
+    {
+      "id": "ich-spreche-ein-bisschen-deutsch",
+      "type": "chunk",
+      "de": "Ich spreche ein bisschen Deutsch.",
+      "it": "Parlo un po' di tedesco.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 110,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "akkusativ"]
+    },
+    {
+      "id": "sprechen-sie-italienisch",
+      "type": "chunk",
+      "de": "Sprechen Sie Italienisch?",
+      "it": "Parla italiano?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 280,
+      "topic": "presentarsi",
+      "tags": ["ja_nein_frage", "hoeflichkeitsform", "akkusativ"]
+    },
+    {
+      "id": "ich-verstehe-nicht",
+      "type": "chunk",
+      "de": "Ich verstehe nicht.",
+      "it": "Non capisco.",
+      "literalIt": "«nicht» nega il verbo e va in fondo",
+      "cefr": "A1",
+      "freqRank": 160,
+      "topic": "presentarsi",
+      "tags": ["negation_nicht_kein", "v2_order"]
+    },
+    {
+      "id": "koennen-sie-das-wiederholen",
+      "type": "chunk",
+      "de": "Können Sie das wiederholen?",
+      "it": "Può ripeterlo?",
+      "literalIt": "potete Lei questo ripetere — il verbo pieno va in fondo",
+      "cefr": "A1",
+      "freqRank": 350,
+      "topic": "presentarsi",
+      "tags": ["modalverb", "verbalklammer", "hoeflichkeitsform", "ja_nein_frage"]
+    },
+    {
+      "id": "ich-bin-zwanzig-jahre-alt",
+      "type": "chunk",
+      "de": "Ich bin zwanzig Jahre alt.",
+      "it": "Ho vent'anni.",
+      "literalIt": "io SONO vent'anni vecchio — in tedesco l'età si «è», non si «ha»",
+      "cefr": "A1",
+      "freqRank": 220,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "zahlen", "plural_form"]
+    },
+    {
+      "id": "wie-alt-sind-sie",
+      "type": "chunk",
+      "de": "Wie alt sind Sie?",
+      "it": "Quanti anni ha?",
+      "literalIt": "quanto vecchio siete Lei",
+      "cefr": "A1",
+      "freqRank": 330,
+      "topic": "presentarsi",
+      "tags": ["w_frage", "hoeflichkeitsform", "inversion"]
+    },
+    {
+      "id": "das-jahr",
+      "type": "noun",
+      "de": "das Jahr",
+      "it": "l'anno",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Jahre",
+      "cefr": "A1",
+      "freqRank": 75,
+      "topic": "presentarsi",
+      "tags": ["gender_das"],
+      "cognateEn": "year"
+    },
+    {
+      "id": "die-sprache",
+      "type": "noun",
+      "de": "die Sprache",
+      "it": "la lingua",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Sprachen",
+      "cefr": "A1",
+      "freqRank": 340,
+      "topic": "presentarsi",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "das-land",
+      "type": "noun",
+      "de": "das Land",
+      "it": "il paese",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Länder",
+      "cefr": "A1",
+      "freqRank": 170,
+      "topic": "presentarsi",
+      "tags": ["gender_das", "plural_form"],
+      "cognateEn": "land"
+    },
+    {
+      "id": "die-stadt",
+      "type": "noun",
+      "de": "die Stadt",
+      "it": "la città",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Städte",
+      "cefr": "A1",
+      "freqRank": 140,
+      "topic": "presentarsi",
+      "tags": ["gender_die", "plural_form"]
+    },
+    {
+      "id": "die-adresse",
+      "type": "noun",
+      "de": "die Adresse",
+      "it": "l'indirizzo",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Adressen",
+      "cefr": "A1",
+      "freqRank": 480,
+      "topic": "presentarsi",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "indirizzo",
+      "cognateEn": "address"
+    },
+    {
+      "id": "die-nummer",
+      "type": "noun",
+      "de": "die Nummer",
+      "it": "il numero",
+      "literalIt": "finisce in -er ma è femminile",
+      "gender": "die",
+      "plural": "die Nummern",
+      "cefr": "A1",
+      "freqRank": 360,
+      "topic": "presentarsi",
+      "tags": ["gender_die", "suffix_er"],
+      "cognateIt": "numero",
+      "cognateEn": "number"
+    },
+    {
+      "id": "ich-bin-verheiratet",
+      "type": "chunk",
+      "de": "Ich bin verheiratet.",
+      "it": "Sono sposato.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 520,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "perfekt_haben_sein"]
+    },
+    {
+      "id": "ich-bin-single",
+      "type": "chunk",
+      "de": "Ich bin ledig.",
+      "it": "Sono celibe/nubile.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "presentarsi",
+      "tags": ["v2_order"]
+    },
+    {
+      "id": "das-ist-mein-freund",
+      "type": "chunk",
+      "de": "Das ist mein Freund.",
+      "it": "Questo è il mio amico.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 250,
+      "topic": "presentarsi",
+      "tags": ["possessivartikel", "nominativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Metti al femminile", "from": "Das ist mein Freund.", "to": "Das ist meine Freundin.", "tag": "possessivartikel" }
+      ]
+    },
+    {
+      "id": "der-freund",
+      "type": "noun",
+      "de": "der Freund",
+      "it": "l'amico",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Freunde",
+      "cefr": "A1",
+      "freqRank": 255,
+      "topic": "presentarsi",
+      "tags": ["gender_der"],
+      "cognateEn": "friend"
+    },
+    {
+      "id": "ich-lerne-deutsch",
+      "type": "chunk",
+      "de": "Ich lerne Deutsch.",
+      "it": "Studio tedesco.",
+      "literalIt": "imparo tedesco",
+      "cefr": "A1",
+      "freqRank": 145,
+      "topic": "presentarsi",
+      "tags": ["v2_order", "akkusativ"],
+      "transformations": [
+        { "prompt": "Riscrivi al perfetto", "from": "Ich lerne Deutsch.", "to": "Ich habe Deutsch gelernt.", "tag": "perfekt_haben_sein" }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-sich-vorstellen",
+      "cefr": "A1",
+      "topic": "presentarsi",
+      "audioPath": null,
+      "targetItemIds": ["ich-heisse", "wie-heissen-sie", "ich-komme-aus-italien", "ich-wohne-in-berlin", "freut-mich", "guten-tag"],
+      "lines": [
+        { "speaker": "Anna", "de": "Guten Tag! Wie heißen Sie?", "it": "Buongiorno! Come si chiama?" },
+        { "speaker": "Luigi", "de": "Ich heiße Luigi. Und Sie?", "it": "Mi chiamo Luigi. E Lei?" },
+        { "speaker": "Anna", "de": "Ich heiße Anna. Freut mich!", "it": "Mi chiamo Anna. Piacere!" },
+        { "speaker": "Luigi", "de": "Freut mich auch. Ich komme aus Italien.", "it": "Piacere mio. Vengo dall'Italia." },
+        { "speaker": "Anna", "de": "Und wo wohnen Sie jetzt?", "it": "E dove abita adesso?" },
+        { "speaker": "Luigi", "de": "Ich wohne in Berlin.", "it": "Abito a Berlino." }
+      ],
+      "questions": [
+        { "de": "Woher kommt Luigi?", "options": ["Aus Italien", "Aus Berlin", "Aus Österreich"], "answerIndex": 0 },
+        { "de": "Wo wohnt Luigi?", "options": ["In Rom", "In Berlin", "In Wien"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-im-sprachkurs",
+      "cefr": "A1",
+      "topic": "presentarsi",
+      "audioPath": null,
+      "targetItemIds": ["ich-lerne-deutsch", "ich-verstehe-nicht", "koennen-sie-das-wiederholen", "ich-spreche-ein-bisschen-deutsch", "ich-bin-zwanzig-jahre-alt"],
+      "lines": [
+        { "speaker": "Lehrerin", "de": "Warum lernen Sie Deutsch?", "it": "Perché studia tedesco?" },
+        { "speaker": "Luigi", "de": "Entschuldigung, ich verstehe nicht.", "it": "Scusi, non capisco." },
+        { "speaker": "Lehrerin", "de": "Warum lernen Sie Deutsch?", "it": "Perché studia tedesco?" },
+        { "speaker": "Luigi", "de": "Können Sie das wiederholen? Langsam, bitte.", "it": "Può ripeterlo? Lentamente, per favore." },
+        { "speaker": "Lehrerin", "de": "Warum … lernen … Sie … Deutsch?", "it": "Perché … studia … tedesco?" },
+        { "speaker": "Luigi", "de": "Ah! Ich arbeite in Berlin. Ich spreche ein bisschen Deutsch.", "it": "Ah! Lavoro a Berlino. Parlo un po' di tedesco." }
+      ],
+      "questions": [
+        { "de": "Was versteht Luigi zuerst nicht?", "options": ["Die Frage", "Den Namen", "Die Uhrzeit"], "answerIndex": 0 },
+        { "de": "Warum lernt Luigi Deutsch?", "options": ["Er arbeitet in Berlin", "Er ist Lehrer", "Er ist Student"], "answerIndex": 0 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,415 @@
+{
+  "items": [
+    {
+      "id": "das-haus",
+      "type": "noun",
+      "de": "das Haus",
+      "it": "la casa",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Häuser",
+      "cefr": "A1",
+      "freqRank": 150,
+      "topic": "casa",
+      "tags": ["gender_das", "plural_form"],
+      "cognateEn": "house"
+    },
+    {
+      "id": "die-wohnung",
+      "type": "noun",
+      "de": "die Wohnung",
+      "it": "l'appartamento",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Wohnungen",
+      "cefr": "A1",
+      "freqRank": 480,
+      "topic": "casa",
+      "tags": ["gender_die", "suffix_ung"]
+    },
+    {
+      "id": "das-zimmer",
+      "type": "noun",
+      "de": "das Zimmer",
+      "it": "la stanza",
+      "literalIt": "finisce in -er ma è neutro",
+      "gender": "das",
+      "plural": "die Zimmer",
+      "cefr": "A1",
+      "freqRank": 380,
+      "topic": "casa",
+      "tags": ["gender_das", "suffix_er", "plural_form"]
+    },
+    {
+      "id": "die-kueche",
+      "type": "noun",
+      "de": "die Küche",
+      "it": "la cucina",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Küchen",
+      "cefr": "A1",
+      "freqRank": 720,
+      "topic": "casa",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "cucina"
+    },
+    {
+      "id": "das-bad",
+      "type": "noun",
+      "de": "das Bad",
+      "it": "il bagno",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Bäder",
+      "cefr": "A1",
+      "freqRank": 730,
+      "topic": "casa",
+      "tags": ["gender_das", "plural_form"],
+      "cognateEn": "bath"
+    },
+    {
+      "id": "das-schlafzimmer",
+      "type": "noun",
+      "de": "das Schlafzimmer",
+      "it": "la camera da letto",
+      "literalIt": "schlafen + Zimmer: stanza del dormire",
+      "gender": "das",
+      "plural": "die Schlafzimmer",
+      "cefr": "A1",
+      "freqRank": 850,
+      "topic": "casa",
+      "tags": ["gender_das", "kompositum", "plural_form"]
+    },
+    {
+      "id": "das-wohnzimmer",
+      "type": "noun",
+      "de": "das Wohnzimmer",
+      "it": "il soggiorno",
+      "literalIt": "wohnen + Zimmer: stanza dell'abitare",
+      "gender": "das",
+      "plural": "die Wohnzimmer",
+      "cefr": "A1",
+      "freqRank": 840,
+      "topic": "casa",
+      "tags": ["gender_das", "kompositum", "plural_form"]
+    },
+    {
+      "id": "die-tuer",
+      "type": "noun",
+      "de": "die Tür",
+      "it": "la porta",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Türen",
+      "cefr": "A1",
+      "freqRank": 410,
+      "topic": "casa",
+      "tags": ["gender_die"],
+      "cognateEn": "door"
+    },
+    {
+      "id": "das-fenster",
+      "type": "noun",
+      "de": "das Fenster",
+      "it": "la finestra",
+      "literalIt": "finisce in -er ma è neutro",
+      "gender": "das",
+      "plural": "die Fenster",
+      "cefr": "A1",
+      "freqRank": 500,
+      "topic": "casa",
+      "tags": ["gender_das", "suffix_er", "plural_form"],
+      "cognateIt": "finestra"
+    },
+    {
+      "id": "der-schrank",
+      "type": "noun",
+      "de": "der Schrank",
+      "it": "l'armadio",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Schränke",
+      "cefr": "A1",
+      "freqRank": 890,
+      "topic": "casa",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "das-bett",
+      "type": "noun",
+      "de": "das Bett",
+      "it": "il letto",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Betten",
+      "cefr": "A1",
+      "freqRank": 520,
+      "topic": "casa",
+      "tags": ["gender_das"],
+      "cognateEn": "bed"
+    },
+    {
+      "id": "der-stuhl",
+      "type": "noun",
+      "de": "der Stuhl",
+      "it": "la sedia",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Stühle",
+      "cefr": "A1",
+      "freqRank": 640,
+      "topic": "casa",
+      "tags": ["gender_der", "plural_form"],
+      "cognateEn": "stool"
+    },
+    {
+      "id": "die-lampe",
+      "type": "noun",
+      "de": "die Lampe",
+      "it": "la lampada",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Lampen",
+      "cefr": "A1",
+      "freqRank": 920,
+      "topic": "casa",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "lampada",
+      "cognateEn": "lamp"
+    },
+    {
+      "id": "der-schluessel",
+      "type": "noun",
+      "de": "der Schlüssel",
+      "it": "la chiave",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Schlüssel",
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "casa",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "die-miete",
+      "type": "noun",
+      "de": "die Miete",
+      "it": "l'affitto",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Mieten",
+      "cefr": "A1",
+      "freqRank": 960,
+      "topic": "casa",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "ich-wohne-in-einer-wohnung",
+      "type": "chunk",
+      "de": "Ich wohne in einer Wohnung.",
+      "it": "Abito in un appartamento.",
+      "literalIt": "«in» + stato = dativo: «einer» è il dativo femminile",
+      "cefr": "A1",
+      "freqRank": 490,
+      "topic": "casa",
+      "tags": ["wechselpraeposition", "dativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Cambia in «una casa»", "from": "Ich wohne in einer Wohnung.", "to": "Ich wohne in einem Haus.", "tag": "dativ" }
+      ]
+    },
+    {
+      "id": "ich-gehe-in-die-kueche",
+      "type": "chunk",
+      "de": "Ich gehe in die Küche.",
+      "it": "Vado in cucina.",
+      "literalIt": "«in» + movimento = accusativo: «die», non «der»",
+      "cefr": "A1",
+      "freqRank": 760,
+      "topic": "casa",
+      "tags": ["wechselpraeposition", "akkusativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi come stato: «sono in cucina»", "from": "Ich gehe in die Küche.", "to": "Ich bin in der Küche.", "tag": "wechselpraeposition" }
+      ]
+    },
+    {
+      "id": "ich-bin-in-der-kueche",
+      "type": "chunk",
+      "de": "Ich bin in der Küche.",
+      "it": "Sono in cucina.",
+      "literalIt": "stato, quindi dativo: «der» femminile",
+      "cefr": "A1",
+      "freqRank": 765,
+      "topic": "casa",
+      "tags": ["wechselpraeposition", "dativ", "v2_order"]
+    },
+    {
+      "id": "das-buch-liegt-auf-dem-tisch",
+      "type": "chunk",
+      "de": "Das Buch liegt auf dem Tisch.",
+      "it": "Il libro è sul tavolo.",
+      "literalIt": "«auf» + stato = dativo",
+      "cefr": "A1",
+      "freqRank": 810,
+      "topic": "casa",
+      "tags": ["wechselpraeposition", "dativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi come movimento: «metto il libro sul tavolo»", "from": "Das Buch liegt auf dem Tisch.", "to": "Ich lege das Buch auf den Tisch.", "tag": "akkusativ" }
+      ]
+    },
+    {
+      "id": "das-buch",
+      "type": "noun",
+      "de": "das Buch",
+      "it": "il libro",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Bücher",
+      "cefr": "A1",
+      "freqRank": 220,
+      "topic": "casa",
+      "tags": ["gender_das", "plural_form"],
+      "cognateEn": "book"
+    },
+    {
+      "id": "die-wohnung-ist-hell",
+      "type": "chunk",
+      "de": "Die Wohnung ist hell.",
+      "it": "L'appartamento è luminoso.",
+      "literalIt": "l'aggettivo dopo «sein» non prende desinenza",
+      "cefr": "A1",
+      "freqRank": 930,
+      "topic": "casa",
+      "tags": ["nominativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Metti l'aggettivo davanti al sostantivo", "from": "Die Wohnung ist hell.", "to": "Die helle Wohnung.", "tag": "adjective_ending" }
+      ]
+    },
+    {
+      "id": "wie-viele-zimmer-hat-die-wohnung",
+      "type": "chunk",
+      "de": "Wie viele Zimmer hat die Wohnung?",
+      "it": "Quante stanze ha l'appartamento?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 940,
+      "topic": "casa",
+      "tags": ["w_frage", "akkusativ", "inversion"]
+    },
+    {
+      "id": "ich-suche-eine-wohnung",
+      "type": "chunk",
+      "de": "Ich suche eine Wohnung.",
+      "it": "Cerco un appartamento.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 870,
+      "topic": "casa",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "die-wohnung-ist-zu-teuer",
+      "type": "chunk",
+      "de": "Die Wohnung ist zu teuer.",
+      "it": "L'appartamento è troppo caro.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 970,
+      "topic": "casa",
+      "tags": ["nominativ", "v2_order"]
+    },
+    {
+      "id": "zu-hause",
+      "type": "chunk",
+      "de": "Ich bin zu Hause.",
+      "it": "Sono a casa.",
+      "literalIt": "«zu Hause» è una formula fissa: stato",
+      "cefr": "A1",
+      "freqRank": 330,
+      "topic": "casa",
+      "tags": ["formelhaft", "dativ", "praeposition_dativ"],
+      "transformations": [
+        { "prompt": "Riscrivi come movimento: «vado a casa»", "from": "Ich bin zu Hause.", "to": "Ich gehe nach Hause.", "tag": "praeposition_dativ" }
+      ]
+    },
+    {
+      "id": "nach-hause-gehen",
+      "type": "chunk",
+      "de": "Ich gehe nach Hause.",
+      "it": "Vado a casa.",
+      "literalIt": "«nach Hause» per il movimento, «zu Hause» per lo stato",
+      "cefr": "A1",
+      "freqRank": 335,
+      "topic": "casa",
+      "tags": ["formelhaft", "praeposition_dativ", "v2_order"]
+    },
+    {
+      "id": "die-treppe",
+      "type": "noun",
+      "de": "die Treppe",
+      "it": "le scale",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Treppen",
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "casa",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "der-garten",
+      "type": "noun",
+      "de": "der Garten",
+      "it": "il giardino",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Gärten",
+      "cefr": "A1",
+      "freqRank": 620,
+      "topic": "casa",
+      "tags": ["gender_der", "plural_form"],
+      "cognateIt": "giardino",
+      "cognateEn": "garden"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-die-neue-wohnung",
+      "cefr": "A1",
+      "topic": "casa",
+      "audioPath": null,
+      "targetItemIds": ["ich-suche-eine-wohnung", "wie-viele-zimmer-hat-die-wohnung", "die-wohnung-ist-hell", "die-miete", "die-wohnung-ist-zu-teuer"],
+      "lines": [
+        { "speaker": "Makler", "de": "Guten Tag, was suchen Sie?", "it": "Buongiorno, cosa cerca?" },
+        { "speaker": "Eva", "de": "Ich suche eine Wohnung.", "it": "Cerco un appartamento." },
+        { "speaker": "Makler", "de": "Hier ist eine. Die Wohnung ist hell.", "it": "Eccone uno. L'appartamento è luminoso." },
+        { "speaker": "Eva", "de": "Wie viele Zimmer hat die Wohnung?", "it": "Quante stanze ha l'appartamento?" },
+        { "speaker": "Makler", "de": "Drei Zimmer, Küche und Bad. Die Miete ist neunhundert Euro.", "it": "Tre stanze, cucina e bagno. L'affitto è novecento euro." },
+        { "speaker": "Eva", "de": "Oh, das ist zu teuer.", "it": "Oh, è troppo caro." }
+      ],
+      "questions": [
+        { "de": "Was sucht Eva?", "options": ["Eine Wohnung", "Ein Haus", "Ein Zimmer"], "answerIndex": 0 },
+        { "de": "Warum sagt Eva nein?", "options": ["Die Wohnung ist dunkel", "Die Miete ist zu hoch", "Es gibt kein Bad"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-wo-ist-der-schluessel",
+      "cefr": "A1",
+      "topic": "casa",
+      "audioPath": null,
+      "targetItemIds": ["der-schluessel", "das-buch-liegt-auf-dem-tisch", "ich-bin-in-der-kueche", "ich-gehe-in-die-kueche", "das-zimmer"],
+      "lines": [
+        { "speaker": "Max", "de": "Wo bist du?", "it": "Dove sei?" },
+        { "speaker": "Lea", "de": "Ich bin in der Küche.", "it": "Sono in cucina." },
+        { "speaker": "Max", "de": "Wo ist mein Schlüssel?", "it": "Dov'è la mia chiave?" },
+        { "speaker": "Lea", "de": "Im Wohnzimmer. Er liegt auf dem Tisch.", "it": "In soggiorno. È sul tavolo." },
+        { "speaker": "Max", "de": "Und mein Buch?", "it": "E il mio libro?" },
+        { "speaker": "Lea", "de": "Das Buch liegt auch auf dem Tisch.", "it": "Anche il libro è sul tavolo." }
+      ],
+      "questions": [
+        { "de": "Wo ist Lea?", "options": ["Im Bad", "In der Küche", "Im Garten"], "answerIndex": 1 },
+        { "de": "Wo liegt der Schlüssel?", "options": ["Auf dem Tisch", "Im Schrank", "Auf dem Bett"], "answerIndex": 0 }
+      ]
+    }
+  ]
+}

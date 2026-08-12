@@ -1,0 +1,389 @@
+{
+  "items": [
+    {
+      "id": "was-kostet-das",
+      "type": "chunk",
+      "de": "Was kostet das?",
+      "it": "Quanto costa?",
+      "literalIt": "che cosa costa questo",
+      "cefr": "A1",
+      "freqRank": 300,
+      "topic": "acquisti",
+      "tags": ["w_frage", "v2_order"]
+    },
+    {
+      "id": "das-ist-zu-teuer",
+      "type": "chunk",
+      "de": "Das ist zu teuer.",
+      "it": "È troppo caro.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 520,
+      "topic": "acquisti",
+      "tags": ["v2_order"]
+    },
+    {
+      "id": "das-ist-billig",
+      "type": "chunk",
+      "de": "Das ist billig.",
+      "it": "È economico.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "acquisti",
+      "tags": ["v2_order"]
+    },
+    {
+      "id": "ich-moechte-das-kaufen",
+      "type": "chunk",
+      "de": "Ich möchte das kaufen.",
+      "it": "Vorrei comprarlo.",
+      "literalIt": "io vorrei questo comprare — il verbo pieno va in fondo",
+      "cefr": "A1",
+      "freqRank": 190,
+      "topic": "acquisti",
+      "tags": ["modalverb", "verbalklammer", "akkusativ"],
+      "transformations": [
+        { "prompt": "Togli il modale e coniuga il verbo", "from": "Ich möchte das kaufen.", "to": "Ich kaufe das.", "tag": "v2_order" }
+      ]
+    },
+    {
+      "id": "es-gibt-einen-supermarkt",
+      "type": "chunk",
+      "de": "Es gibt einen Supermarkt.",
+      "it": "C'è un supermercato.",
+      "literalIt": "esso dà un supermercato — «es gibt» regge sempre l'accusativo",
+      "cefr": "A1",
+      "freqRank": 380,
+      "topic": "acquisti",
+      "tags": ["es_gibt", "akkusativ", "v2_order"],
+      "cognateIt": "supermercato",
+      "transformations": [
+        { "prompt": "Chiedi se c'è un supermercato", "from": "Es gibt einen Supermarkt.", "to": "Gibt es einen Supermarkt?", "tag": "inversion" }
+      ]
+    },
+    {
+      "id": "der-supermarkt",
+      "type": "noun",
+      "de": "der Supermarkt",
+      "it": "il supermercato",
+      "literalIt": "Super + Markt: il genere viene da «der Markt»",
+      "gender": "der",
+      "plural": "die Supermärkte",
+      "cefr": "A1",
+      "freqRank": 385,
+      "topic": "acquisti",
+      "tags": ["gender_der", "kompositum", "plural_form"],
+      "cognateIt": "supermercato",
+      "cognateEn": "supermarket"
+    },
+    {
+      "id": "der-markt",
+      "type": "noun",
+      "de": "der Markt",
+      "it": "il mercato",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Märkte",
+      "cefr": "A1",
+      "freqRank": 450,
+      "topic": "acquisti",
+      "tags": ["gender_der", "plural_form"],
+      "cognateIt": "mercato",
+      "cognateEn": "market"
+    },
+    {
+      "id": "das-geschaeft",
+      "type": "noun",
+      "de": "das Geschäft",
+      "it": "il negozio",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Geschäfte",
+      "cefr": "A1",
+      "freqRank": 540,
+      "topic": "acquisti",
+      "tags": ["gender_das"]
+    },
+    {
+      "id": "ich-habe-keine-zeit",
+      "type": "chunk",
+      "de": "Ich habe keine Zeit.",
+      "it": "Non ho tempo.",
+      "literalIt": "ho nessun tempo — si nega il sostantivo con «kein», non con «nicht»",
+      "cefr": "A1",
+      "freqRank": 280,
+      "topic": "acquisti",
+      "tags": ["negation_nicht_kein", "akkusativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi all'affermativo", "from": "Ich habe keine Zeit.", "to": "Ich habe Zeit.", "tag": "negation_nicht_kein" }
+      ]
+    },
+    {
+      "id": "ich-habe-kein-geld",
+      "type": "chunk",
+      "de": "Ich habe kein Geld.",
+      "it": "Non ho soldi.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 400,
+      "topic": "acquisti",
+      "tags": ["negation_nicht_kein", "akkusativ", "v2_order"]
+    },
+    {
+      "id": "ich-komme-nicht",
+      "type": "chunk",
+      "de": "Ich komme nicht.",
+      "it": "Non vengo.",
+      "literalIt": "«nicht» nega il verbo, «kein» il sostantivo",
+      "cefr": "A1",
+      "freqRank": 320,
+      "topic": "acquisti",
+      "tags": ["negation_nicht_kein", "v2_order"]
+    },
+    {
+      "id": "wie-viel-kostet-es",
+      "type": "chunk",
+      "de": "Wie viel kostet es?",
+      "it": "Quanto costa?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 310,
+      "topic": "acquisti",
+      "tags": ["w_frage", "inversion"]
+    },
+    {
+      "id": "der-euro",
+      "type": "noun",
+      "de": "der Euro",
+      "it": "l'euro",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Euro",
+      "cefr": "A1",
+      "freqRank": 290,
+      "topic": "acquisti",
+      "tags": ["gender_der", "zahlen"],
+      "cognateIt": "euro",
+      "cognateEn": "euro"
+    },
+    {
+      "id": "ich-zahle-mit-karte",
+      "type": "chunk",
+      "de": "Ich zahle mit Karte.",
+      "it": "Pago con la carta.",
+      "literalIt": "«mit» regge il dativo",
+      "cefr": "A1",
+      "freqRank": 760,
+      "topic": "acquisti",
+      "tags": ["praeposition_dativ", "dativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Cambia in «in contanti» (bar)", "from": "Ich zahle mit Karte.", "to": "Ich zahle bar.", "tag": "v2_order" }
+      ]
+    },
+    {
+      "id": "die-karte",
+      "type": "noun",
+      "de": "die Karte",
+      "it": "la carta; il biglietto",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Karten",
+      "cefr": "A1",
+      "freqRank": 340,
+      "topic": "acquisti",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "carta",
+      "cognateEn": "card"
+    },
+    {
+      "id": "haben-sie-das-in-groesse-vierzig",
+      "type": "chunk",
+      "de": "Haben Sie das in Größe vierzig?",
+      "it": "Ce l'ha nella taglia quaranta?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1100,
+      "topic": "acquisti",
+      "tags": ["ja_nein_frage", "hoeflichkeitsform", "zahlen", "inversion"]
+    },
+    {
+      "id": "die-groesse",
+      "type": "noun",
+      "de": "die Größe",
+      "it": "la taglia",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Größen",
+      "cefr": "A1",
+      "freqRank": 1050,
+      "topic": "acquisti",
+      "tags": ["gender_die", "suffix_e"]
+    },
+    {
+      "id": "kann-ich-das-anprobieren",
+      "type": "chunk",
+      "de": "Kann ich das anprobieren?",
+      "it": "Posso provarlo?",
+      "literalIt": "posso io questo provare-addosso — verbo separabile in fondo",
+      "cefr": "A1",
+      "freqRank": 1150,
+      "topic": "acquisti",
+      "tags": ["modalverb", "verbalklammer", "separable_verb", "ja_nein_frage"]
+    },
+    {
+      "id": "ich-nehme-es",
+      "type": "chunk",
+      "de": "Ich nehme es.",
+      "it": "Lo prendo.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 600,
+      "topic": "acquisti",
+      "tags": ["akkusativ", "personalpronomen", "v2_order"]
+    },
+    {
+      "id": "das-hemd",
+      "type": "noun",
+      "de": "das Hemd",
+      "it": "la camicia",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Hemden",
+      "cefr": "A1",
+      "freqRank": 950,
+      "topic": "acquisti",
+      "tags": ["gender_das"]
+    },
+    {
+      "id": "die-hose",
+      "type": "noun",
+      "de": "die Hose",
+      "it": "i pantaloni",
+      "literalIt": "singolare in tedesco, plurale in italiano",
+      "gender": "die",
+      "plural": "die Hosen",
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "acquisti",
+      "tags": ["gender_die", "suffix_e", "plural_form"]
+    },
+    {
+      "id": "der-schuh",
+      "type": "noun",
+      "de": "der Schuh",
+      "it": "la scarpa",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Schuhe",
+      "cefr": "A1",
+      "freqRank": 850,
+      "topic": "acquisti",
+      "tags": ["gender_der"],
+      "cognateEn": "shoe"
+    },
+    {
+      "id": "die-tasche",
+      "type": "noun",
+      "de": "die Tasche",
+      "it": "la borsa",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Taschen",
+      "cefr": "A1",
+      "freqRank": 800,
+      "topic": "acquisti",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "tasca"
+    },
+    {
+      "id": "ich-suche-ein-geschenk",
+      "type": "chunk",
+      "de": "Ich suche ein Geschenk.",
+      "it": "Cerco un regalo.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "acquisti",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "das-geschenk",
+      "type": "noun",
+      "de": "das Geschenk",
+      "it": "il regalo",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Geschenke",
+      "cefr": "A1",
+      "freqRank": 1010,
+      "topic": "acquisti",
+      "tags": ["gender_das"]
+    },
+    {
+      "id": "wo-finde-ich-das-brot",
+      "type": "chunk",
+      "de": "Wo finde ich das Brot?",
+      "it": "Dove trovo il pane?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 880,
+      "topic": "acquisti",
+      "tags": ["w_frage", "akkusativ", "inversion"]
+    },
+    {
+      "id": "das-geschaeft-ist-geschlossen",
+      "type": "chunk",
+      "de": "Das Geschäft ist geschlossen.",
+      "it": "Il negozio è chiuso.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1080,
+      "topic": "acquisti",
+      "tags": ["nominativ", "v2_order", "perfekt_haben_sein"],
+      "transformations": [
+        { "prompt": "Riscrivi con «aperto»", "from": "Das Geschäft ist geschlossen.", "to": "Das Geschäft ist geöffnet.", "tag": "nominativ" }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-im-supermarkt",
+      "cefr": "A1",
+      "topic": "acquisti",
+      "audioPath": null,
+      "targetItemIds": ["es-gibt-einen-supermarkt", "wo-finde-ich-das-brot", "was-kostet-das", "ich-zahle-mit-karte", "der-euro"],
+      "lines": [
+        { "speaker": "Kunde", "de": "Entschuldigung, wo finde ich das Brot?", "it": "Scusi, dove trovo il pane?" },
+        { "speaker": "Verkäufer", "de": "Dort hinten, links.", "it": "Là in fondo, a sinistra." },
+        { "speaker": "Kunde", "de": "Danke. Und was kostet das?", "it": "Grazie. E quanto costa?" },
+        { "speaker": "Verkäufer", "de": "Zwei Euro fünfzig.", "it": "Due euro e cinquanta." },
+        { "speaker": "Kunde", "de": "Gut, ich nehme es. Ich zahle mit Karte.", "it": "Bene, lo prendo. Pago con la carta." },
+        { "speaker": "Verkäufer", "de": "Kein Problem.", "it": "Nessun problema." }
+      ],
+      "questions": [
+        { "de": "Was sucht der Kunde?", "options": ["Das Brot", "Den Käse", "Die Milch"], "answerIndex": 0 },
+        { "de": "Wie zahlt der Kunde?", "options": ["Bar", "Mit Karte", "Er zahlt nicht"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-im-geschaeft",
+      "cefr": "A1",
+      "topic": "acquisti",
+      "audioPath": null,
+      "targetItemIds": ["haben-sie-das-in-groesse-vierzig", "kann-ich-das-anprobieren", "das-ist-zu-teuer", "ich-suche-ein-geschenk", "die-hose"],
+      "lines": [
+        { "speaker": "Verkäuferin", "de": "Kann ich Ihnen helfen?", "it": "Posso aiutarla?" },
+        { "speaker": "Nils", "de": "Ja, ich suche ein Geschenk. Diese Hose ist schön.", "it": "Sì, cerco un regalo. Questi pantaloni sono belli." },
+        { "speaker": "Verkäuferin", "de": "Welche Größe?", "it": "Quale taglia?" },
+        { "speaker": "Nils", "de": "Haben Sie das in Größe vierzig? Kann ich das anprobieren?", "it": "Ce l'ha nella taglia quaranta? Posso provarli?" },
+        { "speaker": "Verkäuferin", "de": "Natürlich. Sie kostet neunzig Euro.", "it": "Certo. Costano novanta euro." },
+        { "speaker": "Nils", "de": "Oh, das ist zu teuer.", "it": "Oh, è troppo caro." }
+      ],
+      "questions": [
+        { "de": "Was sucht Nils?", "options": ["Ein Geschenk", "Ein Buch", "Essen"], "answerIndex": 0 },
+        { "de": "Warum kauft Nils die Hose nicht?", "options": ["Falsche Größe", "Zu teuer", "Sie gefällt ihm nicht"], "answerIndex": 1 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "items": [
+    {
+      "id": "das-wochenende",
+      "type": "noun",
+      "de": "das Wochenende",
+      "it": "il fine settimana",
+      "literalIt": "Woche + Ende: il genere viene da «das Ende»",
+      "gender": "das",
+      "plural": "die Wochenenden",
+      "cefr": "A1",
+      "freqRank": 440,
+      "topic": "tempo_libero",
+      "tags": ["gender_das", "kompositum"]
+    },
+    {
+      "id": "am-wochenende",
+      "type": "chunk",
+      "de": "am Wochenende",
+      "it": "nel fine settimana",
+      "literalIt": "am = an dem, dativo",
+      "cefr": "A1",
+      "freqRank": 450,
+      "topic": "tempo_libero",
+      "tags": ["dativ", "wechselpraeposition", "kompositum"]
+    },
+    {
+      "id": "ich-spiele-gern-fussball",
+      "type": "chunk",
+      "de": "Ich spiele gern Fußball.",
+      "it": "Mi piace giocare a calcio.",
+      "literalIt": "gioco volentieri a calcio",
+      "cefr": "A1",
+      "freqRank": 560,
+      "topic": "tempo_libero",
+      "tags": ["v2_order", "akkusativ"],
+      "transformations": [
+        { "prompt": "Riscrivi al perfetto", "from": "Ich spiele gern Fußball.", "to": "Ich habe gern Fußball gespielt.", "tag": "perfekt_haben_sein" },
+        { "prompt": "Metti «am Wochenende» in prima posizione", "from": "Ich spiele gern Fußball.", "to": "Am Wochenende spiele ich gern Fußball.", "tag": "inversion" }
+      ]
+    },
+    {
+      "id": "der-fussball",
+      "type": "noun",
+      "de": "der Fußball",
+      "it": "il calcio; il pallone",
+      "literalIt": "Fuß + Ball: il genere viene da «der Ball»",
+      "gender": "der",
+      "plural": "die Fußbälle",
+      "cefr": "A1",
+      "freqRank": 570,
+      "topic": "tempo_libero",
+      "tags": ["gender_der", "kompositum", "plural_form"]
+    },
+    {
+      "id": "die-musik",
+      "type": "noun",
+      "de": "die Musik",
+      "it": "la musica",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Musiken",
+      "cefr": "A1",
+      "freqRank": 380,
+      "topic": "tempo_libero",
+      "tags": ["gender_die"],
+      "cognateIt": "musica",
+      "cognateEn": "music"
+    },
+    {
+      "id": "ich-hoere-gern-musik",
+      "type": "chunk",
+      "de": "Ich höre gern Musik.",
+      "it": "Mi piace ascoltare musica.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 385,
+      "topic": "tempo_libero",
+      "tags": ["v2_order", "akkusativ"]
+    },
+    {
+      "id": "der-film",
+      "type": "noun",
+      "de": "der Film",
+      "it": "il film",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Filme",
+      "cefr": "A1",
+      "freqRank": 420,
+      "topic": "tempo_libero",
+      "tags": ["gender_der"],
+      "cognateIt": "film",
+      "cognateEn": "film"
+    },
+    {
+      "id": "ich-sehe-einen-film",
+      "type": "chunk",
+      "de": "Ich sehe einen Film.",
+      "it": "Guardo un film.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 430,
+      "topic": "tempo_libero",
+      "tags": ["akkusativ", "v2_order", "praesens_irregular"]
+    },
+    {
+      "id": "das-kino",
+      "type": "noun",
+      "de": "das Kino",
+      "it": "il cinema",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Kinos",
+      "cefr": "A1",
+      "freqRank": 600,
+      "topic": "tempo_libero",
+      "tags": ["gender_das"],
+      "cognateIt": "cinema"
+    },
+    {
+      "id": "ich-gehe-ins-kino",
+      "type": "chunk",
+      "de": "Ich gehe ins Kino.",
+      "it": "Vado al cinema.",
+      "literalIt": "ins = in das, accusativo: c'è movimento",
+      "cefr": "A1",
+      "freqRank": 610,
+      "topic": "tempo_libero",
+      "tags": ["wechselpraeposition", "akkusativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi come stato: «sono al cinema»", "from": "Ich gehe ins Kino.", "to": "Ich bin im Kino.", "tag": "wechselpraeposition" }
+      ]
+    },
+    {
+      "id": "das-buch-lesen",
+      "type": "chunk",
+      "de": "Ich lese ein Buch.",
+      "it": "Leggo un libro.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 460,
+      "topic": "tempo_libero",
+      "tags": ["akkusativ", "v2_order", "praesens_irregular"],
+      "transformations": [
+        { "prompt": "Riscrivi al perfetto", "from": "Ich lese ein Buch.", "to": "Ich habe ein Buch gelesen.", "tag": "perfekt_haben_sein" }
+      ]
+    },
+    {
+      "id": "ich-treffe-freunde",
+      "type": "chunk",
+      "de": "Ich treffe Freunde.",
+      "it": "Incontro degli amici.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 640,
+      "topic": "tempo_libero",
+      "tags": ["akkusativ", "v2_order", "praesens_irregular"]
+    },
+    {
+      "id": "hast-du-lust",
+      "type": "chunk",
+      "de": "Hast du Lust?",
+      "it": "Ti va?",
+      "literalIt": "hai voglia",
+      "cefr": "A1",
+      "freqRank": 780,
+      "topic": "tempo_libero",
+      "tags": ["ja_nein_frage", "akkusativ", "inversion"]
+    },
+    {
+      "id": "gute-idee",
+      "type": "chunk",
+      "de": "Gute Idee!",
+      "it": "Buona idea!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 820,
+      "topic": "tempo_libero",
+      "tags": ["formelhaft", "adjective_ending"],
+      "cognateIt": "idea"
+    },
+    {
+      "id": "die-idee",
+      "type": "noun",
+      "de": "die Idee",
+      "it": "l'idea",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Ideen",
+      "cefr": "A1",
+      "freqRank": 500,
+      "topic": "tempo_libero",
+      "tags": ["gender_die"],
+      "cognateIt": "idea",
+      "cognateEn": "idea"
+    },
+    {
+      "id": "der-sport",
+      "type": "noun",
+      "de": "der Sport",
+      "it": "lo sport",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Sportarten",
+      "cefr": "A1",
+      "freqRank": 520,
+      "topic": "tempo_libero",
+      "tags": ["gender_der"],
+      "cognateIt": "sport",
+      "cognateEn": "sport"
+    },
+    {
+      "id": "ich-mache-sport",
+      "type": "chunk",
+      "de": "Ich mache Sport.",
+      "it": "Faccio sport.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 525,
+      "topic": "tempo_libero",
+      "tags": ["akkusativ", "v2_order"]
+    },
+    {
+      "id": "ich-schwimme-gern",
+      "type": "chunk",
+      "de": "Ich schwimme gern.",
+      "it": "Mi piace nuotare.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 750,
+      "topic": "tempo_libero",
+      "tags": ["v2_order"],
+      "cognateEn": "swim"
+    },
+    {
+      "id": "ich-bleibe-zu-hause-weil-ich-krank-bin",
+      "type": "chunk",
+      "de": "Ich bleibe zu Hause, weil ich krank bin.",
+      "it": "Resto a casa perché sono malato.",
+      "literalIt": "…perché io malato SONO — dopo «weil» il verbo va in fondo",
+      "cefr": "A1",
+      "freqRank": 750,
+      "topic": "tempo_libero",
+      "tags": ["verb_final_subordinate", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi con «denn» al posto di «weil»", "from": "Ich bleibe zu Hause, weil ich krank bin.", "to": "Ich bleibe zu Hause, denn ich bin krank.", "tag": "v2_order" }
+      ]
+    },
+    {
+      "id": "ich-weiss-dass-er-kommt",
+      "type": "chunk",
+      "de": "Ich weiß, dass er kommt.",
+      "it": "So che viene.",
+      "literalIt": "…che lui VIENE — anche dopo «dass» il verbo va in fondo",
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "tempo_libero",
+      "tags": ["verb_final_subordinate", "v2_order"]
+    },
+    {
+      "id": "wenn-ich-zeit-habe",
+      "type": "chunk",
+      "de": "Wenn ich Zeit habe, lese ich.",
+      "it": "Quando ho tempo, leggo.",
+      "literalIt": "quando io tempo HO, LEGGO io — la subordinata occupa la prima posizione",
+      "cefr": "A1",
+      "freqRank": 870,
+      "topic": "tempo_libero",
+      "tags": ["verb_final_subordinate", "inversion", "v2_order"]
+    },
+    {
+      "id": "der-urlaub",
+      "type": "noun",
+      "de": "der Urlaub",
+      "it": "le ferie",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Urlaube",
+      "cefr": "A1",
+      "freqRank": 690,
+      "topic": "tempo_libero",
+      "tags": ["gender_der"]
+    },
+    {
+      "id": "ich-fahre-in-urlaub",
+      "type": "chunk",
+      "de": "Ich fahre in Urlaub.",
+      "it": "Vado in vacanza.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "tempo_libero",
+      "tags": ["wechselpraeposition", "akkusativ", "v2_order"]
+    },
+    {
+      "id": "die-party",
+      "type": "noun",
+      "de": "die Party",
+      "it": "la festa",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Partys",
+      "cefr": "A1",
+      "freqRank": 830,
+      "topic": "tempo_libero",
+      "tags": ["gender_die"],
+      "cognateEn": "party"
+    },
+    {
+      "id": "wir-gehen-spazieren",
+      "type": "chunk",
+      "de": "Wir gehen spazieren.",
+      "it": "Andiamo a passeggiare.",
+      "literalIt": "andiamo passeggiare — infinito senza «zu»",
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "tempo_libero",
+      "tags": ["infinitiv", "verbalklammer", "v2_order"]
+    },
+    {
+      "id": "das-wetter-ist-schoen",
+      "type": "chunk",
+      "de": "Das Wetter ist schön.",
+      "it": "Il tempo è bello.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 480,
+      "topic": "tempo_libero",
+      "tags": ["nominativ", "v2_order"]
+    },
+    {
+      "id": "das-wetter",
+      "type": "noun",
+      "de": "das Wetter",
+      "it": "il tempo (meteo)",
+      "literalIt": "finisce in -er ma è neutro",
+      "gender": "das",
+      "plural": "die Wetter",
+      "cefr": "A1",
+      "freqRank": 470,
+      "topic": "tempo_libero",
+      "tags": ["gender_das", "suffix_er", "plural_form"],
+      "cognateEn": "weather"
+    },
+    {
+      "id": "es-regnet",
+      "type": "chunk",
+      "de": "Es regnet.",
+      "it": "Piove.",
+      "literalIt": "esso piove — in tedesco serve sempre il soggetto",
+      "cefr": "A1",
+      "freqRank": 620,
+      "topic": "tempo_libero",
+      "tags": ["v2_order", "personalpronomen"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-am-wochenende",
+      "cefr": "A1",
+      "topic": "tempo_libero",
+      "audioPath": null,
+      "targetItemIds": ["am-wochenende", "ich-spiele-gern-fussball", "hast-du-lust", "ich-gehe-ins-kino", "gute-idee"],
+      "lines": [
+        { "speaker": "Jonas", "de": "Was machst du am Wochenende?", "it": "Cosa fai nel fine settimana?" },
+        { "speaker": "Mia", "de": "Am Wochenende spiele ich gern Fußball.", "it": "Nel fine settimana mi piace giocare a calcio." },
+        { "speaker": "Jonas", "de": "Und am Abend? Hast du Lust?", "it": "E la sera? Ti va?" },
+        { "speaker": "Mia", "de": "Wofür?", "it": "Per cosa?" },
+        { "speaker": "Jonas", "de": "Wir gehen ins Kino. Es gibt einen neuen Film.", "it": "Andiamo al cinema. C'è un film nuovo." },
+        { "speaker": "Mia", "de": "Gute Idee!", "it": "Buona idea!" }
+      ],
+      "questions": [
+        { "de": "Was macht Mia am Wochenende?", "options": ["Sie spielt Fußball", "Sie liest", "Sie arbeitet"], "answerIndex": 0 },
+        { "de": "Wohin gehen sie am Abend?", "options": ["Ins Restaurant", "Ins Kino", "Nach Hause"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-schlechtes-wetter",
+      "cefr": "A1",
+      "topic": "tempo_libero",
+      "audioPath": null,
+      "targetItemIds": ["das-wetter-ist-schoen", "es-regnet", "ich-bleibe-zu-hause-weil-ich-krank-bin", "das-buch-lesen", "wenn-ich-zeit-habe"],
+      "lines": [
+        { "speaker": "Ana", "de": "Wie ist das Wetter heute?", "it": "Com'è il tempo oggi?" },
+        { "speaker": "Leo", "de": "Nicht gut. Es regnet.", "it": "Non buono. Piove." },
+        { "speaker": "Ana", "de": "Gehen wir trotzdem spazieren?", "it": "Andiamo a passeggiare lo stesso?" },
+        { "speaker": "Leo", "de": "Nein, ich bleibe zu Hause, weil ich krank bin.", "it": "No, resto a casa perché sono malato." },
+        { "speaker": "Ana", "de": "Was machst du dann?", "it": "Cosa fai allora?" },
+        { "speaker": "Leo", "de": "Wenn ich Zeit habe, lese ich ein Buch.", "it": "Quando ho tempo, leggo un libro." }
+      ],
+      "questions": [
+        { "de": "Wie ist das Wetter?", "options": ["Schön", "Es regnet", "Es schneit"], "answerIndex": 1 },
+        { "de": "Warum bleibt Leo zu Hause?", "options": ["Er ist krank", "Er arbeitet", "Er hat keine Lust"], "answerIndex": 0 }
+      ]
+    }
+  ]
+}

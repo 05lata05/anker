@@ -107,7 +107,19 @@ function isArticle(token: string): boolean {
  * generico: una spiegazione sull'articolo sbagliato vale molto più della
  * ripetizione del nome del tag.
  */
-export function buildFeedback(check: AnswerCheck, item: Item): Feedback {
+export interface FeedbackOptions {
+  /**
+   * L'utente doveva produrre tedesco. Quando è false la domanda era di
+   * significato, e le regole grammaticali non c'entrano: chi ha sbagliato a
+   * capire «der Tag» non ha sbagliato il genere, e sentirsi spiegare che i
+   * giorni sono maschili è rumore travestito da insegnamento.
+   */
+  expectsGerman?: boolean;
+}
+
+export function buildFeedback(check: AnswerCheck, item: Item, options: FeedbackOptions = {}): Feedback {
+  const expectsGerman = options.expectsGerman ?? true;
+
   if (check.verdict === 'correct') {
     return { correct: true, title: 'Esatto', correction: null, explanation: null, tag: null };
   }
@@ -118,6 +130,16 @@ export function buildFeedback(check: AnswerCheck, item: Item): Feedback {
       title: check.verdict === 'typo' ? 'Quasi' : 'Va bene',
       correction: check.normalizedExpected,
       explanation: check.note,
+      tag: null,
+    };
+  }
+
+  if (!expectsGerman) {
+    return {
+      correct: false,
+      title: 'Non ancora',
+      correction: check.normalizedExpected,
+      explanation: item.literalIt ? `Alla lettera: ${item.literalIt}` : null,
       tag: null,
     };
   }

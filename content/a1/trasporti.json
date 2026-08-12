@@ -1,0 +1,392 @@
+{
+  "items": [
+    {
+      "id": "das-auto",
+      "type": "noun",
+      "de": "das Auto",
+      "it": "l'automobile",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Autos",
+      "cefr": "A1",
+      "freqRank": 200,
+      "topic": "trasporti",
+      "tags": ["gender_das"],
+      "cognateIt": "auto",
+      "cognateEn": "auto"
+    },
+    {
+      "id": "ich-fahre-mit-dem-auto",
+      "type": "chunk",
+      "de": "Ich fahre mit dem Auto.",
+      "it": "Vado in macchina.",
+      "literalIt": "viaggio con l'auto — «mit» regge sempre il dativo",
+      "cefr": "A1",
+      "freqRank": 210,
+      "topic": "trasporti",
+      "tags": ["dativ", "praeposition_dativ", "v2_order"],
+      "transformations": [
+        { "prompt": "Riscrivi al perfetto", "from": "Ich fahre mit dem Auto.", "to": "Ich bin mit dem Auto gefahren.", "tag": "perfekt_haben_sein" },
+        { "prompt": "Cambia in «col treno»", "from": "Ich fahre mit dem Auto.", "to": "Ich fahre mit dem Zug.", "tag": "dativ" }
+      ]
+    },
+    {
+      "id": "der-zug",
+      "type": "noun",
+      "de": "der Zug",
+      "it": "il treno",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Züge",
+      "cefr": "A1",
+      "freqRank": 390,
+      "topic": "trasporti",
+      "tags": ["gender_der", "plural_form"]
+    },
+    {
+      "id": "der-bus",
+      "type": "noun",
+      "de": "der Bus",
+      "it": "l'autobus",
+      "literalIt": null,
+      "gender": "der",
+      "plural": "die Busse",
+      "cefr": "A1",
+      "freqRank": 400,
+      "topic": "trasporti",
+      "tags": ["gender_der"],
+      "cognateIt": "bus",
+      "cognateEn": "bus"
+    },
+    {
+      "id": "das-fahrrad",
+      "type": "noun",
+      "de": "das Fahrrad",
+      "it": "la bicicletta",
+      "literalIt": "fahren + Rad: ruota per viaggiare",
+      "gender": "das",
+      "plural": "die Fahrräder",
+      "cefr": "A1",
+      "freqRank": 610,
+      "topic": "trasporti",
+      "tags": ["gender_das", "kompositum", "plural_form"]
+    },
+    {
+      "id": "der-bahnhof",
+      "type": "noun",
+      "de": "der Bahnhof",
+      "it": "la stazione",
+      "literalIt": "Bahn + Hof: corte della ferrovia — il genere viene da «der Hof»",
+      "gender": "der",
+      "plural": "die Bahnhöfe",
+      "cefr": "A1",
+      "freqRank": 620,
+      "topic": "trasporti",
+      "tags": ["gender_der", "kompositum", "plural_form"]
+    },
+    {
+      "id": "wie-komme-ich-zum-bahnhof",
+      "type": "chunk",
+      "de": "Wie komme ich zum Bahnhof?",
+      "it": "Come arrivo alla stazione?",
+      "literalIt": "zum = zu dem, dativo",
+      "cefr": "A1",
+      "freqRank": 640,
+      "topic": "trasporti",
+      "tags": ["w_frage", "inversion", "dativ", "praeposition_dativ"],
+      "transformations": [
+        { "prompt": "Cambia in «alla posta» (die Post)", "from": "Wie komme ich zum Bahnhof?", "to": "Wie komme ich zur Post?", "tag": "dativ" }
+      ]
+    },
+    {
+      "id": "die-fahrkarte",
+      "type": "noun",
+      "de": "die Fahrkarte",
+      "it": "il biglietto",
+      "literalIt": "Fahr + Karte: il genere viene da «die Karte»",
+      "gender": "die",
+      "plural": "die Fahrkarten",
+      "cefr": "A1",
+      "freqRank": 950,
+      "topic": "trasporti",
+      "tags": ["gender_die", "kompositum", "suffix_e"]
+    },
+    {
+      "id": "eine-fahrkarte-nach-berlin",
+      "type": "chunk",
+      "de": "Eine Fahrkarte nach Berlin, bitte.",
+      "it": "Un biglietto per Berlino, per favore.",
+      "literalIt": "«nach» + città, senza articolo",
+      "cefr": "A1",
+      "freqRank": 960,
+      "topic": "trasporti",
+      "tags": ["akkusativ", "praeposition_dativ", "hoeflichkeitsform"]
+    },
+    {
+      "id": "ich-bin-nach-berlin-gefahren",
+      "type": "chunk",
+      "de": "Ich bin nach Berlin gefahren.",
+      "it": "Sono andato a Berlino.",
+      "literalIt": "sono viaggiato a Berlino — i verbi di moto fanno il perfetto con «sein»",
+      "cefr": "A1",
+      "freqRank": 645,
+      "topic": "trasporti",
+      "tags": ["perfekt_haben_sein", "verbalklammer", "praeposition_dativ"]
+    },
+    {
+      "id": "wann-faehrt-der-zug",
+      "type": "chunk",
+      "de": "Wann fährt der Zug nach München?",
+      "it": "Quando parte il treno per Monaco?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 700,
+      "topic": "trasporti",
+      "tags": ["w_frage", "inversion", "praesens_irregular", "praeposition_dativ"]
+    },
+    {
+      "id": "der-zug-hat-verspaetung",
+      "type": "chunk",
+      "de": "Der Zug hat Verspätung.",
+      "it": "Il treno è in ritardo.",
+      "literalIt": "il treno HA ritardo",
+      "cefr": "A1",
+      "freqRank": 1050,
+      "topic": "trasporti",
+      "tags": ["akkusativ", "v2_order", "suffix_ung"]
+    },
+    {
+      "id": "die-verspaetung",
+      "type": "noun",
+      "de": "die Verspätung",
+      "it": "il ritardo",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Verspätungen",
+      "cefr": "A1",
+      "freqRank": 1055,
+      "topic": "trasporti",
+      "tags": ["gender_die", "suffix_ung"]
+    },
+    {
+      "id": "wo-ist-die-haltestelle",
+      "type": "chunk",
+      "de": "Wo ist die Haltestelle?",
+      "it": "Dov'è la fermata?",
+      "literalIt": "halten + Stelle: punto in cui si ferma",
+      "cefr": "A1",
+      "freqRank": 900,
+      "topic": "trasporti",
+      "tags": ["w_frage", "inversion", "kompositum"]
+    },
+    {
+      "id": "die-haltestelle",
+      "type": "noun",
+      "de": "die Haltestelle",
+      "it": "la fermata",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Haltestellen",
+      "cefr": "A1",
+      "freqRank": 905,
+      "topic": "trasporti",
+      "tags": ["gender_die", "kompositum", "suffix_e"]
+    },
+    {
+      "id": "geradeaus",
+      "type": "chunk",
+      "de": "Gehen Sie geradeaus.",
+      "it": "Vada dritto.",
+      "literalIt": "imperativo di cortesia: verbo + Sie",
+      "cefr": "A1",
+      "freqRank": 780,
+      "topic": "trasporti",
+      "tags": ["imperativ", "hoeflichkeitsform"]
+    },
+    {
+      "id": "links-abbiegen",
+      "type": "chunk",
+      "de": "Biegen Sie links ab.",
+      "it": "Giri a sinistra.",
+      "literalIt": "girate Lei a sinistra VIA — il prefisso di «abbiegen» va in fondo",
+      "cefr": "A1",
+      "freqRank": 820,
+      "topic": "trasporti",
+      "tags": ["imperativ", "separable_verb", "hoeflichkeitsform"]
+    },
+    {
+      "id": "rechts",
+      "type": "chunk",
+      "de": "Es ist rechts.",
+      "it": "È a destra.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 560,
+      "topic": "trasporti",
+      "tags": ["v2_order"]
+    },
+    {
+      "id": "die-strasse",
+      "type": "noun",
+      "de": "die Straße",
+      "it": "la strada",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Straßen",
+      "cefr": "A1",
+      "freqRank": 280,
+      "topic": "trasporti",
+      "tags": ["gender_die", "suffix_e"],
+      "cognateIt": "strada",
+      "cognateEn": "street"
+    },
+    {
+      "id": "zu-fuss",
+      "type": "chunk",
+      "de": "Ich gehe zu Fuß.",
+      "it": "Vado a piedi.",
+      "literalIt": "vado a piede — singolare in tedesco",
+      "cefr": "A1",
+      "freqRank": 730,
+      "topic": "trasporti",
+      "tags": ["formelhaft", "praeposition_dativ", "dativ"]
+    },
+    {
+      "id": "das-flugzeug",
+      "type": "noun",
+      "de": "das Flugzeug",
+      "it": "l'aereo",
+      "literalIt": "Flug + Zeug: attrezzo per volare",
+      "gender": "das",
+      "plural": "die Flugzeuge",
+      "cefr": "A1",
+      "freqRank": 680,
+      "topic": "trasporti",
+      "tags": ["gender_das", "kompositum"]
+    },
+    {
+      "id": "der-flughafen",
+      "type": "noun",
+      "de": "der Flughafen",
+      "it": "l'aeroporto",
+      "literalIt": "Flug + Hafen: porto dei voli",
+      "gender": "der",
+      "plural": "die Flughäfen",
+      "cefr": "A1",
+      "freqRank": 690,
+      "topic": "trasporti",
+      "tags": ["gender_der", "kompositum", "plural_form"]
+    },
+    {
+      "id": "ich-muss-umsteigen",
+      "type": "chunk",
+      "de": "Ich muss umsteigen.",
+      "it": "Devo cambiare.",
+      "literalIt": "devo cambiare-treno — col modale il verbo resta intero in fondo",
+      "cefr": "A1",
+      "freqRank": 1000,
+      "topic": "trasporti",
+      "tags": ["modalverb", "verbalklammer", "separable_verb"],
+      "transformations": [
+        { "prompt": "Togli il modale e coniuga il verbo separabile", "from": "Ich muss umsteigen.", "to": "Ich steige um.", "tag": "separable_verb" }
+      ]
+    },
+    {
+      "id": "ich-steige-um",
+      "type": "chunk",
+      "de": "Ich steige in Köln um.",
+      "it": "Cambio a Colonia.",
+      "literalIt": "salgo a Colonia VIA — senza modale il prefisso si stacca",
+      "cefr": "A1",
+      "freqRank": 1010,
+      "topic": "trasporti",
+      "tags": ["separable_verb", "v2_order", "wechselpraeposition", "dativ"]
+    },
+    {
+      "id": "wie-lange-dauert-die-fahrt",
+      "type": "chunk",
+      "de": "Wie lange dauert die Fahrt?",
+      "it": "Quanto dura il viaggio?",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 1020,
+      "topic": "trasporti",
+      "tags": ["w_frage", "inversion", "nominativ"]
+    },
+    {
+      "id": "die-fahrt",
+      "type": "noun",
+      "de": "die Fahrt",
+      "it": "il viaggio (in mezzo)",
+      "literalIt": null,
+      "gender": "die",
+      "plural": "die Fahrten",
+      "cefr": "A1",
+      "freqRank": 1025,
+      "topic": "trasporti",
+      "tags": ["gender_die"]
+    },
+    {
+      "id": "einfach-oder-hin-und-zurueck",
+      "type": "chunk",
+      "de": "Einfach oder hin und zurück?",
+      "it": "Solo andata o andata e ritorno?",
+      "literalIt": "semplice o là e indietro",
+      "cefr": "A1",
+      "freqRank": 1100,
+      "topic": "trasporti",
+      "tags": ["formelhaft", "ja_nein_frage"]
+    },
+    {
+      "id": "das-ticket-kostet-zwanzig-euro",
+      "type": "chunk",
+      "de": "Die Fahrkarte kostet zwanzig Euro.",
+      "it": "Il biglietto costa venti euro.",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 965,
+      "topic": "trasporti",
+      "tags": ["akkusativ", "zahlen", "v2_order"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-am-bahnhof",
+      "cefr": "A1",
+      "topic": "trasporti",
+      "audioPath": null,
+      "targetItemIds": ["wie-komme-ich-zum-bahnhof", "der-bahnhof", "die-fahrkarte", "um-acht-uhr", "entschuldigung"],
+      "lines": [
+        { "speaker": "Tourist", "de": "Entschuldigung! Wie komme ich zum Bahnhof?", "it": "Scusi! Come arrivo alla stazione?" },
+        { "speaker": "Frau", "de": "Der Bahnhof ist dort links.", "it": "La stazione è lì a sinistra." },
+        { "speaker": "Tourist", "de": "Danke! Und wo kaufe ich eine Fahrkarte?", "it": "Grazie! E dove compro un biglietto?" },
+        { "speaker": "Frau", "de": "Im Bahnhof, am Automaten.", "it": "In stazione, al distributore." },
+        { "speaker": "Tourist", "de": "Wann fährt der Zug nach Berlin?", "it": "Quando parte il treno per Berlino?" },
+        { "speaker": "Frau", "de": "Um acht Uhr.", "it": "Alle otto." }
+      ],
+      "questions": [
+        { "de": "Wohin möchte der Tourist?", "options": ["Zum Bahnhof", "Ins Café", "Nach Hause"], "answerIndex": 0 },
+        { "de": "Wann fährt der Zug?", "options": ["Um sechs Uhr", "Um acht Uhr", "Um neun Uhr"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-am-schalter",
+      "cefr": "A1",
+      "topic": "trasporti",
+      "audioPath": null,
+      "targetItemIds": ["eine-fahrkarte-nach-berlin", "einfach-oder-hin-und-zurueck", "ich-muss-umsteigen", "wie-lange-dauert-die-fahrt", "der-zug-hat-verspaetung"],
+      "lines": [
+        { "speaker": "Reisender", "de": "Eine Fahrkarte nach Berlin, bitte.", "it": "Un biglietto per Berlino, per favore." },
+        { "speaker": "Beamter", "de": "Einfach oder hin und zurück?", "it": "Solo andata o andata e ritorno?" },
+        { "speaker": "Reisender", "de": "Hin und zurück. Wie lange dauert die Fahrt?", "it": "Andata e ritorno. Quanto dura il viaggio?" },
+        { "speaker": "Beamter", "de": "Vier Stunden. Sie müssen in Köln umsteigen.", "it": "Quattro ore. Deve cambiare a Colonia." },
+        { "speaker": "Reisender", "de": "Gut. Fährt der Zug pünktlich?", "it": "Bene. Il treno è puntuale?" },
+        { "speaker": "Beamter", "de": "Nein, der Zug hat zehn Minuten Verspätung.", "it": "No, il treno ha dieci minuti di ritardo." }
+      ],
+      "questions": [
+        { "de": "Wo muss der Reisende umsteigen?", "options": ["In Berlin", "In Köln", "In München"], "answerIndex": 1 },
+        { "de": "Wie lange dauert die Fahrt?", "options": ["Zwei Stunden", "Vier Stunden", "Zehn Minuten"], "answerIndex": 1 }
+      ]
+    }
+  ]
+}

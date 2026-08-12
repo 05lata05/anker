@@ -33,13 +33,34 @@ const INSTRUCTIONS: Record<Direction, string> = {
 
 /**
  * Distrattori per la scelta multipla, presi da altri item.
- * Devono essere plausibili: quattro opzioni di cui tre assurde non sono un
- * esercizio, sono un regalo.
+ *
+ * Devono essere plausibili — quattro opzioni di cui tre assurde non sono un
+ * esercizio, sono un regalo — ma soprattutto DIVERSI dalla risposta giusta.
+ * Il tedesco ha coppie che condividono la traduzione italiana: «Wie viel Uhr
+ * ist es?» e «Wie spät ist es?» sono entrambe «Che ore sono?». Senza il
+ * controllo sulla glossa la domanda finisce con due opzioni identiche e
+ * nessuna risposta corretta possibile.
  */
 export function glossDistractors(item: Item, pool: readonly Item[], count = 3): string[] {
   const sameTopic = pool.filter((other) => other.id !== item.id && other.topic === item.topic);
   const rest = pool.filter((other) => other.id !== item.id && other.topic !== item.topic);
-  return [...sameTopic, ...rest].slice(0, count).map((other) => other.it);
+
+  const used = new Set([normalizeGloss(item.it)]);
+  const out: string[] = [];
+
+  for (const candidate of [...sameTopic, ...rest]) {
+    if (out.length >= count) break;
+    const key = normalizeGloss(candidate.it);
+    if (used.has(key)) continue;
+    used.add(key);
+    out.push(candidate.it);
+  }
+
+  return out;
+}
+
+function normalizeGloss(gloss: string): string {
+  return gloss.toLowerCase().replace(/[.,!?;:]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 export function buildPrompt(

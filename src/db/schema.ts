@@ -6,7 +6,7 @@
  * nulla di come sono serializzati.
  */
 import { index, integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import type { ComprehensionQuestion, GrammarTag, LessonLine, SessionPhase } from '../core/types';
+import type { ComprehensionQuestion, GrammarTag, LessonLine, SessionPhase, Transformation } from '../core/types';
 
 // ---------------------------------------------------------------------------
 // items
@@ -32,6 +32,7 @@ export const items = sqliteTable(
     cognateEn: text('cognate_en'),
     falseFriend: integer('false_friend', { mode: 'boolean' }).notNull().default(false),
     falseFriendNote: text('false_friend_note'),
+    transformations: text('transformations', { mode: 'json' }).$type<Transformation[]>().notNull(),
     createdAt: integer('created_at').notNull(),
   },
   (t) => [index('items_freq_idx').on(t.freqRank), index('items_topic_idx').on(t.topic)],

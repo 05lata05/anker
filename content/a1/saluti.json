@@ -1,0 +1,314 @@
+{
+  "items": [
+    {
+      "id": "guten-tag",
+      "type": "chunk",
+      "de": "Guten Tag!",
+      "it": "Buongiorno!",
+      "literalIt": "buon giorno (accusativo fossilizzato)",
+      "cefr": "A1",
+      "freqRank": 40,
+      "topic": "saluti",
+      "tags": ["formelhaft", "akkusativ", "adjective_ending"]
+    },
+    {
+      "id": "guten-morgen",
+      "type": "chunk",
+      "de": "Guten Morgen!",
+      "it": "Buongiorno! (di mattina)",
+      "literalIt": "buon mattino",
+      "cefr": "A1",
+      "freqRank": 45,
+      "topic": "saluti",
+      "tags": ["formelhaft", "akkusativ", "adjective_ending"]
+    },
+    {
+      "id": "guten-abend",
+      "type": "chunk",
+      "de": "Guten Abend!",
+      "it": "Buonasera!",
+      "literalIt": "buona sera",
+      "cefr": "A1",
+      "freqRank": 90,
+      "topic": "saluti",
+      "tags": ["formelhaft", "akkusativ", "adjective_ending"]
+    },
+    {
+      "id": "gute-nacht",
+      "type": "chunk",
+      "de": "Gute Nacht!",
+      "it": "Buonanotte!",
+      "literalIt": "buona notte — qui l'aggettivo perde la -n perché «Nacht» è femminile",
+      "cefr": "A1",
+      "freqRank": 130,
+      "topic": "saluti",
+      "tags": ["formelhaft", "adjective_ending", "akkusativ"]
+    },
+    {
+      "id": "hallo-wie-gehts",
+      "type": "chunk",
+      "de": "Hallo, wie geht's?",
+      "it": "Ciao, come va?",
+      "literalIt": "come va (a te)",
+      "cefr": "A1",
+      "freqRank": 30,
+      "topic": "saluti",
+      "tags": ["w_frage", "formelhaft"]
+    },
+    {
+      "id": "wie-geht-es-ihnen",
+      "type": "chunk",
+      "de": "Wie geht es Ihnen?",
+      "it": "Come sta?",
+      "literalIt": "come va a Lei",
+      "cefr": "A1",
+      "freqRank": 95,
+      "topic": "saluti",
+      "tags": ["w_frage", "hoeflichkeitsform", "dativ", "personalpronomen"]
+    },
+    {
+      "id": "mir-geht-es-gut",
+      "type": "chunk",
+      "de": "Mir geht es gut, danke.",
+      "it": "Sto bene, grazie.",
+      "literalIt": "a me va bene",
+      "cefr": "A1",
+      "freqRank": 55,
+      "topic": "saluti",
+      "tags": ["dativ", "personalpronomen", "v2_order"]
+    },
+    {
+      "id": "es-geht-mir-nicht-so-gut",
+      "type": "chunk",
+      "de": "Es geht mir nicht so gut.",
+      "it": "Non sto molto bene.",
+      "literalIt": "non mi va così bene",
+      "cefr": "A1",
+      "freqRank": 320,
+      "topic": "saluti",
+      "tags": ["dativ", "negation_nicht_kein", "personalpronomen"]
+    },
+    {
+      "id": "und-dir",
+      "type": "chunk",
+      "de": "Und dir?",
+      "it": "E tu?",
+      "literalIt": "e a te — resta il dativo di «wie geht es dir»",
+      "cefr": "A1",
+      "freqRank": 200,
+      "topic": "saluti",
+      "tags": ["dativ", "personalpronomen"]
+    },
+    {
+      "id": "auf-wiedersehen",
+      "type": "chunk",
+      "de": "Auf Wiedersehen!",
+      "it": "Arrivederci!",
+      "literalIt": "al rivedersi",
+      "cefr": "A1",
+      "freqRank": 120,
+      "topic": "saluti",
+      "tags": ["formelhaft", "hoeflichkeitsform"]
+    },
+    {
+      "id": "tschuess",
+      "type": "chunk",
+      "de": "Tschüss!",
+      "it": "Ciao! (congedo)",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 110,
+      "topic": "saluti",
+      "tags": ["formelhaft"]
+    },
+    {
+      "id": "bis-morgen",
+      "type": "chunk",
+      "de": "Bis morgen!",
+      "it": "A domani!",
+      "literalIt": "fino a domani",
+      "cefr": "A1",
+      "freqRank": 150,
+      "topic": "saluti",
+      "tags": ["formelhaft"]
+    },
+    {
+      "id": "bis-spaeter",
+      "type": "chunk",
+      "de": "Bis später!",
+      "it": "A dopo!",
+      "literalIt": "fino a più tardi",
+      "cefr": "A1",
+      "freqRank": 210,
+      "topic": "saluti",
+      "tags": ["formelhaft", "komparativ"]
+    },
+    {
+      "id": "bis-bald",
+      "type": "chunk",
+      "de": "Bis bald!",
+      "it": "A presto!",
+      "literalIt": "fino a presto",
+      "cefr": "A1",
+      "freqRank": 240,
+      "topic": "saluti",
+      "tags": ["formelhaft"]
+    },
+    {
+      "id": "schoenes-wochenende",
+      "type": "chunk",
+      "de": "Schönes Wochenende!",
+      "it": "Buon fine settimana!",
+      "literalIt": "bel fine settimana",
+      "cefr": "A1",
+      "freqRank": 400,
+      "topic": "saluti",
+      "tags": ["formelhaft", "adjective_ending", "kompositum"]
+    },
+    {
+      "id": "entschuldigung",
+      "type": "chunk",
+      "de": "Entschuldigung!",
+      "it": "Scusi!",
+      "literalIt": "scusa (sostantivo usato come formula)",
+      "cefr": "A1",
+      "freqRank": 200,
+      "topic": "saluti",
+      "tags": ["formelhaft", "hoeflichkeitsform"]
+    },
+    {
+      "id": "es-tut-mir-leid",
+      "type": "chunk",
+      "de": "Es tut mir leid.",
+      "it": "Mi dispiace.",
+      "literalIt": "esso mi fa dolore",
+      "cefr": "A1",
+      "freqRank": 230,
+      "topic": "saluti",
+      "tags": ["dativ", "personalpronomen", "v2_order"]
+    },
+    {
+      "id": "vielen-dank",
+      "type": "chunk",
+      "de": "Vielen Dank!",
+      "it": "Grazie mille!",
+      "literalIt": "molto ringraziamento (accusativo)",
+      "cefr": "A1",
+      "freqRank": 100,
+      "topic": "saluti",
+      "tags": ["formelhaft", "akkusativ", "adjective_ending"]
+    },
+    {
+      "id": "bitte-schoen",
+      "type": "chunk",
+      "de": "Bitte schön!",
+      "it": "Prego!",
+      "literalIt": "per favore bello — risponde a «grazie» e accompagna ciò che si porge",
+      "cefr": "A1",
+      "freqRank": 180,
+      "topic": "saluti",
+      "tags": ["formelhaft", "hoeflichkeitsform"]
+    },
+    {
+      "id": "gern-geschehen",
+      "type": "chunk",
+      "de": "Gern geschehen!",
+      "it": "Di niente!",
+      "literalIt": "volentieri accaduto",
+      "cefr": "A1",
+      "freqRank": 500,
+      "topic": "saluti",
+      "tags": ["formelhaft", "perfekt_haben_sein"]
+    },
+    {
+      "id": "kein-problem",
+      "type": "chunk",
+      "de": "Kein Problem!",
+      "it": "Nessun problema!",
+      "literalIt": null,
+      "cefr": "A1",
+      "freqRank": 260,
+      "topic": "saluti",
+      "tags": ["negation_nicht_kein", "akkusativ"],
+      "cognateIt": "problema"
+    },
+    {
+      "id": "das-problem",
+      "type": "noun",
+      "de": "das Problem",
+      "it": "il problema",
+      "literalIt": null,
+      "gender": "das",
+      "plural": "die Probleme",
+      "cefr": "A1",
+      "freqRank": 265,
+      "topic": "saluti",
+      "tags": ["gender_das"],
+      "cognateIt": "problema",
+      "cognateEn": "problem"
+    },
+    {
+      "id": "willkommen",
+      "type": "chunk",
+      "de": "Herzlich willkommen!",
+      "it": "Benvenuto!",
+      "literalIt": "cordialmente benvenuto",
+      "cefr": "A1",
+      "freqRank": 420,
+      "topic": "saluti",
+      "tags": ["formelhaft"],
+      "cognateEn": "welcome"
+    },
+    {
+      "id": "wie-bitte",
+      "type": "chunk",
+      "de": "Wie bitte?",
+      "it": "Come, scusi?",
+      "literalIt": "come per favore",
+      "cefr": "A1",
+      "freqRank": 300,
+      "topic": "saluti",
+      "tags": ["w_frage", "formelhaft", "hoeflichkeitsform"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "l-auf-der-strasse",
+      "cefr": "A1",
+      "topic": "saluti",
+      "audioPath": null,
+      "targetItemIds": ["guten-tag", "wie-geht-es-ihnen", "mir-geht-es-gut", "auf-wiedersehen", "bis-morgen"],
+      "lines": [
+        { "speaker": "Frau Weber", "de": "Guten Tag, Herr Klein!", "it": "Buongiorno, signor Klein!" },
+        { "speaker": "Herr Klein", "de": "Guten Tag! Wie geht es Ihnen?", "it": "Buongiorno! Come sta?" },
+        { "speaker": "Frau Weber", "de": "Mir geht es gut, danke. Und Ihnen?", "it": "Sto bene, grazie. E Lei?" },
+        { "speaker": "Herr Klein", "de": "Auch gut, danke.", "it": "Anche io bene, grazie." },
+        { "speaker": "Frau Weber", "de": "Also, bis morgen!", "it": "Allora, a domani!" },
+        { "speaker": "Herr Klein", "de": "Auf Wiedersehen!", "it": "Arrivederci!" }
+      ],
+      "questions": [
+        { "de": "Wie geht es Frau Weber?", "options": ["Gut", "Schlecht", "Nicht so gut"], "answerIndex": 0 },
+        { "de": "Wann sehen sie sich wieder?", "options": ["Heute Abend", "Morgen", "Nächste Woche"], "answerIndex": 1 }
+      ]
+    },
+    {
+      "id": "l-danke-und-bitte",
+      "cefr": "A1",
+      "topic": "saluti",
+      "audioPath": null,
+      "targetItemIds": ["entschuldigung", "vielen-dank", "bitte-schoen", "kein-problem", "es-tut-mir-leid"],
+      "lines": [
+        { "speaker": "Tom", "de": "Entschuldigung, ist der Platz frei?", "it": "Scusi, il posto è libero?" },
+        { "speaker": "Lena", "de": "Ja, bitte schön.", "it": "Sì, prego." },
+        { "speaker": "Tom", "de": "Vielen Dank!", "it": "Grazie mille!" },
+        { "speaker": "Lena", "de": "Gern geschehen.", "it": "Di niente." },
+        { "speaker": "Tom", "de": "Oh, es tut mir leid!", "it": "Oh, mi dispiace!" },
+        { "speaker": "Lena", "de": "Kein Problem.", "it": "Nessun problema." }
+      ],
+      "questions": [
+        { "de": "Was fragt Tom?", "options": ["Ob der Platz frei ist", "Wie spät es ist", "Wo der Bahnhof ist"], "answerIndex": 0 },
+        { "de": "Was antwortet Lena am Ende?", "options": ["Vielen Dank", "Kein Problem", "Auf Wiedersehen"], "answerIndex": 1 }
+      ]
+    }
+  ]
+}

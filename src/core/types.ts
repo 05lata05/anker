@@ -52,6 +52,24 @@ export interface Item {
   falseFriend: boolean;
   /** Nota mostrata col badge di falso amico. Obbligatoria se `falseFriend`. */
   falseFriendNote: string | null;
+  /**
+   * Trasformazioni autorizzate per il gradino intermedio della Fase 4
+   * («riscrivi al perfetto», «metti al plurale»).
+   *
+   * Stanno nei contenuti e non vengono generate: per correggere una
+   * trasformazione bisogna conoscere la forma attesa, e generarla vorrebbe dire
+   * produrre tedesco che nessuno ha verificato.
+   */
+  transformations: Transformation[];
+}
+
+export interface Transformation {
+  /** Consegna in italiano: «Riscrivi al perfetto». */
+  prompt: string;
+  /** Forma di partenza. Di norma coincide con `de`, ma può essere una variante. */
+  from: string;
+  to: string;
+  tag: GrammarTag;
 }
 
 // ---------------------------------------------------------------------------
