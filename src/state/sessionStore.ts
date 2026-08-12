@@ -18,10 +18,13 @@ import { deriveRating } from '../core/scheduler/rating';
 import { bySiblingDirection, canPresent } from '../core/scheduler/unlock';
 import type { GrammarTag, Item, SessionPhase } from '../core/types';
 import { getDatabase } from '../db/client';
+import { scheduleReinforcementNotification } from '../features/notifications/reinforcement';
+import { tapFeedback } from '../features/ui/haptics';
 import {
   type EngineState,
   completeSession,
   findOpenSession,
+  getNextReinforcementAt,
   introduceItems,
   loadEngineState,
   markQueueCleared,
@@ -245,6 +248,13 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
         // volte nel cap giornaliero.
         if (plan.newItems.items.length > 0) {
           await introduceItems(db, plan.newItems.items, now, engine.settings.dayRolloverHour);
+
+          // La seconda esposizione arriva a sessione chiusa e ad app spenta:
+          // senza promemoria resta una riga nel database che nessuno vede.
+          const nextAt = await getNextReinforcementAt(db, now);
+          if (nextAt !== null) {
+            void scheduleReinforcementNotification(nextAt, plan.newItems.items.length);
+          }
         }
 
         if (open) {
@@ -332,6 +342,7 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
         engine.weights,
       );
 
+      tapFeedback(check.wasCorrect);
       set({
         feedback,
         stats: {
@@ -346,6 +357,7 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
 
     if (step.phase === 'input' && step.kind === 'question') {
       const correct = Number(userAnswer) === step.question.answerIndex;
+      tapFeedback(correct);
       set({
         feedback: {
           correct,
@@ -359,7 +371,7 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
     }
 
     if (step.phase === 'new' && step.kind === 'drill') {
-      const check = gradeAnswer(
+      const drillCheck = gradeAnswer(
         {
           text: step.exercise.text,
           language: 'de',
@@ -369,11 +381,12 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
         },
         userAnswer,
       );
+      tapFeedback(drillCheck.wasCorrect);
       set({
         feedback: {
-          correct: check.wasCorrect,
-          title: check.wasCorrect ? 'Esatto' : 'Non ancora',
-          correction: check.wasCorrect ? null : step.exercise.answer,
+          correct: drillCheck.wasCorrect,
+          title: drillCheck.wasCorrect ? 'Esatto' : 'Non ancora',
+          correction: drillCheck.wasCorrect ? null : step.exercise.answer,
           explanation: step.exercise.explanation,
           tag: step.exercise.tag,
         },
@@ -398,6 +411,7 @@ export const useSessionStore = create<SessionStoreState>((set, get) => ({
         userAnswer,
       );
       const feedback = buildFeedback(check, outputItem);
+      tapFeedback(check.wasCorrect);
       set({
         feedback,
         stats: {

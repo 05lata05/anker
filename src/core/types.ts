@@ -281,6 +281,8 @@ export interface Settings {
   leechLapseThreshold: number;
   /** Streak freeze rimasti nel mese corrente. */
   streakFreezesLeft: number;
+  /** Mese (YYYY-MM) a cui si riferisce la riserva di freeze. */
+  freezeMonth: string;
   /**
    * Livello di partenza stimato dal placement. Limita quali item possono essere
    * introdotti; è una stima, e si corregge da sé man mano che si studia.
@@ -301,6 +303,7 @@ export const DEFAULT_SETTINGS: Settings = {
   initialBlocking: false,
   leechLapseThreshold: 8,
   streakFreezesLeft: 2,
+  freezeMonth: '',
   level: 'A1',
 };
 

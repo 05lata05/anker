@@ -12,10 +12,12 @@ import {
   findOpenSession,
   getAllCards,
   getDayLogs,
+  getDueReinforcements,
   getItem,
   getRecentReviews,
   getSettings,
   isOnboardingDone,
+  runDailyMaintenance,
 } from '../db/repo';
 import { Button, Surface } from '../features/ui/components';
 import { Row } from '../features/ui/Stat';
@@ -30,6 +32,7 @@ interface HomeState {
   level: string;
   resumable: boolean;
   delayed: { item: Item; gapDays: number } | null;
+  reinforcements: number;
 }
 
 /**
@@ -57,14 +60,17 @@ export default function HomeScreen() {
         }
 
         const now = Date.now();
+        await runDailyMaintenance(db, now);
+
         const settings = await getSettings(db);
-        const [due, anchors, open, dayLogs, cards, reviews] = await Promise.all([
+        const [due, anchors, open, dayLogs, cards, reviews, reinforcements] = await Promise.all([
           countDueNow(db, now),
           countAnchors(db),
           findOpenSession(db, now, settings.dayRolloverHour),
           getDayLogs(db),
           getAllCards(db),
           getRecentReviews(db),
+          getDueReinforcements(db, now),
         ]);
 
         const streak = computeStreak(dayLogs, now, settings.dayRolloverHour);
@@ -85,6 +91,7 @@ export default function HomeScreen() {
             level: estimateCefr(anchors),
             resumable: open !== null,
             delayed,
+            reinforcements: reinforcements.length,
           });
         }
       })();
@@ -125,6 +132,20 @@ export default function HomeScreen() {
           />
           <Row label="Livello stimato" value={state?.level ?? '—'} />
         </Surface>
+
+        {state && state.reinforcements > 0 ? (
+          <Pressable accessibilityRole="button" onPress={() => router.push('/reinforcement')}>
+            <Surface>
+              <Text style={[type.label, { color: colors.textFaint }]}>RIPASSO LAMPO</Text>
+              <Text style={[type.body, { color: colors.text }]}>
+                {state.reinforcements === 1
+                  ? 'Un chunk di oggi è pronto per il secondo richiamo.'
+                  : `${state.reinforcements} chunk di oggi sono pronti per il secondo richiamo.`}
+              </Text>
+              <Text style={[type.mono, { color: colors.textFaint }]}>Un minuto · tocca per iniziare</Text>
+            </Surface>
+          </Pressable>
+        ) : null}
 
         {state?.delayed ? (
           <Surface>

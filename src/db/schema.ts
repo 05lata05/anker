@@ -197,6 +197,7 @@ export const settings = sqliteTable('settings', {
   initialBlocking: integer('initial_blocking', { mode: 'boolean' }).notNull().default(false),
   leechLapseThreshold: integer('leech_lapse_threshold').notNull().default(8),
   streakFreezesLeft: integer('streak_freezes_left').notNull().default(2),
+  freezeMonth: text('freeze_month').notNull().default(''),
   level: text('level', { enum: ['A1', 'A2', 'B1', 'B2'] })
     .notNull()
     .default('A1'),

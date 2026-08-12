@@ -9,7 +9,12 @@
 import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import { seedKnownCards } from '../core/onboarding/placement';
 import { recordAnswer } from '../core/profile/errorProfile';
-import { ANCHOR_STABILITY_DAYS } from '../core/progress/metrics';
+import {
+  ANCHOR_STABILITY_DAYS,
+  STREAK_FREEZES_PER_MONTH,
+  currentFreezeMonth,
+  decideStreakFreeze,
+} from '../core/progress/metrics';
 import { logicalDay } from '../core/scheduler/day';
 import { applyReview, createCard, createScheduler, retrievabilityWith } from '../core/scheduler/fsrs';
 import { scheduleSameDayReinforcement } from '../core/scheduler/sameDay';
@@ -338,6 +343,37 @@ async function bumpDayLog(
     });
 }
 
+/**
+ * Manutenzione della giornata, da eseguire all'avvio.
+ *
+ * Ripristina la riserva mensile di freeze e, se ieri è stato saltato, ne brucia
+ * uno per non spezzare la catena. Va fatto qui e non al momento di leggere lo
+ * streak, perché è una scrittura: uno streak che si "aggiusta" solo mentre lo
+ * guardi non è uno streak, è un'illusione ottica.
+ */
+export async function runDailyMaintenance(db: Database, now: number): Promise<{ frozeDay: string | null }> {
+  const settingsValue = await getSettings(db);
+  const month = currentFreezeMonth(now, settingsValue.dayRolloverHour);
+
+  let freezesLeft = settingsValue.streakFreezesLeft;
+  if (settingsValue.freezeMonth !== month) {
+    freezesLeft = STREAK_FREEZES_PER_MONTH;
+    await db.update(settings).set({ streakFreezesLeft: freezesLeft, freezeMonth: month }).where(eq(settings.id, 1));
+  }
+
+  const logs = await getDayLogs(db);
+  const decision = decideStreakFreeze(logs, now, freezesLeft, settingsValue.dayRolloverHour);
+  if (decision.day === null) return { frozeDay: null };
+
+  await db
+    .insert(dayLog)
+    .values({ day: decision.day, frozen: true })
+    .onConflictDoUpdate({ target: dayLog.day, set: { frozen: true } });
+  await db.update(settings).set({ streakFreezesLeft: freezesLeft - 1 }).where(eq(settings.id, 1));
+
+  return { frozeDay: decision.day };
+}
+
 export async function markQueueCleared(db: Database, now: number, rolloverHour: number): Promise<void> {
   const day = logicalDay(now, rolloverHour);
   await db
@@ -491,6 +527,40 @@ export async function getRecentReviews(db: Database, limit = 500) {
     .from(reviews)
     .orderBy(desc(reviews.ts))
     .limit(limit);
+}
+
+export interface ReinforcementCard {
+  card: Card;
+  item: Item;
+}
+
+/**
+ * Card che aspettano la seconda esposizione intra-giornaliera (§3.1).
+ *
+ * Sono fuori dalla coda FSRS: hanno una scadenza propria, e rispondere non
+ * aggiorna stability e difficulty. Servono a consolidare la traccia appena
+ * formata, non a misurarla.
+ */
+export async function getDueReinforcements(db: Database, now: number): Promise<ReinforcementCard[]> {
+  const rows = await db
+    .select({ card: cards, item: items })
+    .from(cards)
+    .innerJoin(items, eq(cards.itemId, items.id))
+    .where(and(eq(cards.suspended, false), sql`${cards.sameDayReinforcementDue} <= ${now}`))
+    .orderBy(cards.sameDayReinforcementDue);
+
+  return rows.map((row) => ({ card: rowToCard(row.card), item: rowToItem(row.item) }));
+}
+
+/** Istante del prossimo rinforzo programmato, per la notifica locale. */
+export async function getNextReinforcementAt(db: Database, now: number): Promise<number | null> {
+  const [row] = await db
+    .select({ due: cards.sameDayReinforcementDue })
+    .from(cards)
+    .where(and(eq(cards.suspended, false), sql`${cards.sameDayReinforcementDue} > ${now}`))
+    .orderBy(cards.sameDayReinforcementDue)
+    .limit(1);
+  return row?.due ?? null;
 }
 
 export async function getItem(db: Database, itemId: string): Promise<Item | null> {

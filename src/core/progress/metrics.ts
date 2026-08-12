@@ -83,6 +83,46 @@ export function computeStreak(dayLogs: readonly DayLog[], now: number, rolloverH
 
 export const STREAK_FREEZES_PER_MONTH = 2;
 
+export interface FreezeDecision {
+  /** Giornata da coprire col freeze, `null` se non serve o non si può. */
+  day: string | null;
+  reason: 'not_needed' | 'no_streak_to_protect' | 'no_freezes_left' | 'consume';
+}
+
+/**
+ * Decide se bruciare uno streak freeze per il giorno appena saltato (§6).
+ *
+ * Protegge l'abitudine da un giorno perso, che è la prima causa di abbandono.
+ * Ma solo se c'era davvero una catena da proteggere: regalarlo a chi non ha
+ * mai studiato non protegge niente e svuota la riserva prima che serva.
+ */
+export function decideStreakFreeze(
+  dayLogs: readonly DayLog[],
+  now: number,
+  freezesLeft: number,
+  rolloverHour = 4,
+): FreezeDecision {
+  const missed = previousLogicalDay(logicalDay(now, rolloverHour));
+  const byDay = new Map(dayLogs.map((log) => [log.day, log]));
+  const missedLog = byDay.get(missed);
+
+  if (missedLog?.queueCleared || missedLog?.frozen) return { day: null, reason: 'not_needed' };
+
+  const beforeMissed = byDay.get(previousLogicalDay(missed));
+  if (!beforeMissed?.queueCleared && !beforeMissed?.frozen) {
+    return { day: null, reason: 'no_streak_to_protect' };
+  }
+
+  if (freezesLeft <= 0) return { day: null, reason: 'no_freezes_left' };
+
+  return { day: missed, reason: 'consume' };
+}
+
+/** Mese corrente in formato YYYY-MM, per il ripristino mensile dei freeze. */
+export function currentFreezeMonth(now: number, rolloverHour = 4): string {
+  return logicalDay(now, rolloverHour).slice(0, 7);
+}
+
 // ---------------------------------------------------------------------------
 // Copertura per frequenza
 // ---------------------------------------------------------------------------

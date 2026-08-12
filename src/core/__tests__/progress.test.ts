@@ -11,6 +11,8 @@ import {
   FREQUENCY_TARGET,
   computeStreak,
   countAnchors,
+  currentFreezeMonth,
+  decideStreakFreeze,
   estimateCefr,
   findDelayedSuccesses,
   frequencyCoverage,
@@ -103,6 +105,51 @@ describe('streak', () => {
       log('2026-05-12', { queueCleared: true }),
     ];
     expect(computeStreak(logs, today).longest).toBe(3);
+  });
+});
+
+describe('streak freeze', () => {
+  function log(day: string, overrides: Partial<DayLog> = {}): DayLog {
+    return { day, newItemsIntroduced: 0, reviewsDone: 0, queueCleared: false, frozen: false, ...overrides };
+  }
+
+  const today = new Date(2026, 4, 12, 10, 0, 0).getTime();
+
+  it('brucia un freeze per il giorno saltato, se c’era una catena', () => {
+    const logs = [log('2026-05-10', { queueCleared: true })];
+    const decision = decideStreakFreeze(logs, today, 2);
+    expect(decision.reason).toBe('consume');
+    expect(decision.day).toBe('2026-05-11');
+  });
+
+  it('non lo brucia se ieri la coda era stata svuotata', () => {
+    const logs = [log('2026-05-11', { queueCleared: true }), log('2026-05-10', { queueCleared: true })];
+    expect(decideStreakFreeze(logs, today, 2).reason).toBe('not_needed');
+  });
+
+  it('non lo regala a chi non ha mai studiato', () => {
+    // Proteggere una catena inesistente svuota la riserva prima che serva.
+    expect(decideStreakFreeze([], today, 2).reason).toBe('no_streak_to_protect');
+  });
+
+  it('non fa nulla quando la riserva è finita', () => {
+    const logs = [log('2026-05-10', { queueCleared: true })];
+    expect(decideStreakFreeze(logs, today, 0).reason).toBe('no_freezes_left');
+  });
+
+  it('non ricongela un giorno già congelato', () => {
+    const logs = [log('2026-05-11', { frozen: true }), log('2026-05-10', { queueCleared: true })];
+    expect(decideStreakFreeze(logs, today, 2).reason).toBe('not_needed');
+  });
+
+  it('protegge anche una catena che ieri l’altro era già congelata', () => {
+    const logs = [log('2026-05-10', { frozen: true })];
+    expect(decideStreakFreeze(logs, today, 1).reason).toBe('consume');
+  });
+
+  it('il mese della riserva segue la giornata logica', () => {
+    expect(currentFreezeMonth(new Date(2026, 4, 1, 2, 0, 0).getTime())).toBe('2026-04');
+    expect(currentFreezeMonth(new Date(2026, 4, 1, 9, 0, 0).getTime())).toBe('2026-05');
   });
 });
 

@@ -18,15 +18,22 @@ import { Rating } from '../../core/types';
 import { buildSessionPlan } from '../../core/session/plan';
 import { buildSteps } from '../../core/session/steps';
 import type { Database } from '../client';
+import { computeStreak } from '../../core/progress/metrics';
+import { logicalDay, previousLogicalDay } from '../../core/scheduler/day';
 import {
   countAnchors,
   countDueNow,
   completeSession,
   findOpenSession,
+  getDayLogs,
+  getDueReinforcements,
+  getNextReinforcementAt,
   getSettings,
   introduceItems,
   loadEngineState,
+  markQueueCleared,
   recordReview,
+  runDailyMaintenance,
   saveResumeState,
   startSession,
 } from '../repo';
@@ -57,7 +64,11 @@ function createDatabase(): Database {
         statement.run(...(params as never[]));
         return { rows: [] };
       }
-      const rows = statement.all(...(params as never[])).map((row) => Object.values(row));
+      // Righe come array, non come oggetti: sulle JOIN i nomi di colonna si
+      // ripetono (`items.id` e `cards.id`) e la mappatura per chiave ne perde
+      // metà, facendo arrivare a Drizzle valori nella colonna sbagliata.
+      statement.setReturnArrays(true);
+      const rows = statement.all(...(params as never[])) as unknown as unknown[][];
       return method === 'get' ? { rows: rows[0] ?? [] } : { rows };
     },
     { schema },
@@ -275,6 +286,159 @@ describe('ciclo di sessione end-to-end', () => {
     const { engine, plan } = await planNow();
     await introduceItems(db, plan.newItems.items, now, engine.settings.dayRolloverHour);
     expect(await countAnchors(db)).toBe(0);
+  });
+});
+
+describe('seconda esposizione intra-giornaliera', () => {
+  let db: Database;
+  const now = Date.now();
+
+  beforeEach(async () => {
+    db = createDatabase();
+    await seedContent(db, now);
+  });
+
+  async function introduceSome() {
+    const engine = await loadEngineState(db, now);
+    const plan = buildSessionPlan({
+      now,
+      settings: engine.settings,
+      cards: engine.cards,
+      itemsById: engine.itemsById,
+      lessons: engine.lessons,
+      errorProfile: engine.errorProfile,
+      knownItemIds: engine.knownItemIds,
+      weights: engine.weights,
+    });
+    await introduceItems(db, plan.newItems.items, now, engine.settings.dayRolloverHour);
+    return plan.newItems.items;
+  }
+
+  it('non è dovuta subito dopo l’introduzione', async () => {
+    await introduceSome();
+    expect(await getDueReinforcements(db, now)).toHaveLength(0);
+  });
+
+  it('diventa dovuta dopo la finestra di 90-120 minuti', async () => {
+    const introduced = await introduceSome();
+    const later = now + 121 * 60 * 1000;
+    const due = await getDueReinforcements(db, later);
+
+    expect(due.length).toBe(introduced.length);
+    for (const entry of due) {
+      expect(entry.card.direction).toBe('recognition');
+      expect(entry.item.id).toBe(entry.card.itemId);
+    }
+  });
+
+  it('annuncia quando arriverà il prossimo, per la notifica', async () => {
+    await introduceSome();
+    const next = await getNextReinforcementAt(db, now);
+    expect(next).not.toBeNull();
+    expect(next! - now).toBeGreaterThanOrEqual(90 * 60 * 1000);
+    expect(next! - now).toBeLessThanOrEqual(120 * 60 * 1000);
+  });
+
+  it('rispondere al rinforzo NON tocca lo stato FSRS', async () => {
+    await introduceSome();
+    const later = now + 121 * 60 * 1000;
+    const [entry] = await getDueReinforcements(db, later);
+    const before = entry.card;
+
+    await recordReview(
+      db,
+      {
+        card: before,
+        item: entry.item,
+        grade: Rating.Good,
+        wasCorrect: true,
+        latencyMs: 1_500,
+        userAnswer: entry.item.it,
+        phase: 'consolidation',
+        sameDayReinforcement: true,
+      },
+      later,
+      (await loadEngineState(db, later)).settings,
+      null,
+    );
+
+    const after = (await loadEngineState(db, later)).cards.find((c) => c.id === before.id)!;
+    // Un richiamo a 90 minuti dato in pasto a FSRS deformerebbe la stability:
+    // qui deve restare esattamente com'era.
+    expect(after.stability).toBe(before.stability);
+    expect(after.difficulty).toBe(before.difficulty);
+    expect(after.due).toBe(before.due);
+    expect(after.reps).toBe(before.reps);
+    // Ma il promemoria si spegne, e quella card non ricompare.
+    expect(after.sameDayReinforcementDue).toBeNull();
+    const stillDue = await getDueReinforcements(db, later);
+    expect(stillDue.map((entry) => entry.card.id)).not.toContain(before.id);
+  });
+
+  it('il rinforzo alimenta comunque il profilo errori', async () => {
+    await introduceSome();
+    const later = now + 121 * 60 * 1000;
+    const [entry] = await getDueReinforcements(db, later);
+
+    await recordReview(
+      db,
+      {
+        card: entry.card,
+        item: entry.item,
+        grade: Rating.Again,
+        wasCorrect: false,
+        latencyMs: 4_000,
+        userAnswer: 'sbagliato',
+        phase: 'consolidation',
+        sameDayReinforcement: true,
+      },
+      later,
+      (await loadEngineState(db, later)).settings,
+      null,
+    );
+
+    const profile = (await loadEngineState(db, later)).errorProfile;
+    for (const tag of entry.item.tags) {
+      expect(profile.get(tag)?.exposures).toBe(1);
+    }
+  });
+});
+
+describe('manutenzione della giornata', () => {
+  let db: Database;
+  const now = Date.now();
+
+  beforeEach(async () => {
+    db = createDatabase();
+    await seedContent(db, now);
+  });
+
+  it('non congela niente per un utente nuovo', async () => {
+    expect((await runDailyMaintenance(db, now)).frozeDay).toBeNull();
+    expect((await getSettings(db)).streakFreezesLeft).toBe(2);
+  });
+
+  it('brucia un freeze per il giorno saltato e lo scrive nel registro', async () => {
+    const settings = await getSettings(db);
+    const twoDaysAgo = now - 2 * 24 * 60 * 60 * 1000;
+    await markQueueCleared(db, twoDaysAgo, settings.dayRolloverHour);
+
+    const { frozeDay } = await runDailyMaintenance(db, now);
+    expect(frozeDay).toBe(previousLogicalDay(logicalDay(now, settings.dayRolloverHour)));
+    expect((await getSettings(db)).streakFreezesLeft).toBe(1);
+
+    // La catena regge: ieri risulta coperto.
+    const logs = await getDayLogs(db);
+    expect(computeStreak(logs, now, settings.dayRolloverHour).current).toBe(1);
+  });
+
+  it('non brucia due freeze per lo stesso giorno', async () => {
+    const settings = await getSettings(db);
+    await markQueueCleared(db, now - 2 * 24 * 60 * 60 * 1000, settings.dayRolloverHour);
+
+    await runDailyMaintenance(db, now);
+    await runDailyMaintenance(db, now);
+    expect((await getSettings(db)).streakFreezesLeft).toBe(1);
   });
 });
 

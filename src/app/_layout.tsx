@@ -12,6 +12,35 @@ import { palette, spacing, type } from '../theme';
 
 type Bootstrap = { status: 'pending' } | { status: 'ready' } | { status: 'error'; message: string };
 
+/**
+ * Rete di sicurezza per gli errori di render (§7: la sessione deve poter
+ * riprendere senza perdere lo stato).
+ *
+ * Un crash a metà sessione senza questa schermata è uno schermo bianco: i dati
+ * sono salvi — ogni risposta è già scritta nel database — ma l'utente non ha
+ * modo di saperlo e presume di aver perso il lavoro.
+ */
+export function ErrorBoundary({ error, retry }: { error: Error; retry: () => Promise<void> }) {
+  const scheme = useColorScheme() ?? 'dark';
+  const colors = palette[scheme === 'light' ? 'light' : 'dark'];
+
+  return (
+    <View style={[styles.center, { backgroundColor: colors.bg }]}>
+      <Text style={[type.title, { color: colors.text, marginBottom: spacing.sm }]}>Qualcosa si è rotto</Text>
+      <Text style={[type.body, { color: colors.textMuted, textAlign: 'center', marginBottom: spacing.lg }]}>
+        Le risposte che hai già dato sono salvate: ogni richiamo viene scritto nel momento in cui rispondi, non alla
+        fine della sessione.
+      </Text>
+      <Text style={[type.mono, { color: colors.textFaint, textAlign: 'center', marginBottom: spacing.lg }]}>
+        {error.message}
+      </Text>
+      <Pressable accessibilityRole="button" onPress={() => void retry()}>
+        <Text style={[type.label, { color: colors.text }]}>RIPROVA</Text>
+      </Pressable>
+    </View>
+  );
+}
+
 export default function RootLayout() {
   const scheme = useColorScheme() ?? 'dark';
   const colors = palette[scheme === 'light' ? 'light' : 'dark'];

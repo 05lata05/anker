@@ -1,8 +1,14 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { STREAK_FREEZES_PER_MONTH } from '../core/progress/metrics';
 import { RETENTION_MAX, RETENTION_MIN } from '../core/types';
+import {
+  cancelReinforcementNotification,
+  hasNotificationPermission,
+  requestNotificationPermission,
+} from '../features/notifications/reinforcement';
 import { exportDatabase, importDatabase } from '../db/backup';
 import { getDatabase } from '../db/client';
 import { resetOnboarding } from '../db/repo';
@@ -26,6 +32,11 @@ export default function SettingsScreen() {
   const patch = useSettingsStore((state) => state.patch);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [notificationsOn, setNotificationsOn] = useState(false);
+
+  useEffect(() => {
+    void hasNotificationPermission().then(setNotificationsOn);
+  }, []);
 
   async function onExport() {
     setBusy(true);
@@ -173,11 +184,41 @@ export default function SettingsScreen() {
           ))}
         </View>
 
+        <Label>Ripasso lampo</Label>
+        <Surface>
+          <Text style={[type.body, { color: colors.textMuted }]}>
+            Ogni chunk nuovo torna una seconda volta dopo un’ora e mezza. È lo spacing che lo fissa, ed è il momento
+            in cui l’app non è aperta: senza promemoria resta una riga nel database che nessuno vede.
+          </Text>
+          <View style={styles.switchRow}>
+            <Text style={[type.body, { color: colors.text }]}>Promemoria</Text>
+            <Switch
+              value={notificationsOn}
+              onValueChange={async (value) => {
+                if (!value) {
+                  await cancelReinforcementNotification();
+                  setNotificationsOn(false);
+                  return;
+                }
+                setNotificationsOn(await requestNotificationPermission());
+              }}
+            />
+          </View>
+          <Text style={[type.mono, { color: colors.textFaint }]}>
+            Una notifica sola, all’ora del ripasso. Nessun promemoria serale e nessun messaggio che ti fa sentire in
+            colpa: sono il motivo per cui la gente disattiva tutto e poi non torna.
+          </Text>
+        </Surface>
+
         <Label>Giornata</Label>
         <Surface>
           <Text style={[type.body, { color: colors.textMuted }]}>
             La giornata inizia alle {settings.dayRolloverHour}:00. Studiare all’una di notte conta per il giorno
             precedente, così non si perde lo streak per un tecnicismo di calendario.
+          </Text>
+          <Text style={[type.mono, { color: colors.textFaint }]}>
+            Streak freeze rimasti questo mese: {settings.streakFreezesLeft} su {STREAK_FREEZES_PER_MONTH}. Si
+            consumano da soli quando salti un giorno, e solo se c’era una catena da proteggere.
           </Text>
         </Surface>
 

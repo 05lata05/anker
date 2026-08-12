@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "c2a56d93-c7b2-4930-aa94-cd8911cf2f9e",
+  "id": "e29e1392-4fc2-4989-97a8-d0d4faf5df8b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "cards": {
@@ -777,6 +777,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": 2
+        },
+        "freeze_month": {
+          "name": "freeze_month",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
         },
         "level": {
           "name": "level",

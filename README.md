@@ -25,6 +25,15 @@ npm run typecheck
 npm start
 ```
 
+Poi si inquadra il QR con Expo Go (Android) o con la fotocamera (iOS). Notifiche
+locali, microfono, export e import funzionano solo lì: nel browser sono inerti.
+
+Per rigenerare le icone dopo aver cambiato i colori del genere:
+
+```bash
+node scripts/make-icons.mjs
+```
+
 Dopo aver modificato `src/db/schema.ts` serve rigenerare le migrazioni:
 
 ```bash
@@ -101,7 +110,12 @@ richiede registrazioni di parlanti reali, che i contenuti non hanno.
 bloccato nel browser usato per la verifica: è stata provata solo la
 degradazione (permesso negato → messaggio esplicito, auto-valutazione ancora
 disponibile, sessione che prosegue). Registrazione, inviluppo e A/B vanno
-provati su telefono, come export e import.
+provati su telefono, come export, import e notifiche.
+
+**Il ripasso lampo è verificato dai test, non a occhio.** Sei test di
+integrazione coprono la finestra dei 90-120 minuti, il fatto che rispondere non
+tocchi lo stato FSRS e che alimenti comunque il profilo errori. Nel browser è
+stato visto solo lo stato vuoto: aspettare un'ora e mezza non era praticabile.
 
 **Il livello stimato dal placement è una stima grossolana.** Venti domande di
 riconoscimento non misurano il livello di nessuno. Serve solo a decidere da
@@ -118,6 +132,12 @@ giorni proprio perché l'errore si scopra subito.
 | D | Home, progressi, dettaglio item, impostazioni, onboarding | fatto |
 | E | Audio: shadowing, registrazione, A/B, TTS | fatto |
 | F | 348 item, 26 lezioni, trasformazioni, rifinitura | fatto |
+
+Dopo le sei fasi sono stati chiusi i buchi che rendevano l'app non usabile tutti
+i giorni: il **ripasso lampo** (la seconda esposizione era programmata nel
+database e non la presentava nessuno), la **notifica locale** che lo richiama,
+gli **streak freeze** che ora si consumano davvero, il feedback aptico,
+l'error boundary, l'icona e la rimozione di dieci dipendenze mai usate.
 
 ## Decisioni prese e loro motivo
 
