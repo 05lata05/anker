@@ -31,9 +31,7 @@
         }
       ],
       "expo-sqlite",
-      "expo-audio",
-      "expo-sharing",
-      "expo-asset"
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true,

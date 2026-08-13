@@ -60,8 +60,19 @@ export interface ImportResult {
  * fingere che l'operazione sia trasparente.
  */
 export async function importDatabase(): Promise<ImportResult> {
-  const picked = await File.pickFileAsync({ mimeTypes: ['application/octet-stream', 'application/x-sqlite3'] });
-  if (picked.canceled) return { imported: false, backupUri: null };
+  // Il selettore segnala l'annullamento lanciando, non con un valore: se
+  // l'utente chiude il pannello non è un errore, è un «no».
+  let picked: Awaited<ReturnType<typeof File.pickFileAsync>>;
+  try {
+    picked = await File.pickFileAsync(undefined, 'application/octet-stream');
+  } catch {
+    return { imported: false, backupUri: null };
+  }
+
+  // Il selettore è tipizzato sulla classe base: il `File` concreto arriva a
+  // runtime, ma TypeScript vede la forma minima.
+  const source = (Array.isArray(picked) ? picked[0] : picked) as File | undefined;
+  if (!source) return { imported: false, backupUri: null };
 
   const target = databaseFile();
   let backupUri: string | null = null;
@@ -74,6 +85,6 @@ export async function importDatabase(): Promise<ImportResult> {
     target.delete();
   }
 
-  picked.result.copy(target);
+  source.copy(target);
   return { imported: true, backupUri };
 }

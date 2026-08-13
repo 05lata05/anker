@@ -28,6 +28,12 @@ npm start
 Poi si inquadra il QR con Expo Go (Android) o con la fotocamera (iOS). Notifiche
 locali, microfono, export e import funzionano solo lì: nel browser sono inerti.
 
+Il progetto è su **Expo SDK 54**, non sull'ultimo. Expo Go supporta un solo SDK
+alla volta — quello della sua versione più recente installabile sul dispositivo
+— e un iPhone che non può aggiornare Expo Go oltre l'SDK 54 rifiuta il QR di un
+progetto più nuovo. Prima di alzare l'SDK, verificare quale supporta il telefono
+su cui l'app deve girare davvero.
+
 Per rigenerare le icone dopo aver cambiato i colori del genere:
 
 ```bash
@@ -63,7 +69,7 @@ migrazioni, colonne JSON, persistenza dello stato FSRS e ripresa di sessione.
 
 ## La patch a `expo-sqlite`
 
-In `patches/expo-sqlite+57.0.1.patch` c'è la correzione di un bug a monte che
+In `patches/expo-sqlite+16.0.10.patch` c'è la correzione di un bug a monte che
 rendeva il target web inutilizzabile. Il canale sincrono verso il worker
 scriveva la lunghezza del risultato così:
 
