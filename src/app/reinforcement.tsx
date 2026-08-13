@@ -1,3 +1,4 @@
+import { goBackOrHome } from '../features/ui/navigation';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -26,7 +27,7 @@ export default function ReinforcementScreen() {
 
   const exit = () => {
     store.reset();
-    router.back();
+    goBackOrHome(router);
   };
 
   if (store.status === 'idle' || store.status === 'loading') {

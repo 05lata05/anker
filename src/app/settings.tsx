@@ -1,3 +1,4 @@
+import { goBackOrHome } from '../features/ui/navigation';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
@@ -98,7 +99,7 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.bg }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable accessibilityRole="button" onPress={() => router.back()} hitSlop={10}>
+        <Pressable accessibilityRole="button" onPress={() => goBackOrHome(router)} hitSlop={10}>
           <Text style={[type.label, { color: colors.textMuted }]}>← HOME</Text>
         </Pressable>
 

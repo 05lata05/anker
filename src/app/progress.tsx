@@ -1,3 +1,4 @@
+import { goBackOrHome } from '../features/ui/navigation';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -71,7 +72,7 @@ export default function ProgressScreen() {
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.bg }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable accessibilityRole="button" onPress={() => router.back()} hitSlop={10}>
+        <Pressable accessibilityRole="button" onPress={() => goBackOrHome(router)} hitSlop={10}>
           <Text style={[type.label, { color: colors.textMuted }]}>← HOME</Text>
         </Pressable>
 

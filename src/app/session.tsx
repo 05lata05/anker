@@ -1,3 +1,4 @@
+import { goBackOrHome } from '../features/ui/navigation';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -31,7 +32,7 @@ export default function SessionScreen() {
 
   const exit = () => {
     stopSpeaking();
-    router.back();
+    goBackOrHome(router);
   };
 
   if (store.status === 'loading' || store.status === 'idle') {
