@@ -27,9 +27,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Node 24, non una versione più vecchia: `package-lock.json` è scritto da
+      # npm 11, che annida le dipendenze in modo diverso da npm 10. Con npm 10
+      # `npm ci` si ferma su «Missing: esbuild@0.28.2 from lock file», anche se
+      # la voce nel lock c'è — sta solo sotto `tsx/node_modules/`.
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       # `npm ci` esegue il postinstall, quindi riapplica la patch a
