@@ -143,6 +143,15 @@ apre o ricarica; GitHub Pages serve `404.html`, che contiene l'app intera e
 legge l'indirizzo da sé. `public/.nojekyll` impedisce a GitHub di scartare
 `_expo/`, dove sta tutto il bundle.
 
+Il primo avvio è lento: si scaricano circa 2 MB di bundle e la pagina si
+ricarica una volta, quando il service worker prende il controllo. Dalla
+seconda volta parte subito.
+
+**Non c'è ancora una cache offline.** Il service worker riscrive le
+intestazioni ma non conserva niente: i dati stanno in locale, i file
+dell'app no. Senza rete l'app si apre solo se il browser ha ancora in cache
+il bundle, e non è una garanzia.
+
 Cosa si perde rispetto a Expo Go o a un'app vera:
 
 - **Le notifiche locali non esistono.** Il promemoria del ripasso lampo è una
@@ -158,8 +167,8 @@ Cosa si perde rispetto a Expo Go o a un'app vera:
 
 **Verificato su Chrome headless, non su iPhone.** Isolamento, persistenza del
 database fra riavvii e istradamento delle rotte con parametro sono stati
-provati automaticamente su Chrome, servendo il build da un server che non manda
-nessuna intestazione — cioè nelle stesse condizioni di GitHub Pages. Su Safari
+provati automaticamente su Chrome, prima contro un server locale senza
+intestazioni e poi contro il sito pubblicato su GitHub Pages. Su Safari
 di iOS non è stato provato: i service worker e `SharedArrayBuffer` ci sono da
 anni, ma il VFS che `expo-sqlite` usa sul web poggia su IndexedDB, e Safari lì
 ha storicamente le sue stranezze.
