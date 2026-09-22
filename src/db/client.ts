@@ -11,6 +11,7 @@
  */
 import { type ExpoSQLiteDatabase, drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
 import * as schema from './schema';
 
 export const DATABASE_NAME = 'anker.db';
@@ -21,12 +22,71 @@ let instance: Database | null = null;
 let handle: SQLite.SQLiteDatabase | null = null;
 let opening: Promise<Database> | null = null;
 
+/** Quanto si aspetta che il service worker isoli la pagina e la ricarichi. */
+const ATTESA_ISOLAMENTO_MS = 20_000;
+
+/**
+ * Sul web il database vive in un worker raggiunto tramite `SharedArrayBuffer`,
+ * che esiste solo in un documento cross-origin isolated. Su un hosting che non
+ * manda le intestazioni è il service worker a procurare l'isolamento, ma non
+ * controlla il primo caricamento: lo ottiene e ricarica la pagina.
+ *
+ * In quella prima passata il database non va toccato. Non perché l'apertura
+ * fallirebbe — quello si potrebbe gestire — ma perché fallisce *dopo* aver
+ * aperto gli handle OPFS dei file. Al ricaricamento il nuovo worker li trova
+ * ancora bloccati dal precedente, e su Safari muore con «the operation failed
+ * for an unknown transient reason». Chrome li rilascia abbastanza in fretta da
+ * nasconderlo; Safari no, e l'app non partiva affatto sull'iPhone.
+ */
+function isolamentoInArrivo(): boolean {
+  if (Platform.OS !== 'web') return false;
+  const isolato = (globalThis as { crossOriginIsolated?: boolean }).crossOriginIsolated;
+  return isolato === false;
+}
+
+/**
+ * L'apertura può fallire per contesa sui file: un'altra scheda con la stessa
+ * app, o il worker del caricamento precedente che non ha ancora mollato la
+ * presa. È una condizione che passa da sé, quindi vale la pena riprovare prima
+ * di mostrare un errore che l'utente non può risolvere.
+ */
+async function apriConRiprove(tentativi = 3): Promise<SQLite.SQLiteDatabase> {
+  let ultimo: unknown;
+  for (let i = 0; i < tentativi; i++) {
+    try {
+      return await SQLite.openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true });
+    } catch (errore) {
+      ultimo = errore;
+      await new Promise((risolvi) => setTimeout(risolvi, 250 * (i + 1)));
+    }
+  }
+  throw ultimo;
+}
+
 export function getDatabase(): Promise<Database> {
   if (instance) return Promise.resolve(instance);
 
   if (!opening) {
     opening = (async () => {
-      const sqlite = await SQLite.openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true });
+      if (isolamentoInArrivo()) {
+        // La pagina sta per essere ricaricata dal service worker: si resta in
+        // attesa senza toccare niente. Il rifiuto dopo la scadenza esiste solo
+        // per il caso in cui il ricaricamento non arrivi mai — meglio una
+        // spiegazione che una schermata di caricamento eterna.
+        await new Promise((_, rifiuta) =>
+          setTimeout(
+            () =>
+              rifiuta(
+                new Error(
+                  "La pagina non è cross-origin isolated e il service worker non ha ripreso il controllo. Chiudi e riapri la scheda; se continua, il browser potrebbe bloccare i service worker (navigazione privata)."
+                )
+              ),
+            ATTESA_ISOLAMENTO_MS
+          )
+        );
+      }
+
+      const sqlite = await apriConRiprove();
       // Le foreign key in SQLite sono disattivate di default: senza questo
       // pragma `onDelete: 'cascade'` sullo schema non fa nulla.
       await sqlite.execAsync('PRAGMA foreign_keys = ON;');

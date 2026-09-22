@@ -143,6 +143,24 @@ apre o ricarica; GitHub Pages serve `404.html`, che contiene l'app intera e
 legge l'indirizzo da sé. `public/.nojekyll` impedisce a GitHub di scartare
 `_expo/`, dove sta tutto il bundle.
 
+La ricarica che il service worker provoca non è innocua, ed è costata il
+primo avvio su iPhone. Il worker SQLite tiene aperti gli handle OPFS del
+database; se la pagina viene ricaricata mentre li tiene, il caricamento
+successivo li ritrova bloccati e Safari fallisce con «the operation failed for
+an unknown transient reason (e.g. out of memory)» — che non ha niente a che
+vedere con la memoria. Chrome rilascia gli handle abbastanza in fretta da
+nasconderlo. Due misure, insieme:
+
+- `getDatabase` non apre il database su una pagina non isolata. Non perché
+  l'apertura fallirebbe comunque, ma perché fallisce *dopo* aver preso gli
+  handle. Sulla prima passata non si tocca niente e si aspetta la ricarica.
+- La ricarica avviene una volta sola, quando il worker diventa attivo, e mai
+  su una pagina già isolata — nemmeno quando esce una versione nuova del
+  worker, che subentrerà da sé alla navigazione seguente.
+
+L'apertura riprova tre volte con attesa crescente: due schede aperte sulla
+stessa app si contendono gli stessi file, ed è una condizione che passa.
+
 Il primo avvio è lento: si scaricano circa 2 MB di bundle e la pagina si
 ricarica una volta, quando il service worker prende il controllo. Dalla
 seconda volta parte subito.

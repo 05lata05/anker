@@ -79,10 +79,37 @@ if (typeof window === 'undefined') {
     }
 
     // Al primo caricamento il worker non controlla ancora questo documento:
-    // le intestazioni arrivano solo dalla navigazione successiva. Per questo
-    // si ricarica una volta sola, e la si segna in `sessionStorage` per non
-    // entrare in un ciclo se per qualche motivo l'isolamento non arriva.
-    const ALREADY_RELOADED = 'coi-reloaded';
+    // le intestazioni arrivano solo dalla navigazione successiva. Serve quindi
+    // una ricarica, ma esattamente UNA, e solo qui.
+    //
+    // La ricarica non è innocua: il worker SQLite tiene aperti gli handle OPFS
+    // del database, e su Safari il caricamento successivo li ritrova bloccati
+    // e muore con «the operation failed for an unknown transient reason». Su
+    // una pagina non isolata il database non è mai stato aperto — `getDatabase`
+    // si astiene — quindi ricaricare è sicuro. Su una pagina già isolata non lo
+    // sarebbe, ed è per questo che lì non si ricarica per nessun motivo, nemmeno
+    // quando esce una versione nuova del worker: quella subentrerà da sé alla
+    // prossima navigazione.
+    const GIA_RICARICATO = 'coi-ricaricato';
+
+    function ricaricaUnaVolta() {
+      let fatto = null;
+      try {
+        fatto = sessionStorage.getItem(GIA_RICARICATO);
+      } catch {
+        // Safari in navigazione privata può lanciare: si procede senza.
+      }
+      if (fatto) {
+        console.error('[coi] ricarica già tentata ma la pagina non è isolata: mi fermo.');
+        return;
+      }
+      try {
+        sessionStorage.setItem(GIA_RICARICATO, '1');
+      } catch {
+        /* vedi sopra */
+      }
+      window.location.reload();
+    }
 
     // Il percorso va risolto rispetto a QUESTO script, non alla pagina: le
     // rotte annidate (`/anker/item/42`) risolverebbero un relativo nel posto
@@ -95,27 +122,18 @@ if (typeof window === 'undefined') {
     navigator.serviceWorker
       .register(scriptUrl, { scope })
       .then((registration) => {
-        registration.addEventListener('updatefound', () => window.location.reload());
-        if (registration.active && !navigator.serviceWorker.controller) {
-          window.location.reload();
+        // Alla primissima registrazione il worker è in installazione e non c'è
+        // ancora niente da cui la pagina possa trarre vantaggio: si aspetta che
+        // diventi attivo. Dopo, `active` c'è già.
+        const worker = registration.installing || registration.waiting || registration.active;
+        if (!worker) return;
+        if (worker.state === 'activated') {
+          ricaricaUnaVolta();
           return;
         }
-        if (navigator.serviceWorker.controller) {
-          let reloaded = null;
-          try {
-            reloaded = sessionStorage.getItem(ALREADY_RELOADED);
-          } catch {
-            // Safari in navigazione privata può lanciare: si procede senza.
-          }
-          if (!reloaded) {
-            try {
-              sessionStorage.setItem(ALREADY_RELOADED, '1');
-            } catch {
-              /* vedi sopra */
-            }
-            window.location.reload();
-          }
-        }
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'activated') ricaricaUnaVolta();
+        });
       })
       .catch((error) => console.error('[coi] registrazione fallita:', error));
   })();
