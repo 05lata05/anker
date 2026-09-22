@@ -28,6 +28,16 @@ npm start
 Poi si inquadra il QR con Expo Go (Android) o con la fotocamera (iOS). Notifiche
 locali, microfono, export e import funzionano solo lì: nel browser sono inerti.
 
+Per costruire il sito statico da pubblicare:
+
+```bash
+npm run build:web
+```
+
+Il sottopercorso si passa nell'ambiente — `ANKER_BASE_URL=anker npm run build:web`
+— e va scritto **senza barra iniziale**: Git Bash traduce i valori che cominciano
+per `/` in percorsi Windows, e il sito ne esce bianco senza un errore in console.
+
 Il progetto è su **Expo SDK 54**, non sull'ultimo. Expo Go supporta un solo SDK
 alla volta — quello della sua versione più recente installabile sul dispositivo
 — e un iPhone che non può aggiornare Expo Go oltre l'SDK 54 rifiuta il QR di un
@@ -94,6 +104,63 @@ La patch viene riapplicata da `patch-package` nel `postinstall`. Non serve su
 iOS e Android, dove SQLite è nativo: serve per poter sviluppare e verificare nel
 browser. Quando expo-sqlite correggerà i bug a monte, questa patch e la
 dipendenza `patch-package` si possono togliere.
+
+## La versione web su GitHub Pages
+
+`.github/workflows/pubblica-web.yml` costruisce il sito a ogni push e lo
+pubblica su GitHub Pages. L'indirizzo che ne esce si apre dal telefono e si
+aggiunge alla schermata Home: diventa un'icona che parte a tutto schermo, senza
+PC acceso e senza Expo Go.
+
+Perché funzioni serviva risolvere un problema che sembrava insormontabile.
+`expo-sqlite` sul web parla con il worker SQLite attraverso una
+`SharedArrayBuffer`, che i browser espongono solo a un documento *cross-origin
+isolated*; per esserlo servono due intestazioni di risposta che GitHub Pages
+non permette di configurare:
+
+```
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+`public/coi-serviceworker.js` le aggiunge da dentro il browser: il service
+worker si interpone sulla navigazione, rifà la richiesta e riscrive le
+intestazioni prima che il documento venga valutato. Al primo caricamento il
+worker non controlla ancora la pagina, quindi ne provoca una ricarica; da lì in
+poi è trasparente.
+
+Intercetta **solo** le richieste di navigazione. Intercettare tutto funziona,
+ma ogni file farebbe un giro in più dentro il worker, e `expo-sqlite` apre il
+database con un'attesa sincrona che scade in qualche decina di millisecondi:
+con il salto in più la prima query arrivava fuori tempo massimo e l'app si
+fermava su «Impossibile preparare il database», in modo intermittente.
+
+`404.html` è una copia di `index.html`. Le rotte con parametro (`/item/42`) non
+hanno un file corrispondente e un hosting statico risponderebbe 404 a chi le
+apre o ricarica; GitHub Pages serve `404.html`, che contiene l'app intera e
+legge l'indirizzo da sé. `public/.nojekyll` impedisce a GitHub di scartare
+`_expo/`, dove sta tutto il bundle.
+
+Cosa si perde rispetto a Expo Go o a un'app vera:
+
+- **Le notifiche locali non esistono.** Il promemoria del ripasso lampo è una
+  notifica programmata, e quell'API sul web non c'è: il ripasso si vede solo
+  aprendo l'app. È la perdita più seria, perché la seconda esposizione a
+  90-120 minuti è metà del metodo.
+- **Export e import del database non funzionano.** Usano `expo-file-system`,
+  che sul web non ha un filesystem da toccare. I dati vivono nello spazio del
+  browser e non hanno una copia di sicurezza.
+- I dati stanno nello spazio del sito. Aggiungere l'app alla schermata Home
+  protegge da buona parte delle politiche di pulizia di Safari, ma resta
+  archiviazione di browser, non di app.
+
+**Verificato su Chrome headless, non su iPhone.** Isolamento, persistenza del
+database fra riavvii e istradamento delle rotte con parametro sono stati
+provati automaticamente su Chrome, servendo il build da un server che non manda
+nessuna intestazione — cioè nelle stesse condizioni di GitHub Pages. Su Safari
+di iOS non è stato provato: i service worker e `SharedArrayBuffer` ci sono da
+anni, ma il VFS che `expo-sqlite` usa sul web poggia su IndexedDB, e Safari lì
+ha storicamente le sue stranezze.
 
 ## Limitazioni note
 

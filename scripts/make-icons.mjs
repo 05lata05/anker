@@ -118,6 +118,20 @@ const targets = [
     size: 432,
     draw: bars({ background: TRANSPARENT, colors: [MONO, MONO, MONO], scale: 0.44 }),
   },
+
+  // Icone della versione web aggiunta alla schermata Home. Stanno in `public/`
+  // e non in `assets/` perché il manifest e iOS le cercano a un percorso fisso:
+  // se passassero dal bundler finirebbero sotto un nome con l'hash.
+  { file: 'public/icons/apple-touch-icon.png', size: 180, draw: bars({ background: BG, colors: BARS }) },
+  { file: 'public/icons/icon-192.png', size: 192, draw: bars({ background: BG, colors: BARS }) },
+  { file: 'public/icons/icon-512.png', size: 512, draw: bars({ background: BG, colors: BARS }) },
+  // «Maskable»: Android ritaglia l'icona in una forma che non conosciamo in
+  // anticipo, quindi il segno sta dentro il cerchio di sicurezza.
+  {
+    file: 'public/icons/icon-512-maskable.png',
+    size: 512,
+    draw: bars({ background: BG, colors: BARS, scale: 0.44 }),
+  },
 ];
 
 const root = resolve(import.meta.dirname, '..');

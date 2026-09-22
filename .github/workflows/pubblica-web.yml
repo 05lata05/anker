@@ -1,0 +1,66 @@
+# Costruisce la versione web e la pubblica su GitHub Pages a ogni push.
+#
+# Il risultato è un indirizzo che si apre dal telefono e si aggiunge alla
+# schermata Home come un'app. Non sostituisce Expo Go per le funzioni native
+# (notifiche locali su tutte), ma non richiede il PC acceso.
+name: Pubblica la versione web
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Una pubblicazione alla volta. Non si annulla quella in corso: interrompere a
+# metà lascerebbe online un sito parziale.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  costruisci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` esegue il postinstall, quindi riapplica la patch a
+      # expo-sqlite: senza, il target web è inutilizzabile.
+      - run: npm ci
+
+      - name: Verifica che i test passino
+        run: npm test
+
+      - name: Controlla i tipi
+        run: npm run typecheck
+
+      - name: Costruisci il sito
+        # Il base path è il nome del repository: ricavarlo qui invece di
+        # scriverlo a mano evita che rinominare il repository produca un sito
+        # bianco senza spiegazione.
+        env:
+          ANKER_BASE_URL: ${{ github.event.repository.name }}
+        run: npm run build:web
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  pubblica:
+    needs: costruisci
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
