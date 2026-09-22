@@ -50,7 +50,12 @@ jobs:
           ANKER_BASE_URL: ${{ github.event.repository.name }}
         run: npm run build:web
 
+      # `enablement` accende GitHub Pages da sé la prima volta: senza, il
+      # primo push fallisce sull'ultimo passo e bisogna andare a cercare
+      # l'opzione nelle impostazioni del repository.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
