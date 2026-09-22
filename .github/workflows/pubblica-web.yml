@@ -54,12 +54,12 @@ jobs:
           ANKER_BASE_URL: ${{ github.event.repository.name }}
         run: npm run build:web
 
-      # `enablement` accende GitHub Pages da sé la prima volta: senza, il
-      # primo push fallisce sull'ultimo passo e bisogna andare a cercare
-      # l'opzione nelle impostazioni del repository.
+      # Pages va acceso una volta a mano, in Settings > Pages, scegliendo
+      # «GitHub Actions» come sorgente. Il token del workflow può pubblicare
+      # su un sito esistente ma non crearlo: con `enablement: true` questo
+      # passo muore su «Create Pages site failed — Resource not accessible by
+      # integration».
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -108,7 +108,9 @@ dipendenza `patch-package` si possono togliere.
 ## La versione web su GitHub Pages
 
 `.github/workflows/pubblica-web.yml` costruisce il sito a ogni push e lo
-pubblica su GitHub Pages. L'indirizzo che ne esce si apre dal telefono e si
+pubblica su GitHub Pages. Pages va acceso una volta a mano, in
+**Settings > Pages > Source > GitHub Actions**: il token del workflow può
+pubblicare su un sito esistente, ma non crearne uno. L'indirizzo che ne esce si apre dal telefono e si
 aggiunge alla schermata Home: diventa un'icona che parte a tutto schermo, senza
 PC acceso e senza Expo Go.
 
