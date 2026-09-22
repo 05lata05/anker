@@ -11,3 +11,81 @@ index 7fba380..b80252c 100644
      resultArray.set(resultBytes, 4);
      Atomics.store(lock, 0, RESOLVED);
    } else {
+diff --git a/node_modules/expo-sqlite/web/wa-sqlite/AccessHandlePoolVFS.js b/node_modules/expo-sqlite/web/wa-sqlite/AccessHandlePoolVFS.js
+index cbb68f3..5943024 100644
+--- a/node_modules/expo-sqlite/web/wa-sqlite/AccessHandlePoolVFS.js
++++ b/node_modules/expo-sqlite/web/wa-sqlite/AccessHandlePoolVFS.js
+@@ -24,6 +24,27 @@ const PERSISTENT_FILE_TYPES =
+ 
+ const DEFAULT_CAPACITY = 6;
+ 
++/**
++ * createSyncAccessHandle() con qualche riprova.
++ *
++ * Su WebKit l'errore è dichiarato «transient» dallo standard e lo è davvero:
++ * capita quando un handle sullo stesso file non è ancora stato rilasciato. Le
++ * attese sono brevi e crescenti; se non passa, l'errore originale viene
++ * rilanciato tale e quale, perché è l'unico che dica qualcosa.
++ */
++async function createSyncAccessHandleWithRetry(handle, attempts = 5) {
++  let firstError;
++  for (let i = 0; i < attempts; i++) {
++    try {
++      return await handle.createSyncAccessHandle();
++    } catch (error) {
++      firstError ??= error;
++      await new Promise((resolve) => setTimeout(resolve, 50 * (i + 1)));
++    }
++  }
++  throw firstError;
++}
++
+ /**
+  * This VFS uses the updated Access Handle API with all synchronous methods
+  * on FileSystemSyncAccessHandle (instead of just read and write). It will
+@@ -259,7 +280,7 @@ export class AccessHandlePoolVFS extends FacadeVFS {
+     for (let i = 0; i < n; ++i) {
+       const name = Math.random().toString(36).replace('0.', '');
+       const handle = await this.#directoryHandle.getFileHandle(name, { create: true });
+-      const accessHandle = await handle.createSyncAccessHandle();
++      const accessHandle = await createSyncAccessHandleWithRetry(handle);
+       this.#mapAccessHandleToName.set(accessHandle, name);
+ 
+       this.#setAssociatedPath(accessHandle, '', 0);
+@@ -298,19 +319,23 @@ export class AccessHandlePoolVFS extends FacadeVFS {
+       }
+     }
+ 
+-    // Open access handles in parallel, separating associated and unassociated.
+-    await Promise.all(
+-      files.map(async ([name, handle]) => {
+-        const accessHandle = await handle.createSyncAccessHandle();
+-        this.#mapAccessHandleToName.set(accessHandle, name);
+-        const path = this.#getAssociatedPath(accessHandle);
+-        if (path) {
+-          this.#mapPathToAccessHandle.set(path, accessHandle);
+-        } else {
+-          this.#availableAccessHandles.add(accessHandle);
+-        }
+-      })
+-    );
++    // Uno alla volta, non in parallelo. WebKit fallisce le chiamate concorrenti
++    // a createSyncAccessHandle() con «UnknownError: The operation failed for an
++    // unknown transient reason (e.g. out of memory)», che non ha niente a che
++    // vedere con la memoria. Su Safari l'apertura del database falliva dal
++    // secondo avvio in poi: alla prima la cartella è vuota e il pool viene
++    // creato in sequenza da addCapacity(), dalla seconda ci sono sei file da
++    // riaprire e questo ciclo li chiedeva tutti insieme.
++    for (const [name, handle] of files) {
++      const accessHandle = await createSyncAccessHandleWithRetry(handle);
++      this.#mapAccessHandleToName.set(accessHandle, name);
++      const path = this.#getAssociatedPath(accessHandle);
++      if (path) {
++        this.#mapPathToAccessHandle.set(path, accessHandle);
++      } else {
++        this.#availableAccessHandles.add(accessHandle);
++      }
++    }
+   }
+ 
+   #releaseAccessHandles() {

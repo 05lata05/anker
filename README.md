@@ -100,6 +100,15 @@ disponibile e di un miliardo quando non lo è — mille volte più stretto nei
 browser recenti, cioè qualche decina di millisecondi. Con 348 item qualsiasi
 query sull'intero catalogo lo sfondava.
 
+La stessa patch tocca un secondo file, `web/wa-sqlite/AccessHandlePoolVFS.js`.
+Il VFS persistente tiene il database su OPFS e all'avvio riapre gli handle di
+tutti i file del pool; lo faceva con `Promise.all`, cioè tutti insieme. WebKit
+fallisce le `createSyncAccessHandle()` concorrenti con «UnknownError: The
+operation failed for an unknown transient reason (e.g. out of memory)», che non
+c'entra con la memoria. L'effetto era che su Safari il primo avvio andava — la
+cartella è vuota e il pool viene creato in sequenza — e dal secondo in poi no.
+Ora gli handle si aprono uno alla volta, con qualche riprova breve.
+
 La patch viene riapplicata da `patch-package` nel `postinstall`. Non serve su
 iOS e Android, dove SQLite è nativo: serve per poter sviluppare e verificare nel
 browser. Quando expo-sqlite correggerà i bug a monte, questa patch e la

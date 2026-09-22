@@ -49,18 +49,25 @@ function isolamentoInArrivo(): boolean {
  * app, o il worker del caricamento precedente che non ha ancora mollato la
  * presa. È una condizione che passa da sé, quindi vale la pena riprovare prima
  * di mostrare un errore che l'utente non può risolvere.
+ *
+ * Si rilancia il PRIMO errore, non l'ultimo. Sul web il worker di expo-sqlite
+ * inizializza wa-sqlite e il VFS insieme, e memorizza il primo anche se il
+ * secondo fallisce: da lì in poi ogni tentativo muore su «Invalid VFS state»,
+ * che descrive lo stato in cui il fallimento precedente ha lasciato il worker
+ * e non dice niente sulla causa. Tenendo il primo, l'errore che arriva a
+ * schermo è quello vero.
  */
 async function apriConRiprove(tentativi = 3): Promise<SQLite.SQLiteDatabase> {
-  let ultimo: unknown;
+  let primo: unknown;
   for (let i = 0; i < tentativi; i++) {
     try {
       return await SQLite.openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true });
     } catch (errore) {
-      ultimo = errore;
+      primo ??= errore;
       await new Promise((risolvi) => setTimeout(risolvi, 250 * (i + 1)));
     }
   }
-  throw ultimo;
+  throw primo;
 }
 
 export function getDatabase(): Promise<Database> {

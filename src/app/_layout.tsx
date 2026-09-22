@@ -2,7 +2,7 @@ import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import migrations from '../../drizzle/migrations';
 import { getDatabase, resetDatabase } from '../db/client';
@@ -11,6 +11,22 @@ import { useSettingsStore } from '../state/settingsStore';
 import { palette, spacing, type } from '../theme';
 
 type Bootstrap = { status: 'pending' } | { status: 'ready' } | { status: 'error'; message: string };
+
+/**
+ * Segna un evento per la durata della scheda e dice se era già segnato.
+ * `sessionStorage` può lanciare (Safari in navigazione privata): in quel caso
+ * si risponde «già fatto», che è la risposta prudente — meglio mostrare
+ * l'errore che rischiare un ciclo di ricariche.
+ */
+function gia(chiave: string): boolean {
+  try {
+    if (sessionStorage.getItem(chiave)) return true;
+    sessionStorage.setItem(chiave, '1');
+    return false;
+  } catch {
+    return true;
+  }
+}
 
 /**
  * Rete di sicurezza per gli errori di render (§7: la sessione deve poter
@@ -59,7 +75,16 @@ export default function RootLayout() {
         await useSettingsStore.getState().load();
         if (!cancelled) setBootstrap({ status: 'ready' });
       } catch (e) {
-        if (!cancelled) setBootstrap({ status: 'error', message: e instanceof Error ? e.message : String(e) });
+        if (cancelled) return;
+        // Un fallimento all'apertura sul web è spesso contesa sui file OPFS, e
+        // passa con un worker nuovo. Si concede una ricarica sola — segnata in
+        // sessionStorage — perché se il problema è stabile un ciclo infinito
+        // sarebbe peggio dell'errore.
+        if (Platform.OS === 'web' && !gia('anker-riavvio-db')) {
+          window.location.reload();
+          return;
+        }
+        setBootstrap({ status: 'error', message: e instanceof Error ? e.message : String(e) });
       }
     })();
     return () => {
@@ -76,6 +101,21 @@ export default function RootLayout() {
           Impossibile preparare il database
         </Text>
         <Text style={[type.body, { color: colors.textMuted, textAlign: 'center' }]}>{bootstrap.message}</Text>
+
+        {Platform.OS === 'web' ? (
+          // Sul web l'unico tentativo che può riuscire è ricaricare la pagina.
+          // Il worker di expo-sqlite memorizza wa-sqlite prima di creare il
+          // VFS: se la creazione fallisce, quel worker resta inservibile per
+          // sempre e ogni nuovo tentativo dallo stesso documento muore su
+          // «Invalid VFS state». Ricaricare è l'unico modo di averne uno nuovo.
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => window.location.reload()}
+            style={{ marginTop: spacing.lg }}
+          >
+            <Text style={[type.label, { color: colors.text }]}>RICARICA LA PAGINA</Text>
+          </Pressable>
+        ) : null}
 
         {__DEV__ ? (
           // Solo in sviluppo: rigenerare lo schema lascia un file incompatibile
