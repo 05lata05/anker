@@ -13,6 +13,7 @@ import { type ExpoSQLiteDatabase, drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 import { Platform } from 'react-native';
 import * as schema from './schema';
+import { leggiSnapshot, scriviSnapshot } from './webSnapshot';
 
 export const DATABASE_NAME = 'anker.db';
 
@@ -70,6 +71,106 @@ async function apriConRiprove(tentativi = 3): Promise<SQLite.SQLiteDatabase> {
   throw primo;
 }
 
+/**
+ * Una volta passati al ripiego non si torna indietro da soli.
+ *
+ * Se OPFS tornasse a funzionare — un aggiornamento del browser basta — l'app
+ * aprirebbe il database su disco, lo troverebbe vuoto e mostrerebbe un utente
+ * senza storia, mentre i suoi dati sono ancora nella copia in IndexedDB.
+ * Meglio restare dove i dati sono davvero.
+ */
+const CHIAVE_RIPIEGO = 'anker-ripiego-memoria';
+
+function ripiegoGiaDeciso(): boolean {
+  try {
+    return localStorage.getItem(CHIAVE_RIPIEGO) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function ricordaRipiego(): void {
+  try {
+    localStorage.setItem(CHIAVE_RIPIEGO, '1');
+  } catch {
+    // Senza localStorage si ricomincerà dal tentativo persistente al prossimo
+    // avvio: fastidioso, non dannoso.
+  }
+}
+
+/** Quanto si aspetta dopo un cambiamento prima di riscrivere la copia. */
+const RITARDO_SALVATAGGIO_MS = 1_500;
+
+/**
+ * Tiene aggiornata la copia in IndexedDB del database in memoria.
+ *
+ * Si salva poco dopo ogni cambiamento invece che a ogni scrittura: serializzare
+ * significa riscrivere il file intero, e farlo per ogni risposta sarebbe
+ * sprecato. La finestra di un secondo e mezzo è il prezzo — al massimo si perde
+ * l'ultima risposta, e solo se il browser viene ucciso in quell'istante.
+ */
+function avviaSalvataggio(sqlite: SQLite.SQLiteDatabase): void {
+  let sporco = false;
+  let inCorso = false;
+  let attesa: ReturnType<typeof setTimeout> | null = null;
+
+  const salva = async () => {
+    if (inCorso || !sporco) return;
+    inCorso = true;
+    sporco = false;
+    try {
+      await scriviSnapshot(await sqlite.serializeAsync());
+    } catch (errore) {
+      sporco = true; // si riprova al prossimo cambiamento
+      console.warn('[db] salvataggio della copia fallito:', errore);
+    } finally {
+      inCorso = false;
+    }
+  };
+
+  SQLite.addDatabaseChangeListener(() => {
+    sporco = true;
+    if (attesa) clearTimeout(attesa);
+    attesa = setTimeout(() => void salva(), RITARDO_SALVATAGGIO_MS);
+  });
+
+  // La chiusura della scheda non aspetta un salvataggio asincrono. Il passaggio
+  // in secondo piano sì, ed è il momento in cui su iOS le schede muoiono.
+  if (typeof document !== 'undefined') {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') void salva();
+    });
+  }
+}
+
+/**
+ * Apre il database, ripiegando sulla memoria se l'archiviazione persistente
+ * non è utilizzabile.
+ *
+ * Sul web il database vive su OPFS, che su WebKit può mancare del tutto o
+ * rifiutare gli handle sincroni. Invece di non far partire l'app, si tiene il
+ * database in memoria e se ne conserva l'immagine in IndexedDB.
+ */
+async function apriDatabase(): Promise<{ sqlite: SQLite.SQLiteDatabase; ripiego: boolean }> {
+  const soloRipiego = Platform.OS === 'web' && ripiegoGiaDeciso();
+
+  if (!soloRipiego) {
+    try {
+      return { sqlite: await apriConRiprove(), ripiego: false };
+    } catch (errore) {
+      if (Platform.OS !== 'web') throw errore;
+      console.warn('[db] archiviazione persistente non disponibile, si passa alla copia:', errore);
+    }
+  }
+
+  const byte = await leggiSnapshot();
+  const sqlite = byte
+    ? await SQLite.deserializeDatabaseAsync(byte, { enableChangeListener: true })
+    : await SQLite.openDatabaseAsync(':memory:', { enableChangeListener: true });
+  ricordaRipiego();
+  return { sqlite, ripiego: true };
+}
+
 export function getDatabase(): Promise<Database> {
   if (instance) return Promise.resolve(instance);
 
@@ -93,12 +194,13 @@ export function getDatabase(): Promise<Database> {
         );
       }
 
-      const sqlite = await apriConRiprove();
+      const { sqlite, ripiego } = await apriDatabase();
       // Le foreign key in SQLite sono disattivate di default: senza questo
       // pragma `onDelete: 'cascade'` sullo schema non fa nulla.
       await sqlite.execAsync('PRAGMA foreign_keys = ON;');
       handle = sqlite;
       instance = drizzle(sqlite, { schema });
+      if (ripiego) avviaSalvataggio(sqlite);
       return instance;
     })();
   }

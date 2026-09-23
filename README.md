@@ -109,6 +109,14 @@ c'entra con la memoria. L'effetto era che su Safari il primo avvio andava — la
 cartella è vuota e il pool viene creato in sequenza — e dal secondo in poi no.
 Ora gli handle si aprono uno alla volta, con qualche riprova breve.
 
+La terza parte della patch riguarda `web/worker.ts`. Il VFS persistente veniva
+creato all'avvio del worker **sempre**, anche per un database in memoria che
+con OPFS non ha niente a che fare: se la creazione falliva, falliva tutto, e non
+restava nessun ripiego. Ora un OPFS non disponibile viene messo da parte con il
+suo errore, che viene rilanciato solo a chi chiede davvero un database su disco.
+
+Questo rende possibile il ripiego descritto sotto.
+
 La patch viene riapplicata da `patch-package` nel `postinstall`. Non serve su
 iOS e Android, dove SQLite è nativo: serve per poter sviluppare e verificare nel
 browser. Quando expo-sqlite correggerà i bug a monte, questa patch e la
@@ -178,6 +186,27 @@ seconda volta parte subito.
 intestazioni ma non conserva niente: i dati stanno in locale, i file
 dell'app no. Senza rete l'app si apre solo se il browser ha ancora in cache
 il bundle, e non è una garanzia.
+
+### Quando OPFS non è utilizzabile
+
+Su WebKit l'archiviazione persistente può mancare o rifiutarsi, e l'app non
+partiva affatto. In quel caso il database viene tenuto **in memoria** e la sua
+immagine conservata in IndexedDB (`src/db/webSnapshot.ts`): si salva un secondo
+e mezzo dopo ogni cambiamento e quando la pagina passa in secondo piano.
+
+È un ripiego, non un pari grado. Si riscrive il file intero a ogni salvataggio
+invece delle sole pagine toccate, e resta una finestra in cui l'ultima risposta
+non è ancora al sicuro — al massimo una, e solo se il browser viene ucciso in
+quell'istante.
+
+Una volta entrati nel ripiego non si torna indietro da soli, ed è voluto: se
+OPFS tornasse a funzionare, l'app aprirebbe un database su disco vuoto e
+mostrerebbe un utente senza storia mentre i suoi dati sono ancora nella copia.
+La scelta è ricordata in `localStorage`.
+
+Verificato su WebKit, dove il ripiego scatta sullo stesso errore riportato
+sull'iPhone: copia scritta, pagina ricaricata, dati ritrovati. Su Chrome il
+percorso normale resta quello di prima.
 
 Cosa si perde rispetto a Expo Go o a un'app vera:
 

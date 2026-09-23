@@ -89,3 +89,105 @@ index cbb68f3..5943024 100644
    }
  
    #releaseAccessHandles() {
+diff --git a/node_modules/expo-sqlite/web/worker.ts b/node_modules/expo-sqlite/web/worker.ts
+index deaf721..d0c3a73 100644
+--- a/node_modules/expo-sqlite/web/worker.ts
++++ b/node_modules/expo-sqlite/web/worker.ts
+@@ -53,6 +53,12 @@ const MIN_INT32 = -0x80000000;
+ 
+ let _sqlite3: SQLiteAPI | null = null;
+ let _vfs: AccessHandlePoolVFS | null = null;
++/**
++ * Perché il VFS persistente non è disponibile, se non lo è. Tenuto da parte
++ * per poterlo rilanciare a chi chiede davvero un database su disco: senza,
++ * l'unico sintomo sarebbe un «no such vfs» di SQLite.
++ */
++let _vfsError: unknown = null;
+ let _vfsMemory: MemoryVFS | null = null;
+ 
+ const databaseIdMap = new Map<number, DatabaseEntity>();
+@@ -265,7 +271,7 @@ async function closeDatabase(nativeDatabaseId: number) {
+ async function deleteDatabase(databasePath: string): Promise<void> {
+   const { vfs } = await maybeInitAsync();
+   if (databasePath !== ':memory:') {
+-    vfs.jDelete(databasePath, 0 /* unused arg for AccessHandlePoolVFS */);
++    requirePersistentVfs(vfs).jDelete(databasePath, 0 /* unused arg for AccessHandlePoolVFS */);
+   }
+ }
+ 
+@@ -346,7 +352,7 @@ async function importAssetDatabase(
+   const { sqlite3, vfs } = await maybeInitAsync();
+   if (!forceOverwrite) {
+     const buffer = new DataView(new ArrayBuffer(4));
+-    await vfs.jAccess(databasePath, 0 /* unused arg for AccessHandlePoolVFS */, buffer);
++    await requirePersistentVfs(vfs).jAccess(databasePath, 0 /* unused arg for AccessHandlePoolVFS */, buffer);
+     if (buffer.getUint8(0) === 1) {
+       return;
+     }
+@@ -403,6 +409,11 @@ async function openDatabase(
+ 
+     const flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+     const vfsName = databasePath === ':memory:' ? VFS_NAME_MEMORY : VFS_NAME_PERSISTENT;
++    if (vfsName === VFS_NAME_PERSISTENT) {
++      // Rilancia la ragione vera per cui OPFS non c'è, invece di lasciare che
++      // SQLite dica soltanto che il VFS non è registrato.
++      requirePersistentVfs((await maybeInitAsync()).vfs);
++    }
+     pointer = await sqlite3.open_v2(databasePath, flags, vfsName);
+   }
+ 
+@@ -772,9 +783,16 @@ async function maybeFinalizeAllStatements(nativeDatabaseId: number) {
+   if (error) throw error;
+ }
+ 
++function requirePersistentVfs(vfs: AccessHandlePoolVFS | null): AccessHandlePoolVFS {
++  if (vfs == null) {
++    throw _vfsError ?? new Error('Persistent storage (OPFS) is not available');
++  }
++  return vfs;
++}
++
+ async function maybeInitAsync(): Promise<{
+   sqlite3: SQLiteAPI;
+-  vfs: AccessHandlePoolVFS;
++  vfs: AccessHandlePoolVFS | null;
+   vfsMemory: MemoryVFS;
+ }> {
+   if (!_sqlite3) {
+@@ -787,12 +805,23 @@ async function maybeInitAsync(): Promise<{
+     }
+ 
+     if (_vfs == null) {
+-      _vfs = await AccessHandlePoolVFS.create(VFS_NAME_PERSISTENT, module);
+-      if (_vfs == null) {
+-        throw new Error('Failed to initialize AccessHandlePoolVFS');
++      // Il VFS persistente poggia su OPFS, che può mancare o rifiutarsi: su
++      // WebKit gli handle sincroni non sempre ci sono. Non è una ragione per
++      // far fallire anche i database in memoria, che non toccano OPFS — e il
++      // chiamante può volerli proprio come ripiego. Si prosegue senza.
++      try {
++        _vfs = await AccessHandlePoolVFS.create(VFS_NAME_PERSISTENT, module);
++        if (_vfs == null) {
++          _vfsError = new Error('Failed to initialize AccessHandlePoolVFS');
++        }
++      } catch (error) {
++        _vfs = null;
++        _vfsError = error;
+       }
+     }
+-    _sqlite3.vfs_register(_vfs, true);
++    if (_vfs != null) {
++      _sqlite3.vfs_register(_vfs, true);
++    }
+ 
+     if (_vfsMemory == null) {
+       _vfsMemory = await MemoryVFS.create(VFS_NAME_MEMORY, module);
+@@ -802,7 +831,7 @@ async function maybeInitAsync(): Promise<{
+     }
+     _sqlite3.vfs_register(_vfsMemory, false);
+   }
+-  if (_vfs == null || _vfsMemory == null) {
++  if (_vfsMemory == null) {
+     throw new Error('Invalid VFS state');
+   }
+   return { sqlite3: _sqlite3, vfs: _vfs, vfsMemory: _vfsMemory };
